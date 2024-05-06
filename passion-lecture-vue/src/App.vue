@@ -1,23 +1,5 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-<<<<<<< HEAD
-</script>
-
-<template>
-  <div id="layout">
-    <header>
-      <div class="wrapper">
-        <nav>
-          <RouterLink :to="{ name: 'book-list' }">Mes livres</RouterLink> |
-          <RouterLink :to="{ name: 'account' }">Mon compte</RouterLink>
-        </nav>
-      </div>
-    </header>
-    <RouterView />
-    <!-- espace résérvé pour le contenue du composant "view", sera replacer par le composant de la route chargée -->
-  </div>
-=======
-import HelloWorld from './components/BookView.vue'
 </script>
 
 <template>
@@ -25,6 +7,7 @@ import HelloWorld from './components/BookView.vue'
     <div id="layout">
       <div class="wrapper">
         <nav>
+          <RouterLink :to="{ name: 'account' }">Mon compte</RouterLink> |
           <RouterLink to="/">Home</RouterLink> | <RouterLink to="/Books">Books</RouterLink> |
           <RouterLink to="">Add book</RouterLink> | <RouterLink to="">Edit book</RouterLink> |
           <RouterLink to="">Drop book</RouterLink> |
@@ -35,11 +18,10 @@ import HelloWorld from './components/BookView.vue'
   </header>
 
   <RouterView />
->>>>>>> dev-william
+  <!-- espace résérvé pour le contenue du composant "view", sera replacer par le composant de la route chargée -->
 </template>
 <!-- composant de la library vue-router, crée un lien vers une route spécifique -->
 
-<<<<<<< HEAD
 <!-- font size pour toute l'app -->
 <style>
 h1 {
@@ -56,7 +38,9 @@ h2 {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-=======
+}
+</style>
+
 <style scoped>
 #layout {
   text-align: center;
@@ -69,22 +53,23 @@ nav {
   padding: 30px;
 
   font-family: Avenir, Arial, Helvetica, sans-serif;
->>>>>>> dev-william
 }
 nav {
   padding: 30px;
 }
-<<<<<<< HEAD
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-nav a.router-link-exact-active {
-=======
 
 nav a {
   font-weight: bold;
->>>>>>> dev-william
+  color: #439482;
+  text-decoration: none;
+}
+nav a.router-link-exact-active {
   color: #42b983;
+}
+
+nav a {
+  font-weight: bold;
+
+  color: #212c27;
 }
 </style>
