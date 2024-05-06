@@ -65,7 +65,7 @@ const BookModel = (sequelize, DataTypes) => {
       },
       imagePath: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       categoryId: {
         type: DataTypes.INTEGER,
