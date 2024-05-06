@@ -1,10 +1,16 @@
 import express from "express";
-
+import cors from "cors";
 const app = express();
 
-app.use(express.json());
-
 const port = 3001;
+
+// Configuración de CORS
+var corsOptions = {
+  origin: `http://localhost:5173`,
+  optionsSuccessStatus: 200, // For legacy browser support
+};
+
+app.use(cors(corsOptions));
 
 import { sequelize, initDb } from "./db/sequelize.mjs";
 
@@ -44,13 +50,9 @@ app.use("/api/login", loginRouter);
 app.use(({ res }) => {
   const message =
     "Impossible de trouver la ressource demandée ! Vous pouvez essayer une autre URL.";
-  res.status(404).json(message);
+  res.status(404).json({ message });
 });
 
-app.listen(port);
-
-/* SI TEMPS
 app.listen(port, () => {
   console.log(`Example app listening on port http://localhost:${port}/`);
 });
- */
