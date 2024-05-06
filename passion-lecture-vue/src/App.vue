@@ -1,6 +1,6 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/EventCard.vue'
+import HelloWorld from './components/BookView.vue'
 </script>
 
 <template>
