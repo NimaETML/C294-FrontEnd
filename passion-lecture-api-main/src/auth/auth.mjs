@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { privateKey } from "./private_key.mjs";
 import { Book } from "../db/sequelize.mjs";
 
-const auth = (req, res, next) => {
+const auth = async (req, res, next) => {
   const authorizationHeader = req.headers.authorization;
 
   if (!authorizationHeader) {
@@ -42,8 +42,10 @@ const auth = (req, res, next) => {
             return res.status(401).json({ message, data: error });
           }
         }
-
-        if (req.body.userId && req.body.userId !== userId) {
+        console.log(req.body.userId);
+        console.log(userId);
+        //L'admin n'a pas besoin d'être la personne qui a post le livre
+        if (!isAdmin && req.body.userId && req.body.userId !== userId) {
           const message = `L'identifiant de l'utisateur est invalide`;
           return res.status(401).json({ message });
         } else {

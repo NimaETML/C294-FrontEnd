@@ -11,6 +11,7 @@ var corsOptions = {
 };
 
 app.use(cors(corsOptions));
+app.use(express.json());
 
 import { sequelize, initDb } from "./db/sequelize.mjs";
 

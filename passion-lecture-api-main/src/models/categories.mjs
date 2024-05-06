@@ -12,9 +12,6 @@ const CategoryModel = (sequelize, DataTypes) => {
       name: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: {
-          msg: "Ce libellé est déjà pris.",
-        },
         validate: {
           is: {
             args: /^[A-Za-z0-9À-ÖØ-öø-ÿ\s'-]*$/,
