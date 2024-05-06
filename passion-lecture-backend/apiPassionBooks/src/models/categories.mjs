@@ -1,5 +1,5 @@
 const CategoryModel = (sequelize, DataTypes) => {
-  return sequelize.define("Category", {
+  const Category = sequelize.define("Category", {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -23,5 +23,14 @@ const CategoryModel = (sequelize, DataTypes) => {
       },
     },
   });
+  Category.associate = (models) => {
+    Category.belongsToMany(models.Book, {
+      through: "BookCategory",
+      as: "books",
+      foreignKey: "categoryId",
+      otherKey: "bookId",
+    });
+  };
+  return Category;
 };
 export { CategoryModel };

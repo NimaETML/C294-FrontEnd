@@ -1,5 +1,5 @@
 const UserModel = (sequelize, Datatypes) => {
-  return sequelize.define("User", {
+  const User = sequelize.define("User", {
     id: {
       type: Datatypes.INTEGER,
       primaryKey: true,
@@ -85,6 +85,17 @@ const UserModel = (sequelize, Datatypes) => {
       },
     },
   });
+
+  User.associate = (models) => {
+    User.hasMany(models.Comment, {
+      as: "comment",
+    });
+    User.hasMany(models.Rate, {
+      as: "rate",
+    });
+  };
+
+  return User;
 };
 
 export { UserModel };

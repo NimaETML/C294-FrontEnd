@@ -1,5 +1,5 @@
 const RateModel = (sequelize, DataTypes) => {
-  return sequelize.define("Rate", {
+  const rate = sequelize.define("Rate", {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -25,37 +25,17 @@ const RateModel = (sequelize, DataTypes) => {
         },
       },
     },
-    fkUser: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        isInt: {
-          msg: "Le fkUser peu juste être un nombre.",
-        },
-        notEmpty: {
-          msg: "Le fkUser ne peut pas être vide.",
-        },
-        notNull: {
-          msg: "Le fkUser est une propriété obligatoire.",
-        },
-      },
-    },
-    fkBook: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        isInt: {
-          msg: "Le fkBook peu juste être un nombre.",
-        },
-        notEmpty: {
-          msg: "Le fkBook ne peut pas être vide.",
-        },
-        notNull: {
-          msg: "Le fkBook est une propriété obligatoire.",
-        },
-      },
-    },
   });
+  Comment.associate = (models) => {
+    Comment.belongsTo(models.Book, {
+      as: "book",
+    });
+
+    Comment.belongsTo(models.User, {
+      as: "user",
+    });
+  };
+  return rate;
 };
 
 export { RateModel };

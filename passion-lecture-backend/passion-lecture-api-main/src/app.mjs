@@ -4,7 +4,7 @@ const app = express();
 
 app.use(express.json());
 
-const port = 3000;
+const port = 3001;
 
 import { sequelize, initDb } from "./db/sequelize.mjs";
 
@@ -13,7 +13,10 @@ sequelize
   .then((_) =>
     console.log("La connexion à la base de données a bien été établie")
   )
-  .catch((error) => console.error("Impossible de se connecter à la DB"));
+  .catch((error) => {
+    console.log(error);
+    console.error("Impossible de se connecter à la DB");
+  });
 
 initDb();
 
@@ -44,6 +47,10 @@ app.use(({ res }) => {
   res.status(404).json(message);
 });
 
+app.listen(port);
+
+/* SI TEMPS
 app.listen(port, () => {
-  console.log(`Example app listening on port http://localhost:${port}`);
+  console.log(`Example app listening on port http://localhost:${port}/`);
 });
+ */

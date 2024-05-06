@@ -1,5 +1,5 @@
 const BookModel = (sequelize, DataTypes) => {
-  return sequelize.define(
+  const Book = sequelize.define(
     "Book",
     {
       id: {
@@ -154,21 +154,6 @@ const BookModel = (sequelize, DataTypes) => {
           },
         },
       },
-      fkCategory: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        validate: {
-          isInt: {
-            msg: "Le fkCategory peu juste être un nombre.",
-          },
-          notEmpty: {
-            msg: "Le fkCategory ne peut pas être vide.",
-          },
-          notNull: {
-            msg: "Le fkCategory est une propriété obligatoire.",
-          },
-        },
-      },
       fkAddedBy: {
         type: DataTypes.INTEGER,
         allowNull: true,
@@ -188,6 +173,23 @@ const BookModel = (sequelize, DataTypes) => {
       updatedAt: false,
     }
   );
+
+  Book.associate = (models) => {
+    Book.hasMany(models.Comment, {
+      as: "comment",
+    });
+    Book.hasMany(models.Rate, {
+      as: "rate",
+    });
+
+    Book.belongsToMany(models.Category, {
+      through: "BookCategory",
+      as: "categories",
+      foreignKey: "bookId",
+      otherKey: "categoryId",
+    });
+  };
+  return Book;
 };
 
 export { BookModel };

@@ -17,6 +17,7 @@ const sequelize = new Sequelize(
   "root", // Mot de passe de l'utilisateur
   {
     host: "localhost",
+    port: "6033",
     dialect: "mysql",
     logging: false,
   }
@@ -58,7 +59,7 @@ let initDb = async () => {
     );
   } catch (error) {
     console.error(
-      "Erreur lors de l'initialisation de la base de données :",
+      "Erreur lors de l'initiaffsdfsdfsdfdsflisation de la base de données :",
       error
     );
   }
