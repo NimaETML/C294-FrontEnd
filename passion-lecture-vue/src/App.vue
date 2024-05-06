@@ -30,6 +30,8 @@ import HelloWorld from './components/BookView.vue'
 }
 nav {
   padding: 30px;
+
+  font-family: Avenir, Arial, Helvetica, sans-serif;
 }
 
 nav a.router-link-exact-active {
