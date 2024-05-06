@@ -1,5 +1,6 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
+<<<<<<< HEAD
 </script>
 
 <template>
@@ -15,9 +16,30 @@ import { RouterLink, RouterView } from 'vue-router'
     <RouterView />
     <!-- espace résérvé pour le contenue du composant "view", sera replacer par le composant de la route chargée -->
   </div>
+=======
+import HelloWorld from './components/BookView.vue'
+</script>
+
+<template>
+  <header>
+    <div id="layout">
+      <div class="wrapper">
+        <nav>
+          <RouterLink to="/">Home</RouterLink> | <RouterLink to="/Books">Books</RouterLink> |
+          <RouterLink to="">Add book</RouterLink> | <RouterLink to="">Edit book</RouterLink> |
+          <RouterLink to="">Drop book</RouterLink> |
+          <RouterLink to="">Book Details</RouterLink>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <RouterView />
+>>>>>>> dev-william
 </template>
 <!-- composant de la library vue-router, crée un lien vers une route spécifique -->
 
+<<<<<<< HEAD
 <!-- font size pour toute l'app -->
 <style>
 h1 {
@@ -34,15 +56,35 @@ h2 {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+=======
+<style scoped>
+#layout {
+  text-align: center;
+  font-family: Avenir, Arial, Helvetica, sans-serif;
+  -webkit-font-feature-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #2c3e50;
+}
+nav {
+  padding: 30px;
+
+  font-family: Avenir, Arial, Helvetica, sans-serif;
+>>>>>>> dev-william
 }
 nav {
   padding: 30px;
 }
+<<<<<<< HEAD
 nav a {
   font-weight: bold;
   color: #2c3e50;
 }
 nav a.router-link-exact-active {
+=======
+
+nav a {
+  font-weight: bold;
+>>>>>>> dev-william
   color: #42b983;
 }
 </style>
