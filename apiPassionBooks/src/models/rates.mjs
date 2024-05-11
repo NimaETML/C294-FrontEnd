@@ -28,11 +28,11 @@ const RateModel = (sequelize, DataTypes) => {
   });
   Rate.associate = (models) => {
     Rate.belongsTo(models.Book, {
-      as: "book",
+      foreignKey: "bookId",
     });
 
     Rate.belongsTo(models.User, {
-      as: "user",
+      foreignKey: "userId",
     });
   };
   return Rate;

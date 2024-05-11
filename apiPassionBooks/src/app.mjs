@@ -1,9 +1,16 @@
 import express from "express";
+import cors from "cors";
 const app = express();
+const port = 3901;
 
 app.use(express.json());
+app.use(cors(corsOptions));
 
-const port = 3901;
+var corsOptions = {
+  origin: `http://localhost:5173`,
+  optionsSuccessStatus: 200, // For legacy browser support
+};
+
 import { initDb, sequelize } from "./db/sequelize.mjs";
 
 sequelize

@@ -13,7 +13,7 @@ let books = [
     avg_rating: 1,
     comments: "J'ai rien compris",
     book_cover: "https://affweichage/couverturRWhrtue",
-    fkCategory: 1,
+    fkAddedBy: 1,
   },
   {
     id: 2,

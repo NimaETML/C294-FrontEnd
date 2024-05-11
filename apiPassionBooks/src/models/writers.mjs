@@ -48,7 +48,7 @@ const WriterModel = (sequelize, DataTypes) => {
   });
   Writer.associate = (models) => {
     Writer.belongsTo(models.Book, {
-      as: "writer",
+      foreignKey: "bookId",
     });
   };
   return Writer;

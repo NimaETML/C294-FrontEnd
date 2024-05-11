@@ -7,7 +7,7 @@ const CommentModel = (sequelize, DataTypes) => {
     },
     text: {
       type: DataTypes.TEXT,
-      allowNull: true,
+      allowNull: false,
       validate: {
         is: {
           args: /^[A-Za-z0-9\s]/,
@@ -25,11 +25,11 @@ const CommentModel = (sequelize, DataTypes) => {
   });
   Comment.associate = (models) => {
     Comment.belongsTo(models.Book, {
-      as: "book",
+      foreignKey: "bookId",
     });
 
     Comment.belongsTo(models.User, {
-      as: "user",
+      foreignKey: "userId",
     });
   };
   return Comment;

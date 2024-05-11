@@ -139,21 +139,6 @@ const BookModel = (sequelize, DataTypes) => {
           },
         },
       },
-      fkWriter: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        validate: {
-          isInt: {
-            msg: "Le fkWriter peu juste être un nombre.",
-          },
-          notEmpty: {
-            msg: "Le fkWriter ne peut pas être vide.",
-          },
-          notNull: {
-            msg: "Le fkWriter est une propriété obligatoire.",
-          },
-        },
-      },
       fkAddedBy: {
         type: DataTypes.INTEGER,
         allowNull: true,
@@ -176,13 +161,13 @@ const BookModel = (sequelize, DataTypes) => {
 
   Book.associate = (models) => {
     Book.hasMany(models.Comment, {
-      as: "comment",
+      foreignKey: "commentId",
     });
     Book.hasMany(models.Rate, {
-      as: "rate",
+      foreignKey: "rateId",
     });
-    Book.hasMany(models.Rate, {
-      as: "writer",
+    Book.hasMany(models.Writer, {
+      foreignKey: "writerId",
     });
 
     Book.belongsToMany(models.Category, {
