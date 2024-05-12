@@ -80,7 +80,7 @@ const importUsers = async () => {
         dateEntry: user.dateEntry,
         isAdmin: user.isAdmin,
       });
-      console.log(createdUser.toJSON());
+      console.log("User created:", createdUser.toJSON());
     } catch (error) {
       console.error("Error crating users:", error);
     }
@@ -94,7 +94,7 @@ const importCategories = async () => {
       const createdCategory = await Category.create({
         name: category.name,
       });
-      console.log(createdCategory.toJSON());
+      console.log("Category created:", createdCategory.toJSON());
     } catch (error) {
       console.error("Error creating category:", error);
     }
@@ -109,7 +109,7 @@ const importWriters = async () => {
         firstName: writer.firstName,
         lastName: writer.lastName,
       });
-      console.log(createdWriter.toJSON());
+      console.log("Writer created:", createdWriter.toJSON());
     } catch (error) {
       console.error("Error creating writer:", error);
     }
@@ -121,15 +121,12 @@ const importBooks = async () => {
   for (const book of books) {
     if (!book.userId) {
       console.error("Invalid data: comment must have userId", book);
-      //continue; // Si le commentaire n'a pas du userId, il saut au commentaire suivant
     }
     if (!book.categoryId) {
       console.error("Invalid data: comment must have categoryId", book);
-      //continue; // Si le commentaire n'a pas du bookId, il saut au commentaire suivant
     }
     if (!book.writerId) {
       console.error("Invalid data: comment must have writerId", book);
-      //continue; // Si le commentaire n'a pas du bookId, il saut au commentaire suivant
     }
     try {
       const user = await User.findByPk(book.userId);
@@ -162,11 +159,9 @@ const importComments = async () => {
   for (const comment of comments) {
     if (!comment.userId) {
       console.error("Invalid data: comment must have userId", comment);
-      //continue; // Si le commentaire n'a pas du userId, il saut au commentaire suivant
     }
     if (!comment.bookId) {
       console.error("Invalid data: comment must have bookId", comment);
-      //continue; // Si le commentaire n'a pas du bookId, il saut au commentaire suivant
     }
     try {
       const user = await User.findByPk(comment.userId);
@@ -174,11 +169,9 @@ const importComments = async () => {
 
       if (!user) {
         console.error("User not found for comment:", comment);
-        // continue; // Si l'utilisateur correspendant n'est pas trouvé, il saut au commentaire suivant
       }
       if (!book) {
         console.error("Book not found for comment:", comment);
-        // continue; // Si le livre correspendant n'est pas trouvé, il saut au commentaire suivant
       }
 
       const [createdComment, created] = await Comment.findOrCreate({
@@ -188,7 +181,7 @@ const importComments = async () => {
           text: comment.text,
         },
       });
-      console.log(createdComment.toJSON());
+      console.log("Comment created or found:", createdComment.toJSON());
     } catch (error) {
       console.error("Error creating comment:", error);
     }
@@ -200,11 +193,9 @@ const importRates = async () => {
   for (const rate of rates) {
     if (!rate.userId) {
       console.error("Invalid data: rate must have userId", rate);
-      //continue; // Si l'appréciation n'a pas du userId, il saut à l'appréciation suivante
     }
     if (!rate.bookId) {
       console.error("Invalid data: rate must have bookId", rate);
-      //continue; // Si l'appréciation n'a pas du bookId, il saut à l'appréciation suivante
     }
     try {
       const user = await User.findByPk(rate.userId);
@@ -212,11 +203,9 @@ const importRates = async () => {
 
       if (!user) {
         console.error("User not found for rate:", rate);
-        // continue; // Si l'utilisateur correspendant n'est pas trouvé, il saut à l'appréciation suivante
       }
       if (!book) {
         console.error("Book not found for rate:", rate);
-        // continue; // Si le livre correspendant n'est pas trouvé, il saut à l'appréciation suivante
       }
 
       const [createdRate, created] = await Rate.findOrCreate({
@@ -226,7 +215,7 @@ const importRates = async () => {
           rating: rate.rating,
         },
       });
-      console.log(createdRate.toJSON());
+      console.log("Rate created or found:", createdRate.toJSON());
     } catch (error) {
       console.error("Error creating comment:", error);
     }
