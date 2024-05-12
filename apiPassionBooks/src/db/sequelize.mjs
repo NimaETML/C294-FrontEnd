@@ -18,18 +18,16 @@ const sequelize = new Sequelize("db_Web295", "root", "root", {
 let initDb = async () => {
   try {
     await sequelize.sync({ force: true });
-    await importBooks();
-    await importCategories();
     await importUsers();
     await importWriters();
+    await importCategories();
+    await importBooks();
     await importComments();
     await importRates();
-    console.log(
-      "La base de données db_passion_lecture a bien été synchronisée"
-    );
+    console.log("La base de données db_Web295 a bien été synchronisée");
   } catch (error) {
     console.error(
-      "Erreur lors de l'initiaffsdfsdfsdfdsflisation de la base de données :",
+      "Erreur lors de l'initialisation de la base de données :",
       error
     );
   }
@@ -69,29 +67,6 @@ Object.keys(models).forEach((modelName) => {
   }
 });
 
-//import tous les livres presents dans le fichier db/mock-book
-const importBooks = async () => {
-  for (const book of books) {
-    try {
-      const createdBook = await Book.create({
-        title: book.title,
-        number_of_pages: book.number_of_pages,
-        excerpt: book.excerpt,
-        summary: book.summary,
-        writer: book.writer,
-        publisher: book.publisher,
-        year_of_publication: book.year_of_publication,
-        comments: book.comments,
-        book_cover: book.book_cover,
-        fkAddedBy: book.fkAddedBy,
-      });
-      console.log(createdBook.toJSON());
-    } catch (error) {
-      console.error("Error creating book:", error);
-    }
-  }
-};
-
 //import tous les utilisateurs presents dans le fichier db/mock-users
 const importUsers = async () => {
   for (const user of users) {
@@ -100,9 +75,10 @@ const importUsers = async () => {
       const createdUser = await User.create({
         firstName: user.firstName,
         lastName: user.lastName,
-        password: hash,
         nickName: user.nickName,
+        password: hash,
         dateEntry: user.dateEntry,
+        isAdmin: user.isAdmin,
       });
       console.log(createdUser.toJSON());
     } catch (error) {
@@ -136,6 +112,47 @@ const importWriters = async () => {
       console.log(createdWriter.toJSON());
     } catch (error) {
       console.error("Error creating writer:", error);
+    }
+  }
+};
+
+//import tous les livres presents dans le fichier db/mock-book
+const importBooks = async () => {
+  for (const book of books) {
+    if (!book.userId) {
+      console.error("Invalid data: comment must have userId", book);
+      //continue; // Si le commentaire n'a pas du userId, il saut au commentaire suivant
+    }
+    if (!book.categoryId) {
+      console.error("Invalid data: comment must have categoryId", book);
+      //continue; // Si le commentaire n'a pas du bookId, il saut au commentaire suivant
+    }
+    if (!book.writerId) {
+      console.error("Invalid data: comment must have writerId", book);
+      //continue; // Si le commentaire n'a pas du bookId, il saut au commentaire suivant
+    }
+    try {
+      const user = await User.findByPk(book.userId);
+      const category = await Category.findByPk(book.categoryId);
+      const writer = await Writer.findByPk(book.writerId);
+
+      const createdBook = await Book.create({
+        title: book.title,
+        number_of_pages: book.number_of_pages,
+        excerpt: book.excerpt,
+        summary: book.summary,
+        writer: book.writer,
+        publisher: book.publisher,
+        year_of_publication: book.year_of_publication,
+        comments: book.comments,
+        book_cover: book.book_cover,
+        userId: user.id,
+        categoryId: category.id,
+        writerId: writer.id,
+      });
+      console.log("Book created or found:", createdBook.toJSON());
+    } catch (error) {
+      console.error("Error creating book:", error.message);
     }
   }
 };

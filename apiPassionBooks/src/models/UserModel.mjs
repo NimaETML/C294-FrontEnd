@@ -84,9 +84,24 @@ const UserModel = (sequelize, Datatypes) => {
         },
       },
     },
+    isAdmin: {
+      type: Datatypes.BOOLEAN,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "La date d'entrée de l'utilisateur ne peut pas être vide.",
+        },
+        notNull: {
+          msg: "La date d'entrée est une propriété obligatoire.",
+        },
+      },
+    },
   });
 
   User.associate = (models) => {
+    User.hasMany(models.Book, {
+      foreignKey: "bookId",
+    });
     User.hasMany(models.Comment, {
       foreignKey: "commentId",
     });

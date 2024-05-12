@@ -139,18 +139,6 @@ const BookModel = (sequelize, DataTypes) => {
           },
         },
       },
-      fkAddedBy: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        validate: {
-          isInt: {
-            msg: "Le fkAddedBy peu juste être un nombre.",
-          },
-          notEmpty: {
-            msg: "Le fkAddedBy ne peut pas être vide.",
-          },
-        },
-      },
     },
     {
       timestamps: true,
@@ -166,8 +154,14 @@ const BookModel = (sequelize, DataTypes) => {
     Book.hasMany(models.Rate, {
       foreignKey: "rateId",
     });
-    Book.hasMany(models.Writer, {
-      foreignKey: "writerId",
+    Book.belongsTo(models.User, {
+      foreignKey: "userId",
+    });
+    Book.belongsToMany(models.Writer, {
+      through: "BookWriter",
+      as: "writers",
+      foreignKey: "bookId",
+      otherKey: "writerId",
     });
 
     Book.belongsToMany(models.Category, {

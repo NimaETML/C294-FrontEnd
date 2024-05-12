@@ -6,6 +6,7 @@ let users = [
     password: "etml",
     nickName: "etml",
     dateEntry: "02-02-2025",
+    isAdmin: false,
   },
   {
     id: 2,
@@ -14,14 +15,16 @@ let users = [
     password: "etml2",
     nickName: "etml2",
     dateEntry: "02-02-2025",
+    isAdmin: false,
   },
   {
     id: 3,
-    firstName: "etml2",
+    firstName: "etml3",
     lastName: "etml3",
     password: "etml3",
     nickName: "etml3",
     dateEntry: "02-02-2025",
+    isAdmin: false,
   },
   {
     id: 4,
@@ -30,6 +33,7 @@ let users = [
     password: "etml4",
     nickName: "etml4",
     dateEntry: "02-02-2025",
+    isAdmin: false,
   },
   {
     id: 5,
@@ -38,6 +42,16 @@ let users = [
     password: "etml5",
     nickName: "etml5",
     dateEntry: "02-02-2025",
+    isAdmin: false,
+  },
+  {
+    id: 6,
+    firstName: "admin",
+    lastName: "admin",
+    password: "admin",
+    nickName: "admin",
+    dateEntry: "02-02-2025",
+    isAdmin: true,
   },
 ];
 export { users };

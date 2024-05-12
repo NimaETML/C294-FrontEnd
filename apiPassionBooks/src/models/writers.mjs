@@ -47,8 +47,11 @@ const WriterModel = (sequelize, DataTypes) => {
     },
   });
   Writer.associate = (models) => {
-    Writer.belongsTo(models.Book, {
-      foreignKey: "bookId",
+    Writer.belongsToMany(models.Book, {
+      through: "BookWriter",
+      as: "books",
+      foreignKey: "userId",
+      otherKey: "bookId",
     });
   };
   return Writer;
