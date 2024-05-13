@@ -3,10 +3,11 @@ import { Writer } from "../db/sequelize.mjs";
 import { success } from "./helper.mjs";
 import { auth } from "../auth/auth.mjs";
 import { Book } from "../db/sequelize.mjs";
+import { authVer } from "../auth/authVer.mjs";
 const writersRouter = express();
 
 //GET pour acceder a tous les categories
-writersRouter.get("/", async (req, res) => {
+writersRouter.get("/", authVer, async (req, res) => {
   try {
     const writers = await Writer.findAll();
     const message = "La liste des écrivains a bien été récupérée.";
@@ -19,7 +20,7 @@ writersRouter.get("/", async (req, res) => {
 });
 
 //GET acceder à une categorie par id
-writersRouter.get("/:id", async (req, res) => {
+writersRouter.get("/:id", authVer, async (req, res) => {
   const writerId = req.params.id;
   const writer = await Writer.findByPk(writerId);
   try {
@@ -38,7 +39,7 @@ writersRouter.get("/:id", async (req, res) => {
 });
 
 //GET trouve les livres qui appartient à une categorie
-writersRouter.get("/:id/books", async (req, res) => {
+writersRouter.get("/:id/books", authVer, async (req, res) => {
   const writerId = req.params.id;
   const writer = await Book.findByPk(writerId);
   try {

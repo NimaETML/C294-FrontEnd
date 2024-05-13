@@ -1,11 +1,11 @@
 import express from "express";
 import { Book, Category } from "../db/sequelize.mjs";
 import { auth } from "../auth/auth.mjs";
-
+import { authVer } from "../auth/authVer.mjs";
 const categoriesRouter = express();
 
 //GET pour acceder a tous les categories
-categoriesRouter.get("/", async (req, res) => {
+categoriesRouter.get("/", authVer, async (req, res) => {
   try {
     const categories = await Category.findAll();
     const message = "La liste des categories a bien été récupérée.";
@@ -17,7 +17,7 @@ categoriesRouter.get("/", async (req, res) => {
   }
 });
 
-categoriesRouter.get("/:id", async (req, res) => {
+categoriesRouter.get("/:id", authVer, async (req, res) => {
   const categoryId = req.params.id;
   const category = await Category.findByPk(categoryId);
   try {

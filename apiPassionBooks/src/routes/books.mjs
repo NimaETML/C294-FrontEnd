@@ -2,11 +2,11 @@ import express from "express";
 import { Book, User, Category, Writer } from "../db/sequelize.mjs";
 import { success } from "./helper.mjs";
 import { auth } from "../auth/auth.mjs";
-
+import { authVer } from "../auth/authVer.mjs";
 const booksRouter = express();
 //{ order: ["title"] }
 //GET pour acceder a tous les libres
-booksRouter.get("/", auth, async (req, res) => {
+booksRouter.get("/", authVer, async (req, res) => {
   try {
     const books = await Book.findAll();
     const message = "La liste des produits a bien été récupérée.";

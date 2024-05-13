@@ -2,11 +2,12 @@ import express from "express";
 import { Book, User } from "../db/sequelize.mjs";
 import { success } from "./helper.mjs";
 import { auth } from "../auth/auth.mjs";
+import { authVer } from "../auth/authVer.mjs";
 
 const usersRouter = express();
 
 //GET pour acceder a tous les users
-usersRouter.get("/", async (req, res) => {
+usersRouter.get("/", authVer, async (req, res) => {
   const users = await User.findAll();
   try {
     const message = "La liste des utilisateurs a bien été récupérée.";
@@ -19,7 +20,7 @@ usersRouter.get("/", async (req, res) => {
 });
 
 //GET pour acceder a un utilisateur en particulier depuis son id
-usersRouter.get("/:id", async (req, res) => {
+usersRouter.get("/:id", authVer, async (req, res) => {
   const userId = req.params.id;
   const user = await User.findByPk(userId);
   try {
@@ -39,7 +40,7 @@ usersRouter.get("/:id", async (req, res) => {
 });
 
 //GET pour acceder aux livres ajoute par un utilisateur depuis l'Id de l'utilisateur
-usersRouter.get("/:id/books", async (req, res) => {
+usersRouter.get("/:id/books", authVer, async (req, res) => {
   const userId = req.params.id;
   const user = await Book.findByPk(userId);
   try {
