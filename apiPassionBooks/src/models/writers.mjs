@@ -50,7 +50,7 @@ const WriterModel = (sequelize, DataTypes) => {
     Writer.belongsToMany(models.Book, {
       through: "BookWriter",
       as: "books",
-      foreignKey: "userId",
+      foreignKey: "writerId",
       otherKey: "bookId",
     });
   };

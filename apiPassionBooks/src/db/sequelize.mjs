@@ -176,9 +176,9 @@ const importComments = async () => {
 
       const [createdComment, created] = await Comment.findOrCreate({
         where: {
+          text: comment.text,
           userId: user.id,
           bookId: book.id,
-          text: comment.text,
         },
       });
       console.log("Comment created or found:", createdComment.toJSON());
@@ -210,9 +210,9 @@ const importRates = async () => {
 
       const [createdRate, created] = await Rate.findOrCreate({
         where: {
+          rating: rate.rating,
           userId: user.id,
           bookId: book.id,
-          rating: rate.rating,
         },
       });
       console.log("Rate created or found:", createdRate.toJSON());

@@ -28,9 +28,9 @@ let books = [
     publisher: "Sushi Productions",
     year_of_publication: "02-02-2025",
     book_cover: "https://affichagwerwee/couvertureuearZE",
-    userId: 1,
-    writerId: 1,
-    categoryId: 1,
+    userId: 2,
+    writerId: 2,
+    categoryId: 2,
   },
   {
     id: 3,
@@ -44,8 +44,8 @@ let books = [
     year_of_publication: "02-02-2026",
     book_cover: "https://affichwerwerage/couvertureXYTUE",
     userId: 2,
-    writerId: 1,
-    categoryId: 1,
+    writerId: 3,
+    categoryId: 4,
   },
   {
     id: 4,
@@ -75,7 +75,7 @@ let books = [
     book_cover: "https://weraffichage/couvertureasdxvch",
     userId: 1,
     writerId: 1,
-    categoryId: 1,
+    categoryId: 2,
   },
   {
     id: 6,
@@ -105,7 +105,7 @@ let books = [
     book_cover: "https://affichagwerwerwere/couvertureJTZt",
     userId: 1,
     writerId: 1,
-    categoryId: 1,
+    categoryId: 5,
   },
   {
     id: 8,
@@ -120,7 +120,7 @@ let books = [
     book_cover: "https://afficwerewrhage/couvertureatWERJFSGH",
     userId: 1,
     writerId: 1,
-    categoryId: 1,
+    categoryId: 4,
   },
   {
     id: 9,
@@ -149,7 +149,7 @@ let books = [
     book_cover: "hsttps://afficewrwereheage/eeGeEEe",
     userId: 5,
     writerId: 1,
-    categoryId: 1,
+    categoryId: 3,
   },
 ];
 

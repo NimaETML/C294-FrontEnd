@@ -159,13 +159,13 @@ const BookModel = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           isInt: {
-            msg: "Utilisez uniquement des nombres pour l'writerId.",
+            msg: "Utilisez uniquement des nombres pour le writerId.",
           },
           notEmpty: {
-            msg: "L'writerId ne peut pas être vide.",
+            msg: "Le writerId ne peut pas être vide.",
           },
           notNull: {
-            msg: "L'writerId est une propriété obligatoire",
+            msg: "Le writerId est une propriété obligatoire",
           },
         },
       },
@@ -194,10 +194,10 @@ const BookModel = (sequelize, DataTypes) => {
 
   Book.associate = (models) => {
     Book.hasMany(models.Comment, {
-      foreignKey: "commentId",
+      foreignKey: "bookId",
     });
     Book.hasMany(models.Rate, {
-      foreignKey: "rateId",
+      foreignKey: "bookId",
     });
     Book.belongsTo(models.User, {
       foreignKey: "userId",

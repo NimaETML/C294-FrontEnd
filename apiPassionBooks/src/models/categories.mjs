@@ -27,8 +27,8 @@ const CategoryModel = (sequelize, DataTypes) => {
     Category.belongsToMany(models.Book, {
       through: "BookCategory",
       as: "books",
-      foreignKey: "categoryId",
-      otherKey: "bookId",
+      foreignKey: "bookId",
+      otherKey: "categoryId",
     });
   };
   return Category;

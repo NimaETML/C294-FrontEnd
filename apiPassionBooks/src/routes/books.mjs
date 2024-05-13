@@ -1,14 +1,14 @@
 import express from "express";
-import { Book } from "../db/sequelize.mjs";
+import { Book, User, Category, Writer } from "../db/sequelize.mjs";
 import { success } from "./helper.mjs";
 import { auth } from "../auth/auth.mjs";
 
 const booksRouter = express();
-
+//{ order: ["title"] }
 //GET pour acceder a tous les libres
 booksRouter.get("/", auth, async (req, res) => {
   try {
-    const books = await Book.findAll(); //{ order: ["title"] }
+    const books = await Book.findAll();
     const message = "La liste des produits a bien été récupérée.";
     res.json(success({ message, books }));
   } catch (error) {
@@ -40,7 +40,24 @@ booksRouter.get("/:id", auth, async (req, res) => {
 //Reste à créer la vérification de la catégorie, de l'utilisateur et de l'écrivant
 //POST ajouter un livre
 booksRouter.post("/", auth, async (req, res) => {
+  const { userId, writerId, categoryId } = req.body;
   try {
+    const userExists = await User.findByPk(userId);
+    if (!userExists) {
+      return res.status(404).json({ message: "L'utilisateur n'existe pas." });
+    }
+
+    // Verificar que el escritor existe
+    const writerExists = await Writer.findByPk(writerId);
+    if (!writerExists) {
+      return res.status(404).json({ message: "L'écrivain n'existe pas." });
+    }
+
+    // Verificar que la categoría existe
+    const categoryExists = await Category.findByPk(categoryId);
+    if (!categoryExists) {
+      return res.status(404).json({ message: "La catégorie n'existe pas." });
+    }
     const createdBook = await Book.create(req.body);
     const message = `Le livre dont l'id est ${createdBook.id} a été bien créé`;
     res.json(success(message, createdBook));
