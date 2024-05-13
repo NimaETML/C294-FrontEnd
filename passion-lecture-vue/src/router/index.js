@@ -30,8 +30,9 @@ const router = createRouter({
       component: AddBook
     },
     {
-      path: '/book/:id/details',
-      name: '/book/bookdetails',
+      path: '/book/:id',
+      name: 'book-details',
+      props: true,
       component: BookDetails
     },
     {

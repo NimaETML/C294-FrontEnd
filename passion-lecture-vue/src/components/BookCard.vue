@@ -10,13 +10,11 @@ defineProps({
 </script>
 
 <template>
-  <!-- route avec un paramètre -->
-
-  <div class="book-card">
-    <h2>{{ book.title }}</h2>
-    <p>Edit in {{ book.editionYear }}</p>
-    <span> Date: {{ book.created }}</span>
-  </div>
+  <RouterLink class="book-link" :to="{ name: 'book-details', params: { id: book.id } }">
+    <div class="book-card">
+      <h2>{{ book.title }}</h2>
+    </div>
+  </RouterLink>
 </template>
 
 <style scoped>
@@ -30,5 +28,9 @@ defineProps({
 .book-card:hover {
   transform: scale(1.01);
   box-shadow: 0 3px 12px 0 rgba(0, 0, 0, 0.2);
+}
+.book-link {
+  color: #39495c;
+  text-decoration: none;
 }
 </style>
