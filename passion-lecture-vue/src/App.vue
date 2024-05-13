@@ -7,11 +7,27 @@ import { RouterLink, RouterView } from 'vue-router'
     <div id="layout">
       <div class="wrapper">
         <nav>
-          <RouterLink :to="{ name: 'account' }">Mon compte</RouterLink> |
-          <RouterLink to="/">Home</RouterLink> | <RouterLink to="/Books">Books</RouterLink> |
-          <RouterLink to="">Add book</RouterLink> | <RouterLink to="">Edit book</RouterLink> |
-          <RouterLink to="">Drop book</RouterLink> |
+          |
+          <RouterLink to="/">Home</RouterLink>
+          |
+          <RouterLink to="/Books">Books</RouterLink>
+          |
+          <RouterLink to="">Add book</RouterLink>
+          |
+          <RouterLink to="">Edit book</RouterLink>
+          |
+          <RouterLink to="">Drop book</RouterLink>
+          |
           <RouterLink to="">Book Details</RouterLink>
+          |
+          <RouterLink to="/LogIn">Log in</RouterLink>
+          |
+          <RouterLink to="/SignIn">Sign in</RouterLink>
+          |
+          <!-- LE FAIRE ALLER A DROITE -->
+          <RouterLink to="{ name: 'account' }" id="user-right"
+            ><img src="./assets/images/UserIcon.png" alt="Icon utilisateur" width="40" height="40"
+          /></RouterLink>
         </nav>
       </div>
     </div>
@@ -43,22 +59,27 @@ h2 {
 
 <style scoped>
 #layout {
-  text-align: center;
+  text-align: left;
   font-family: Avenir, Arial, Helvetica, sans-serif;
   -webkit-font-feature-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
 }
-nav {
+
+#user-right {
+  text-align: right;
+}
+
+#nav {
   padding: 30px;
 
   font-family: Avenir, Arial, Helvetica, sans-serif;
 }
 nav {
-  padding: 30px;
+  padding: 20px 10px 30px 10px;
 }
 
-nav a {
+nav {
   font-weight: bold;
   color: #439482;
   text-decoration: none;

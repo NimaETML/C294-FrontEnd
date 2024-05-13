@@ -2,10 +2,12 @@ import AccountView from '../views/AccountView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import BooksView from '@/views/BooksView.vue'
-import AddBook from '@/views/AddBook.vue'
-import BookDetails from '@/views/BookDetails.vue'
+import AddBook from '@/views/AddBookView.vue'
+import BookDetailsView from '@/views/BookDetailsView.vue'
 import DropBook from '@/views/DropBook.vue'
-import EditBook from '@/views/DropBook.vue'
+import EditBook from '@/views/EditBook.vue'
+import LogInView from '@/views/LogInView.vue'
+import SignInView from '@/views/SignInView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,6 +17,17 @@ const router = createRouter({
       name: 'book-list', // nom de la route
       component: HomeView
     },
+    {
+      path: '/signin',
+      name: 'signin',
+      component: SignInView
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: LogInView
+    },
+
     {
       path: '/account',
       name: 'account',
@@ -35,7 +48,7 @@ const router = createRouter({
     {
       path: '/book/:id',
       name: '/book/bookdetails',
-      component: BookDetails
+      component: BookDetailsView
     },
     {
       path: '/book/:id/edit',

@@ -1,17 +1,11 @@
 <template>
   <main>
     <form class="review-form" @submit.prevent="onSubmit">
-      <label for="title">Titre :</label>
-      <input id="title" v-model="note.title" />
-      <label for="description">Description :</label>
-      <textarea v-model="note.description"></textarea>
-      <button type="submit">Enregistrer</button>
-
-      <!-- listen pour le submit, le ".prevent" empèche le reload de la page, qui est le comportement par défaut ICI JE SUIS ICI ICI ICI ICI ICI ICI ICI ICI ICI ICI ICI ICI ICI ICI -->
-      <h3>Editing</h3>
+      <!-- listen pour le submit, le ".prevent" empèche le reload de la page, qui est le comportement par défaut -->
+      <h3>Leave a review</h3>
       <!-- champ de texte "imput" pour le nom du reviewer -->
-      <label for="name">Title:</label>
-      <input id="name" v-model="title" />
+      <label for="name">Name:</label>
+      <input id="name" v-model="name" />
       <!-- fait le lien avec le champ "name" dans data -->
       <!-- champ de texte pour ecriture d'une "review" -->
       <label for="review">Review:</label>
@@ -70,19 +64,11 @@ onMounted(() => {
 const onSubmit = async () => {
   const newBook = {
     title: book.value.title,
-    number_of_pages: book.value.number_of_pages,
-    excerpt: book.value.excerpt,
-    summary: book.value.summary,
-    publisher: book.value.publisher,
-    year_of_publication: book.value.year_of_publication,
-    book_cover: book.value.book_cover,
-    userId: book.value.userId,
-    writerId: book.value.writerId,
-    categoryId: book.value.categoryId
+    description: book.value.description
   }
-  await BookService.editBook(route.params.id, newBook)
+  await NoteService.editNote(route.params.id, newNote)
     .then((response) => {
-      book.value = response.data.data
+      note.value = response.data.data
     })
     .catch((error) => console.log(error))
   router.push('/') // Redirection vers la page d'accueil
