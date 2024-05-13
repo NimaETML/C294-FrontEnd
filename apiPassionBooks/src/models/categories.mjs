@@ -7,7 +7,7 @@ const CategoryModel = (sequelize, DataTypes) => {
     },
     name: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
       validate: {
         is: {
           args: /^[A-Za-z0-9\s]/,

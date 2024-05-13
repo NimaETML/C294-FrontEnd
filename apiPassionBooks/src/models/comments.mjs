@@ -22,6 +22,36 @@ const CommentModel = (sequelize, DataTypes) => {
         },
       },
     },
+    bookId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        isInt: {
+          msg: "Utilisez uniquement des nombres pour le bookId.",
+        },
+        notEmpty: {
+          msg: "Le bookId ne peut pas être vide.",
+        },
+        notNull: {
+          msg: "Le bookId est une propriété obligatoire",
+        },
+      },
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        isInt: {
+          msg: "Utilisez uniquement des nombres pour l'userId.",
+        },
+        notEmpty: {
+          msg: "L'userId ne peut pas être vide.",
+        },
+        notNull: {
+          msg: "L'userId est une propriété obligatoire",
+        },
+      },
+    },
   });
   Comment.associate = (models) => {
     Comment.belongsTo(models.Book, {

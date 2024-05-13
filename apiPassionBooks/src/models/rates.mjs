@@ -7,7 +7,7 @@ const RateModel = (sequelize, DataTypes) => {
     },
     rating: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
       validate: {
         isInt: {
           msg: "Utilisez uniquement des nombres pour le nombre de pages.",
@@ -22,6 +22,36 @@ const RateModel = (sequelize, DataTypes) => {
         max: {
           args: [5.0],
           msg: "L'appreciation doit être inférieur ou égal à 5",
+        },
+      },
+    },
+    bookId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        isInt: {
+          msg: "Utilisez uniquement des nombres pour le bookId.",
+        },
+        notEmpty: {
+          msg: "Le bookId ne peut pas être vide.",
+        },
+        notNull: {
+          msg: "Le bookId est une propriété obligatoire",
+        },
+      },
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        isInt: {
+          msg: "Utilisez uniquement des nombres pour l'userId.",
+        },
+        notEmpty: {
+          msg: "L'userId ne peut pas être vide.",
+        },
+        notNull: {
+          msg: "L'userId est une propriété obligatoire",
         },
       },
     },

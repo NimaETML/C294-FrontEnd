@@ -139,6 +139,51 @@ const BookModel = (sequelize, DataTypes) => {
           },
         },
       },
+      userId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          isInt: {
+            msg: "Utilisez uniquement des nombres pour l'userId.",
+          },
+          notEmpty: {
+            msg: "L'userId ne peut pas être vide.",
+          },
+          notNull: {
+            msg: "L'userId est une propriété obligatoire",
+          },
+        },
+      },
+      writerId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          isInt: {
+            msg: "Utilisez uniquement des nombres pour l'writerId.",
+          },
+          notEmpty: {
+            msg: "L'writerId ne peut pas être vide.",
+          },
+          notNull: {
+            msg: "L'writerId est une propriété obligatoire",
+          },
+        },
+      },
+      categoryId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          isInt: {
+            msg: "Utilisez uniquement des nombres pour la categoryId.",
+          },
+          notEmpty: {
+            msg: "La categoryId ne peut pas être vide.",
+          },
+          notNull: {
+            msg: "La categoryId est une propriété obligatoire",
+          },
+        },
+      },
     },
     {
       timestamps: true,
