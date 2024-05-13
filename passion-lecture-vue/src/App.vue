@@ -1,5 +1,6 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
+import AddBook from './views/AddBook.vue'
 </script>
 
 <template>
@@ -9,10 +10,9 @@ import { RouterLink, RouterView } from 'vue-router'
         <nav>
           <h1>Hyper Book</h1>
           <RouterLink :to="{ name: 'account' }">Mon compte</RouterLink> |
-          <RouterLink to="/">Home</RouterLink> | <RouterLink to="/book-list">Books</RouterLink> |
-          <RouterLink to="">Add book</RouterLink> | <RouterLink to="">Edit book</RouterLink> |
-          <RouterLink to="">Drop book</RouterLink> |
-          <RouterLink to="">Book Details</RouterLink>
+          <RouterLink :to="{ name: 'home' }">Home</RouterLink> |
+          <RouterLink :to="{ name: 'book-list' }">Books</RouterLink> |
+          <RouterLink :to="{ name: 'add-book' }">Add book</RouterLink>
         </nav>
       </div>
     </div>

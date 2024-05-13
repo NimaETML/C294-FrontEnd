@@ -20,5 +20,14 @@ export default {
   },
   getBook(id) {
     return apiClient.get('/books/' + id)
+  },
+  createBook(newBook) {
+    return apiClient.post('/books/', newBook)
+  },
+  editBook(id, newBook) {
+    return apiClient.put('/books/', +id, newBook)
+  },
+  deleteBook(id) {
+    return apiClient.delete('/books/' + id)
   }
 }

@@ -8,6 +8,8 @@
 */
 </script>
 
-<template></template>
+<template>
+  <h1>Editing the book..</h1>
+</template>
 
 <style scoped></style>

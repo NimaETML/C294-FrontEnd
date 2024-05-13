@@ -26,7 +26,7 @@ const router = createRouter({
     },
     {
       path: '/addbook',
-      name: 'addbook',
+      name: 'add-book',
       component: AddBook
     },
     {
@@ -36,14 +36,14 @@ const router = createRouter({
       component: BookDetails
     },
     {
-      path: '/book/:id/edit',
-      name: '/book/editbook',
+      path: '/book/:id',
+      name: 'edit-book',
       component: EditBook
     },
 
     {
-      path: '/book/:id/delete',
-      name: '/book/deletebook',
+      path: '/book/',
+      name: 'delete-book',
       component: DropBook
     }
   ]
