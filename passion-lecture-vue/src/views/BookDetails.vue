@@ -22,11 +22,11 @@ onMounted(() => {
 <template>
   <div class="book-card" v-if="book">
     <h2>{{ book.title }}</h2>
+    <img :src="book.imagePath" />
     <h3>Category: {{ book.categoryId }}</h3>
     <h4>Writer : {{ book.editor }}</h4>
     <p>{{ book.abstract }}</p>
     <p>Pages: {{ book.numberOfPages }}</p>
-    <img :src="book.imagePath" alt="" />
 
     <RouterLink class="button-link" :to="{ name: 'edit-book' }">Edit this book</RouterLink>
   </div>
