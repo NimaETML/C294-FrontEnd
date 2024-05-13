@@ -1,4 +1,6 @@
 <script setup>
+import { ref } from 'vue'
+
 defineProps({
   book: {
     type: Object,
@@ -7,15 +9,14 @@ defineProps({
 })
 </script>
 
-<!-- affichage d'une EventCard -->
 <template>
   <!-- route avec un paramètre -->
-  <RouterLink class="book-link" :to="{ name: 'book-details', params: { id: book.id } }">
-    <div class="book-card">
-      <h2>{{ book.title }}</h2>
-      <span>@{{ book.time }} on {{ book.date }}</span>
-    </div>
-  </RouterLink>
+
+  <div class="book-card">
+    <h2>{{ book.title }}</h2>
+    <p>Edit in {{ book.editionYear }}</p>
+    <span> Date: {{ book.created }}</span>
+  </div>
 </template>
 
 <style scoped>

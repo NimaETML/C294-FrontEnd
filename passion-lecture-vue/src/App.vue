@@ -7,8 +7,9 @@ import { RouterLink, RouterView } from 'vue-router'
     <div id="layout">
       <div class="wrapper">
         <nav>
+          <h1>Hyper Book</h1>
           <RouterLink :to="{ name: 'account' }">Mon compte</RouterLink> |
-          <RouterLink to="/">Home</RouterLink> | <RouterLink to="/Books">Books</RouterLink> |
+          <RouterLink to="/">Home</RouterLink> | <RouterLink to="/book-list">Books</RouterLink> |
           <RouterLink to="">Add book</RouterLink> | <RouterLink to="">Edit book</RouterLink> |
           <RouterLink to="">Drop book</RouterLink> |
           <RouterLink to="">Book Details</RouterLink>
@@ -55,7 +56,7 @@ nav {
   font-family: Avenir, Arial, Helvetica, sans-serif;
 }
 nav {
-  padding: 30px;
+  padding: 5px;
 }
 
 nav a {
