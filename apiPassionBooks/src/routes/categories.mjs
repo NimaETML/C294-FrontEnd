@@ -1,6 +1,7 @@
 import express from "express";
 import { Book, Category } from "../db/sequelize.mjs";
 import { authVer } from "../auth/authVer.mjs";
+import { authAdmin } from "../auth/authAdmin.mjs";
 const categoriesRouter = express();
 
 //GET pour acceder a tous les categories
@@ -61,12 +62,7 @@ categoriesRouter.get("/:id/books", authVer, async (req, res) => {
   }
 });
 
-/*
-categoriesRouter.post("/", auth, async (req, res) => {
-  if (!res.locals.isAdmin) {
-    return res.status(403).json({ message: "Accès non autorisé." });
-  }
-
+categoriesRouter.post("/", authAdmin, async (req, res) => {
   try {
     const newCategory = await Category.create({ name: req.body.name });
     res.status(201).json(newCategory);
@@ -77,17 +73,12 @@ categoriesRouter.post("/", auth, async (req, res) => {
   }
 });
 
-categoriesRouter.put("/:id", auth, async (req, res) => {
-  if (!res.locals.isAdmin) {
-    return res.status(403).json({ message: "Accès non autorisé." });
-  }
-
+categoriesRouter.put("/:id", authAdmin, async (req, res) => {
   try {
     const category = await Category.findByPk(req.params.id);
     if (!category) {
       return res.status(404).json({ message: "Catégorie non trouvée." });
     }
-
     category.name = req.body.name;
     await category.save();
     res.status(200).json(category);
@@ -97,5 +88,5 @@ categoriesRouter.put("/:id", auth, async (req, res) => {
       .json({ message: "Erreur lors de la modification de la catégorie." });
   }
 });
-*/
+
 export { categoriesRouter };

@@ -1,7 +1,7 @@
 import express from "express";
-import { Writer } from "../db/sequelize.mjs";
+import { Book, Writer } from "../db/sequelize.mjs";
 import { success } from "./helper.mjs";
-import { Book } from "../db/sequelize.mjs";
+import { authAdmin } from "../auth/authAdmin.mjs";
 import { authVer } from "../auth/authVer.mjs";
 
 const writersRouter = express();
@@ -66,6 +66,37 @@ writersRouter.get("/:id/books", authVer, async (req, res) => {
     const message =
       "L'écrivain n'a pas pu être récupéré. Merci de réessayer dans quelques instants.";
     res.status(500).json({ message, data: error });
+  }
+});
+
+writersRouter.post("/", authAdmin, async (req, res) => {
+  try {
+    const newWriter = await Writer.create({
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+    });
+    res.status(201).json(newWriter);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Erreur lors de la création de l'écrivain." });
+  }
+});
+
+writersRouter.put("/:id", authAdmin, async (req, res) => {
+  try {
+    const writer = await Writer.findByPk(req.params.id);
+    if (!writer) {
+      return res.status(404).json({ message: "Écrivain non trouvé." });
+    }
+    writer.firstName = req.body.firstName;
+    writer.lastName = req.body.lastName;
+    await writer.save();
+    res.status(200).json(writer);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Erreur lors de la modification de l'écrivain." });
   }
 });
 
