@@ -76,6 +76,7 @@ const importUsers = async () => {
         firstName: user.firstName,
         lastName: user.lastName,
         nickName: user.nickName,
+        email: user.email,
         password: hash,
         dateEntry: user.dateEntry,
         isAdmin: user.isAdmin,

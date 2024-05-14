@@ -1,7 +1,6 @@
 import express from "express";
 import { Book, User } from "../db/sequelize.mjs";
 import { success } from "./helper.mjs";
-import { auth } from "../auth/auth.mjs";
 import { authVer } from "../auth/authVer.mjs";
 
 const usersRouter = express();

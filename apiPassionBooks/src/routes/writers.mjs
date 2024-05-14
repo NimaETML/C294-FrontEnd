@@ -1,9 +1,9 @@
 import express from "express";
 import { Writer } from "../db/sequelize.mjs";
 import { success } from "./helper.mjs";
-import { auth } from "../auth/auth.mjs";
 import { Book } from "../db/sequelize.mjs";
 import { authVer } from "../auth/authVer.mjs";
+
 const writersRouter = express();
 
 //GET pour acceder a tous les categories

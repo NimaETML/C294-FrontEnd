@@ -1,6 +1,5 @@
 import express from "express";
 import { Book, Category } from "../db/sequelize.mjs";
-import { auth } from "../auth/auth.mjs";
 import { authVer } from "../auth/authVer.mjs";
 const categoriesRouter = express();
 
@@ -34,7 +33,7 @@ categoriesRouter.get("/:id", authVer, async (req, res) => {
   }
 });
 
-categoriesRouter.get("/:id/books", async (req, res) => {
+categoriesRouter.get("/:id/books", authVer, async (req, res) => {
   const categoryId = req.params.id;
   const category = await Book.findByPk(categoryId);
   try {
@@ -61,6 +60,7 @@ categoriesRouter.get("/:id/books", async (req, res) => {
     res.status(500).json({ message, data: error });
   }
 });
+
 /*
 categoriesRouter.post("/", auth, async (req, res) => {
   if (!res.locals.isAdmin) {
