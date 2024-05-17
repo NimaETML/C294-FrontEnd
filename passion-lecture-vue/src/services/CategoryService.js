@@ -15,25 +15,7 @@ const apiClient = axios.create({
 
 export default {
   //get tous les books
-  getBooks() {
-    return apiClient.get('/books')
-  },
-  getCategorie(id) {
-    return apiClient.get('/categories/' + id)
-  },
-  getCategories() {
-    return apiClient.get('/categories/')
-  },
-  getBook(id) {
-    return apiClient.get('/books/' + id)
-  },
-  createBook(newBook) {
-    return apiClient.post('/books/', newBook)
-  },
-  editBook(id, newBook) {
-    return apiClient.put('/books/', +id, newBook)
-  },
-  deleteBook(id) {
-    return apiClient.delete('/books/' + id)
+  getCategory() {
+    return apiClient.get('/category')
   }
 }
