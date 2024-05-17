@@ -1,4 +1,6 @@
 <script setup>
+import { ref } from 'vue'
+
 defineProps({
   book: {
     type: Object,
@@ -7,13 +9,10 @@ defineProps({
 })
 </script>
 
-<!-- affichage d'une EventCard -->
 <template>
-  <!-- route avec un paramètre -->
   <RouterLink class="book-link" :to="{ name: 'book-details', params: { id: book.id } }">
     <div class="book-card">
       <h2>{{ book.title }}</h2>
-      <span>@{{ book.time }} on {{ book.date }}</span>
     </div>
   </RouterLink>
 </template>
@@ -29,5 +28,9 @@ defineProps({
 .book-card:hover {
   transform: scale(1.01);
   box-shadow: 0 3px 12px 0 rgba(0, 0, 0, 0.2);
+}
+.book-link {
+  color: #39495c;
+  text-decoration: none;
 }
 </style>

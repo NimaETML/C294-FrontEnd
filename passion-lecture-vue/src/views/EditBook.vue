@@ -1,101 +1,15 @@
-<template>
-  <main>
-    <form class="review-form" @submit.prevent="onSubmit">
-      <label for="title">Titre :</label>
-      <input id="title" v-model="note.title" />
-      <label for="description">Description :</label>
-      <textarea v-model="note.description"></textarea>
-      <button type="submit">Enregistrer</button>
-
-      <!-- listen pour le submit, le ".prevent" empèche le reload de la page, qui est le comportement par défaut ICI JE SUIS ICI ICI ICI ICI ICI ICI ICI ICI ICI ICI ICI ICI ICI ICI -->
-      <h3>Editing</h3>
-      <!-- champ de texte "imput" pour le nom du reviewer -->
-      <label for="name">Title:</label>
-      <input id="name" v-model="title" />
-      <!-- fait le lien avec le champ "name" dans data -->
-      <!-- champ de texte pour ecriture d'une "review" -->
-      <label for="review">Review:</label>
-      <textarea id="review" v-model="review"></textarea>
-      <!-- fait le lien avec le champ "name" dans data -->
-      <!-- select un "rating" parmis la liste d'options -->
-      <label for="rating">Rating:</label>
-      <select id="rating" v-model.number="rating">
-        <!-- fait le lien avec le champ "rating" dans data, le ".number" précise que la valeur doit être un nombre -->
-        <option>5</option>
-        <option>4</option>
-        <option>3</option>
-        <option>2</option>
-        <option>1</option>
-      </select>
-      <!-- select Yes ou No pour la question "Recommanderiez-vous ce produit ?" -->
-      <label for="recommendation">Recommanderiez-vous ce produit ?</label>
-      <select id="recommendation" v-model="recommendation">
-        <!-- fait le lien avec le champ "rating" dans data, le ".number" précise que la valeur doit être un nombre -->
-        <option>Yes</option>
-        <option>No</option>
-      </select>
-      <!-- bouton pour soumettre le formulaire  -->
-      <input class="button" type="submit" value="Submit" />
-    </form>
-  </main>
-</template>
-
 <script setup>
-defineProps({
-  BookId: {
-    type: Number,
-    required: true
-  },
-  UserId: {
-    type: Number,
+/*defineProps({
+  msg: {
+    type: String,
     required: true
   }
 })
-import { ref, onMounted } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import BookService from '../services/BookService.js'
-
-const route = useRoute()
-const router = useRouter()
-const book = ref({})
-
-onMounted(() => {
-  BookService.getBook(route.params.id)
-    .then((response) => {
-      book.value = response.data.data
-    })
-    .catch((error) => console.log(error))
-})
-
-const onSubmit = async () => {
-  const newBook = {
-    title: book.value.title,
-    number_of_pages: book.value.number_of_pages,
-    excerpt: book.value.excerpt,
-    summary: book.value.summary,
-    publisher: book.value.publisher,
-    year_of_publication: book.value.year_of_publication,
-    book_cover: book.value.book_cover,
-    userId: book.value.userId,
-    writerId: book.value.writerId,
-    categoryId: book.value.categoryId
-  }
-  await BookService.editBook(route.params.id, newBook)
-    .then((response) => {
-      book.value = response.data.data
-    })
-    .catch((error) => console.log(error))
-  router.push('/') // Redirection vers la page d'accueil
-}
+*/
 </script>
 
-<style scoped>
-/*
-@media (min-width: 1024px) {
-  .about {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-  }
-}*/
-</style>
+<template>
+  <h1>Editing the book..</h1>
+</template>
+
+<style scoped></style>

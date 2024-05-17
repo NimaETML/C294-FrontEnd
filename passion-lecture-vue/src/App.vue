@@ -1,5 +1,6 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
+import AddBook from './views/AddBook.vue'
 </script>
 
 <template>
@@ -7,27 +8,11 @@ import { RouterLink, RouterView } from 'vue-router'
     <div id="layout">
       <div class="wrapper">
         <nav>
-          |
-          <RouterLink to="/">Home</RouterLink>
-          |
-          <RouterLink to="/Books">Books</RouterLink>
-          |
-          <RouterLink to="">Add book</RouterLink>
-          |
-          <RouterLink to="">Edit book</RouterLink>
-          |
-          <RouterLink to="">Drop book</RouterLink>
-          |
-          <RouterLink to="">Book Details</RouterLink>
-          |
-          <RouterLink to="/LogIn">Log in</RouterLink>
-          |
-          <RouterLink to="/SignIn">Sign in</RouterLink>
-          |
-          <!-- LE FAIRE ALLER A DROITE -->
-          <RouterLink to="{ name: 'account' }" id="user-right"
-            ><img src="./assets/images/UserIcon.png" alt="Icon utilisateur" width="40" height="40"
-          /></RouterLink>
+          <h1>Hyper Book</h1>
+          <RouterLink :to="{ name: 'account' }">Mon compte</RouterLink> |
+          <RouterLink :to="{ name: 'home' }">Home</RouterLink> |
+          <RouterLink :to="{ name: 'book-list' }">Books</RouterLink> |
+          <RouterLink :to="{ name: 'add-book' }">Add book</RouterLink>
         </nav>
       </div>
     </div>
@@ -59,27 +44,22 @@ h2 {
 
 <style scoped>
 #layout {
-  text-align: left;
+  text-align: center;
   font-family: Avenir, Arial, Helvetica, sans-serif;
   -webkit-font-feature-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
 }
-
-#user-right {
-  text-align: right;
-}
-
-#nav {
+nav {
   padding: 30px;
 
   font-family: Avenir, Arial, Helvetica, sans-serif;
 }
 nav {
-  padding: 20px 10px 30px 10px;
+  padding: 5px;
 }
 
-nav {
+nav a {
   font-weight: bold;
   color: #439482;
   text-decoration: none;

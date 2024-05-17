@@ -1,9 +1,10 @@
 <script setup>
 import BookCard from '@/components/BookCard.vue'
+import { onMounted, ref } from 'vue'
 import BookService from '@/services/BookService'
-import { ref, onMounted } from 'vue'
 
 const books = ref(null)
+
 onMounted(() => {
   BookService.getBooks()
     .then((response) => {
@@ -19,7 +20,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <h3>The bests sellers:</h3>
+  <h3>All books</h3>
   <div class="home">
     <BookCard v-for="book in books" :key="book.id" :book="book" />
   </div>
