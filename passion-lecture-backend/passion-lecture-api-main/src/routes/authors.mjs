@@ -33,7 +33,7 @@ authorsRouter.get("/:id/", auth, async (req, res) => {
   }
 });
 
-authorsRouter.get("/:id/books/", auth, async (req, res) => {
+authorsRouter.get("/:id/books/", async (req, res) => {
   try {
     const author = await Author.findByPk(req.params.id);
     if (author === null) {
