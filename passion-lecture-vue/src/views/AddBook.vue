@@ -4,7 +4,7 @@
       <h2>Add a new book</h2>
       <form @submit.prevent="addBook">
         <input v-model="newBook.title" placeholder="Title" />
-        <input v-model="newBook.ca" placeholder="Pages" />
+        <input v-model="newBook.category" placeholder="Pages" />
 
         <textarea v-model="newBook.description" placeholder="Contenu"></textarea>
         <button type="submit">Ajouter</button>
@@ -24,17 +24,17 @@ const newBook = ref({ title: '', description: '' })
 
 async function addBook() {
   if (newBook.value.title && newBook.value.description) {
-    // Préparation de l'objet à envoyer
-    const noteData = {
+    const bookData = {
       title: newBook.value.title,
+      category: newBook.value.category,
       description: newBook.value.description
     }
-    await NoteService.createNote(noteData)
+    await BookService.createBook(bookData)
       .then((response) => {
         newBook.value = response.data.data
       })
       .catch((error) => console.log(error))
-    router.push('/') // Redirection vers la page d'accueil
+    router.push('/')
   } else {
     alert('Veuillez remplir tous les champs.')
   }
