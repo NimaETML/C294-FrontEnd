@@ -11,11 +11,11 @@ writersRouter.get("/", authVer, async (req, res) => {
   try {
     const writers = await Writer.findAll();
     const message = "La liste des écrivains a bien été récupérée.";
-    res.json(success(message, writers));
+    res.json({ mg: message, data: writers });
   } catch (error) {
     const message =
       "La liste des écrivains n'a pas pu être récupérée. Merci de réessayer dans quelques instants.";
-    res.status(500).json({ message, data: error });
+    res.status(500).json({ msg: message, data: error });
   }
 });
 
@@ -30,11 +30,11 @@ writersRouter.get("/:id", authVer, async (req, res) => {
       return res.status(404).json({ message });
     }
     const message = `La categorie dont l'id est ${writerId} a été bien récuperé`;
-    res.json(success(message, writer));
+    res.json({ msg: message, data: writer });
   } catch (error) {
     const message =
       "La liste des categories n'a pas pu être récupérée. Merci de réessayer dans quelques instants.";
-    res.status(500).json({ message, data: error });
+    res.status(500).json({ msg: message, data: error });
   }
 });
 
