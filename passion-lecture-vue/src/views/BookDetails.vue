@@ -2,6 +2,8 @@
 import { ref, onMounted } from 'vue'
 import BookService from '@/services/BookService'
 const book = ref(null)
+const category = ref(null)
+
 const props = defineProps({
   id: {
     required: true
@@ -12,6 +14,11 @@ onMounted(() => {
   BookService.getBook(props.id)
     .then((response) => {
       book.value = response.data.data
+
+      return BookService.getCategorie(book.value.categoryId)
+    })
+    .then((categoryResponse) => {
+      category.value = categoryResponse.data.data
     })
     .catch((error) => {
       console.log(error)
@@ -23,7 +30,7 @@ onMounted(() => {
   <div class="book-card" v-if="book">
     <h2>{{ book.title }}</h2>
     <img :src="book.imagePath" />
-    <h3>Category: {{ book.categoryId }}</h3>
+    <h3>Category: {{ category ? category.name : 'Loading...' }}</h3>
     <h4>Writer : {{ book.editor }}</h4>
     <p>{{ book.abstract }}</p>
     <p>Pages: {{ book.numberOfPages }}</p>
