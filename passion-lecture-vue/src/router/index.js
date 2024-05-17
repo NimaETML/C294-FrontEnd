@@ -1,11 +1,22 @@
 import AccountView from '../views/AccountView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
+
 import HomeView from '@/views/HomeView.vue'
 import AllBooks from '@/views/BookList.vue'
 import AddBook from '@/views/AddBook.vue'
 import BookDetails from '@/views/BookDetails.vue'
 import EditBook from '@/views/EditBook.vue'
 import DropBook from '@/views/DropBook.vue'
+
+
+
+
+
+
+
+//import LogInView from '@/views/LogInView.vue'
+//import SignInView from '@/views/SignInView.vue'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -20,6 +31,7 @@ const router = createRouter({
       component: AllBooks
     },
     {
+
       path: '/account',
       name: 'account',
       component: AccountView
@@ -34,6 +46,7 @@ const router = createRouter({
       name: 'book-details',
       props: true,
       component: BookDetails
+
     },
     {
       path: '/book/:id',

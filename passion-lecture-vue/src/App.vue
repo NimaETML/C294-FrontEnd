@@ -8,11 +8,13 @@ import AddBook from './views/AddBook.vue'
     <div id="layout">
       <div class="wrapper">
         <nav>
+
           <h1>Hyper Book</h1>
           <RouterLink :to="{ name: 'account' }">Mon compte</RouterLink> |
           <RouterLink :to="{ name: 'home' }">Home</RouterLink> |
           <RouterLink :to="{ name: 'book-list' }">Books</RouterLink> |
           <RouterLink :to="{ name: 'add-book' }">Add book</RouterLink>
+
         </nav>
       </div>
     </div>
@@ -44,22 +46,29 @@ h2 {
 
 <style scoped>
 #layout {
-  text-align: center;
+  text-align: left;
   font-family: Avenir, Arial, Helvetica, sans-serif;
   -webkit-font-feature-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
 }
-nav {
+
+#user-right {
+  text-align: right;
+}
+
+#nav {
   padding: 30px;
 
   font-family: Avenir, Arial, Helvetica, sans-serif;
 }
 nav {
+
   padding: 5px;
+
 }
 
-nav a {
+nav {
   font-weight: bold;
   color: #439482;
   text-decoration: none;
