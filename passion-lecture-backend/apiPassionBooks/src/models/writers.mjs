@@ -1,5 +1,5 @@
 const WriterModel = (sequelize, DataTypes) => {
-  const writer = sequelize.define("Writer", {
+  const Writer = sequelize.define("Writer", {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -46,6 +46,14 @@ const WriterModel = (sequelize, DataTypes) => {
       },
     },
   });
-  return writer;
+  Writer.associate = (models) => {
+    Writer.belongsToMany(models.Book, {
+      through: "BookWriter",
+      as: "books",
+      foreignKey: "writerId",
+      otherKey: "bookId",
+    });
+  };
+  return Writer;
 };
 export { WriterModel };

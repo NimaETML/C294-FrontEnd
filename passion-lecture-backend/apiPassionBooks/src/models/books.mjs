@@ -139,30 +139,48 @@ const BookModel = (sequelize, DataTypes) => {
           },
         },
       },
-      fkWriter: {
+      userId: {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
           isInt: {
-            msg: "Le fkWriter peu juste être un nombre.",
+            msg: "Utilisez uniquement des nombres pour l'userId.",
           },
           notEmpty: {
-            msg: "Le fkWriter ne peut pas être vide.",
+            msg: "L'userId ne peut pas être vide.",
           },
           notNull: {
-            msg: "Le fkWriter est une propriété obligatoire.",
+            msg: "L'userId est une propriété obligatoire",
           },
         },
       },
-      fkAddedBy: {
+      writerId: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: false,
         validate: {
           isInt: {
-            msg: "Le fkAddedBy peu juste être un nombre.",
+            msg: "Utilisez uniquement des nombres pour le writerId.",
           },
           notEmpty: {
-            msg: "Le fkAddedBy ne peut pas être vide.",
+            msg: "Le writerId ne peut pas être vide.",
+          },
+          notNull: {
+            msg: "Le writerId est une propriété obligatoire",
+          },
+        },
+      },
+      categoryId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          isInt: {
+            msg: "Utilisez uniquement des nombres pour la categoryId.",
+          },
+          notEmpty: {
+            msg: "La categoryId ne peut pas être vide.",
+          },
+          notNull: {
+            msg: "La categoryId est une propriété obligatoire",
           },
         },
       },
@@ -176,10 +194,19 @@ const BookModel = (sequelize, DataTypes) => {
 
   Book.associate = (models) => {
     Book.hasMany(models.Comment, {
-      as: "comment",
+      foreignKey: "bookId",
     });
     Book.hasMany(models.Rate, {
-      as: "rate",
+      foreignKey: "bookId",
+    });
+    Book.belongsTo(models.User, {
+      foreignKey: "userId",
+    });
+    Book.belongsToMany(models.Writer, {
+      through: "BookWriter",
+      as: "writers",
+      foreignKey: "bookId",
+      otherKey: "writerId",
     });
 
     Book.belongsToMany(models.Category, {

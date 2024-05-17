@@ -19,9 +19,14 @@ loginRouter.post("/", (req, res) => {
             const message = `Le mot de passe est incorrecte.`;
             return res.status(401).json({ message });
           } else {
-            const token = jwt.sign({ userId: user.id }, privateKey, {
-              expiresIn: "1y",
-            });
+            // JWT
+            const token = jwt.sign(
+              { userId: user.id, isAdmin: user.isAdmin },
+              privateKey,
+              {
+                expiresIn: "1y",
+              }
+            );
             const message = `L'utilisateur a été connecté avec succès`;
             return res.json({ message, data: user, token });
           }

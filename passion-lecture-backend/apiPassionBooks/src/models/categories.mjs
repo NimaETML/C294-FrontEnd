@@ -7,7 +7,7 @@ const CategoryModel = (sequelize, DataTypes) => {
     },
     name: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
       validate: {
         is: {
           args: /^[A-Za-z0-9\s]/,
@@ -27,8 +27,8 @@ const CategoryModel = (sequelize, DataTypes) => {
     Category.belongsToMany(models.Book, {
       through: "BookCategory",
       as: "books",
-      foreignKey: "categoryId",
-      otherKey: "bookId",
+      foreignKey: "bookId",
+      otherKey: "categoryId",
     });
   };
   return Category;

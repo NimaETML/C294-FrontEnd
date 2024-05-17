@@ -37,22 +37,6 @@ const UserModel = (sequelize, Datatypes) => {
         },
       },
     },
-    password: {
-      type: Datatypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: {
-          msg: "Le mot de passe de l'utilisateur ne peut pas être vide.",
-        },
-        notNull: {
-          msg: "Le mot de passe de l'utilisateur est une propriété obligatoire.",
-        },
-        len: {
-          args: [0, 150],
-          msg: "Le mot de passe de l'utilisateur doit contenir au maximum 200 caractères.",
-        },
-      },
-    },
     nickName: {
       type: Datatypes.STRING,
       allowNull: false,
@@ -72,8 +56,55 @@ const UserModel = (sequelize, Datatypes) => {
         },
       },
     },
+    email: {
+      type: Datatypes.STRING,
+      allowNull: false,
+      unique: {
+        msg: "Ce email est déjà utilisé.",
+      },
+      validate: {
+        notEmpty: {
+          msg: "L'email de l'utilisateur ne peut pas être vide.",
+        },
+        notNull: {
+          msg: "L'email de l'utilisateur est une propriété obligatoire.",
+        },
+        len: {
+          args: [0, 30],
+          msg: "L'email de l'utilisateur doit contenir au maximum 30 caractères.",
+        },
+      },
+    },
+    password: {
+      type: Datatypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "Le mot de passe de l'utilisateur ne peut pas être vide.",
+        },
+        notNull: {
+          msg: "Le mot de passe de l'utilisateur est une propriété obligatoire.",
+        },
+        len: {
+          args: [0, 150],
+          msg: "Le mot de passe de l'utilisateur doit contenir au maximum 200 caractères.",
+        },
+      },
+    },
     dateEntry: {
       type: Datatypes.DATE,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "La date d'entrée de l'utilisateur ne peut pas être vide.",
+        },
+        notNull: {
+          msg: "La date d'entrée est une propriété obligatoire.",
+        },
+      },
+    },
+    isAdmin: {
+      type: Datatypes.BOOLEAN,
       allowNull: false,
       validate: {
         notEmpty: {
@@ -87,11 +118,14 @@ const UserModel = (sequelize, Datatypes) => {
   });
 
   User.associate = (models) => {
+    User.hasMany(models.Book, {
+      foreignKey: "userId",
+    });
     User.hasMany(models.Comment, {
-      as: "comment",
+      foreignKey: "userId",
     });
     User.hasMany(models.Rate, {
-      as: "rate",
+      foreignKey: "userId",
     });
   };
 

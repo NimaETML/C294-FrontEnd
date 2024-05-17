@@ -11,10 +11,10 @@ let books = [
     publisher: "Sushi Productions",
     year_of_publication: "02-02-2024",
     avg_rating: 1,
-    comments: "J'ai rien compris",
     book_cover: "https://affweichage/couverturRWhrtue",
-    fkWriter: 1,
-    fkCategory: 1,
+    userId: 1,
+    writerId: 1,
+    categoryId: 1,
   },
   {
     id: 2,
@@ -27,11 +27,10 @@ let books = [
     writer: "John Doe",
     publisher: "Sushi Productions",
     year_of_publication: "02-02-2025",
-    comments: "Wow",
     book_cover: "https://affichagwerwee/couvertureuearZE",
-    fkWriter: 2,
-    fkCategory: 2,
-    fkAddedBy: 1,
+    userId: 2,
+    writerId: 2,
+    categoryId: 2,
   },
   {
     id: 3,
@@ -43,11 +42,10 @@ let books = [
     writer: "Author Name",
     publisher: "Publisher Name",
     year_of_publication: "02-02-2026",
-    comments: "Comment 0",
     book_cover: "https://affichwerwerage/couvertureXYTUE",
-    fkWriter: 2,
-    fkCategory: 3,
-    fkAddedBy: 2,
+    userId: 2,
+    writerId: 3,
+    categoryId: 4,
   },
   {
     id: 4,
@@ -59,11 +57,10 @@ let books = [
     writer: "Author Name",
     publisher: "Publisher Name",
     year_of_publication: "02-02-2027",
-    comments: "Comment 0",
     book_cover: "https:/werwe/affichage/couverturejsrsre",
-    fkWriter: 3,
-    fkCategory: 2,
-    fkAddedBy: 1,
+    userId: 1,
+    writerId: 1,
+    categoryId: 1,
   },
   {
     id: 5,
@@ -75,10 +72,10 @@ let books = [
     writer: "Author Name",
     publisher: "Publisher Name",
     year_of_publication: "02-02-2028",
-    comments: "Comment 0",
     book_cover: "https://weraffichage/couvertureasdxvch",
-    fkWriter: 2,
-    fkCategory: 2,
+    userId: 1,
+    writerId: 1,
+    categoryId: 2,
   },
   {
     id: 6,
@@ -90,11 +87,10 @@ let books = [
     writer: "Author Name",
     publisher: "Publisher Name",
     year_of_publication: "02-02-2029",
-    comments: "Comment 0",
     book_cover: "https://afficherwerage/couvertureuirg",
-    fkWriter: 2,
-    fkCategory: 3,
-    fkAddedBy: 3,
+    userId: 3,
+    writerId: 1,
+    categoryId: 1,
   },
   {
     id: 7,
@@ -106,10 +102,10 @@ let books = [
     writer: "Author Name",
     publisher: "Publisher Name",
     year_of_publication: "02-02-2030",
-    comments: "Comment 0",
     book_cover: "https://affichagwerwerwere/couvertureJTZt",
-    fkWriter: 3,
-    fkCategory: 5,
+    userId: 1,
+    writerId: 1,
+    categoryId: 5,
   },
   {
     id: 8,
@@ -121,11 +117,10 @@ let books = [
     writer: "Author Name",
     publisher: "Publisher Name",
     year_of_publication: "02-02-2031",
-    comments: "Comment 0",
     book_cover: "https://afficwerewrhage/couvertureatWERJFSGH",
-    fkWriter: 3,
-    fkCategory: 4,
-    fkAddedBy: 1,
+    userId: 1,
+    writerId: 1,
+    categoryId: 4,
   },
   {
     id: 9,
@@ -136,11 +131,10 @@ let books = [
     writer: "Author Name",
     publisher: "Publisher Name",
     year_of_publication: "02-02-2032",
-    comments: "Comment 0",
     book_cover: "httpetstes://affiwerwerceetthage/ctetouverture",
-    fkWriter: 4,
-    fkCategory: 3,
-    fkAddedBy: 4,
+    userId: 5,
+    writerId: 1,
+    categoryId: 1,
   },
   {
     id: 10,
@@ -152,49 +146,11 @@ let books = [
     writer: "Author Name",
     publisher: "Publisher Name",
     year_of_publication: "02-02-2033",
-    comments: "Comment 0",
     book_cover: "hsttps://afficewrwereheage/eeGeEEe",
-    fkWriter: 5,
-    fkCategory: 5,
-    fkAddedBy: 5,
+    userId: 5,
+    writerId: 1,
+    categoryId: 3,
   },
 ];
 
-const getComments = (bookId) => {
-  const book = books.find((book) => book.id == bookId);
-  return book?.Comments;
-};
-
-const getNotes = (bookId) => {
-  const book = books.find((book) => book.id == bookId);
-  return book?.avg_rating;
-};
-
-const getBook = (bookId) => {
-  return books.find((book) => book.id == bookId);
-};
-
-const updateBook = (bookId, updatedBook) => {
-  books = books.map((book) => (book.id == bookId ? updatedBook : book));
-};
-
-const removeBook = (bookId) => {
-  books = books.filter((book) => book.id != bookId);
-};
-
-const getUniqueId = (books) => {
-  const bookIds = books.map((book) => book.id);
-  const maxId = bookIds.reduce((a, b) => Math.max(a, b));
-  const uniqueId = maxId + 1;
-  return uniqueId;
-};
-
-export {
-  books,
-  getUniqueId,
-  getBook,
-  updateBook,
-  removeBook,
-  getComments,
-  getNotes,
-};
+export { books };

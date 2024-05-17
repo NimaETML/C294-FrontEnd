@@ -1,5 +1,5 @@
 const RateModel = (sequelize, DataTypes) => {
-  const rate = sequelize.define("Rate", {
+  const Rate = sequelize.define("Rate", {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -7,7 +7,7 @@ const RateModel = (sequelize, DataTypes) => {
     },
     rating: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
       validate: {
         isInt: {
           msg: "Utilisez uniquement des nombres pour le nombre de pages.",
@@ -25,17 +25,47 @@ const RateModel = (sequelize, DataTypes) => {
         },
       },
     },
+    bookId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        isInt: {
+          msg: "Utilisez uniquement des nombres pour le bookId.",
+        },
+        notEmpty: {
+          msg: "Le bookId ne peut pas être vide.",
+        },
+        notNull: {
+          msg: "Le bookId est une propriété obligatoire",
+        },
+      },
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        isInt: {
+          msg: "Utilisez uniquement des nombres pour l'userId.",
+        },
+        notEmpty: {
+          msg: "L'userId ne peut pas être vide.",
+        },
+        notNull: {
+          msg: "L'userId est une propriété obligatoire",
+        },
+      },
+    },
   });
-  Comment.associate = (models) => {
-    Comment.belongsTo(models.Book, {
-      as: "book",
+  Rate.associate = (models) => {
+    Rate.belongsTo(models.Book, {
+      foreignKey: "bookId",
     });
 
-    Comment.belongsTo(models.User, {
-      as: "user",
+    Rate.belongsTo(models.User, {
+      foreignKey: "userId",
     });
   };
-  return rate;
+  return Rate;
 };
 
 export { RateModel };
