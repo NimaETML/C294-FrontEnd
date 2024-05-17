@@ -4,6 +4,7 @@
       <h2>Add a new book</h2>
       <form @submit.prevent="addBook">
         <input v-model="newBook.title" placeholder="Title" />
+        <input v-model="newBook.ca" placeholder="Pages" />
 
         <textarea v-model="newBook.description" placeholder="Contenu"></textarea>
         <button type="submit">Ajouter</button>
