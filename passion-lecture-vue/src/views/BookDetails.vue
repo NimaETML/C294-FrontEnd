@@ -10,19 +10,20 @@ const props = defineProps({
   }
 })
 
-onMounted(() => {
-  BookService.getBook(props.id)
-    .then((response) => {
-      book.value = response.data.data
+onMounted(async () => {
+  try {
+    //get d'un book a partir de l'id
+    const response = await BookService.getBook(props.id)
+    book.value = response.data.data
+    // Le backend nous retourne un objet contenant 2 entrées :
+    // - msg qde confirmation
+    // - data qui contient l'ensemble des livres
 
-      return BookService.getCategorie(book.value.categoryId)
-    })
-    .then((categoryResponse) => {
-      category.value = categoryResponse.data.data
-    })
-    .catch((error) => {
-      console.log(error)
-    })
+    const categoryResponse = await BookService.getCategorie(book.value.categoryId)
+    category.value = categoryResponse.data.data
+  } catch (error) {
+    console.log(error)
+  }
 })
 </script>
 
