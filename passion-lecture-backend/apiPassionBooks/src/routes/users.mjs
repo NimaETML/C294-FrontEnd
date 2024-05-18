@@ -68,12 +68,19 @@ usersRouter.get("/:id/books", authVer, async (req, res) => {
 usersRouter.get("/:id/commentedbooks", authVer, async (req, res) => {
   const userId = req.params.id;
   try {
-    const comments = await Comment.findAll({ where: { userId: userId } });
-    if (!comments) {
+    const comments = await Comment.findAll({
+      where: { userId: userId },
+      attributes: ["bookId"],
+    });
+    if (comments.length === 0) {
       const message = `Aucun commentaire trouvé pour l'utilisateur avec l'ID ${userId}. Aucun livre à afficher.`;
       return res.status(404).json({ msg: message });
     }
-    const books = await comments.map((comment) => comment.Book);
+    const bookIds = [...new Set(comments.map((comment) => comment.bookId))];
+    const books = await Book.findAll({
+      where: { id: bookIds },
+    });
+
     const message = `Liste des livres commentés par l'utilisateur avec l'ID ${userId} récupérée avec succès.`;
     res.json({ msg: message, data: books });
   } catch (error) {
@@ -87,12 +94,19 @@ usersRouter.get("/:id/commentedbooks", authVer, async (req, res) => {
 usersRouter.get("/:id/ratedbooks", authVer, async (req, res) => {
   const userId = req.params.id;
   try {
-    const rates = await Rate.findAll({ where: { userId: userId } });
-    if (!rates) {
+    const rates = await Rate.findAll({
+      where: { userId: userId },
+      attributes: ["bookId"],
+    });
+    if (rates.length === 0) {
       const message = `Aucun commentaire trouvé pour l'utilisateur avec l'ID ${userId}. Aucun livre à afficher.`;
       return res.status(404).json({ msg: message });
     }
-    const books = await rates.map((rate) => rate.Book);
+    const bookIds = [...new Set(rates.map((rate) => rate.bookId))];
+    const books = await Book.findAll({
+      where: { id: bookIds },
+    });
+
     const message = `Liste des livres commentés par l'utilisateur avec l'ID ${userId} récupérée avec succès.`;
     res.json({ msg: message, data: books });
   } catch (error) {

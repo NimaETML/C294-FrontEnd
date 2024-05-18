@@ -48,7 +48,7 @@ booksRouter.get("/:id/rates", authVer, async (req, res) => {
   const bookId = req.params.id;
   try {
     const rates = await Rate.findAll({ where: { bookId: bookId } });
-    if (!rates) {
+    if (rates.length === 0) {
       const message = `Aucune appréciation trouvée pour le livre avec l'ID ${bookId}.`;
       return res.status(404).json({ msg: message });
     }
@@ -66,7 +66,7 @@ booksRouter.get("/:id/comments", authVer, async (req, res) => {
   const bookId = req.params.id;
   try {
     const comments = await Comment.findAll({ where: { bookId: bookId } });
-    if (!comments) {
+    if (comments.length === 0) {
       const message = `Aucune appréciation trouvée pour le livre avec l'ID ${bookId}.`;
       return res.status(404).json({ msg: message });
     }
