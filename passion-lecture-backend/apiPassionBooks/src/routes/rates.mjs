@@ -67,7 +67,9 @@ ratesRouter.put("/:id", authRates, async (req, res) => {
   const { userId, bookId } = req.body;
   const rateId = req.params.id;
   const data = { ...req.body };
+
   try {
+    // Validar existencia del libro
     const book = await Book.findByPk(bookId);
     if (!book) {
       const message =
@@ -83,15 +85,21 @@ ratesRouter.put("/:id", authRates, async (req, res) => {
     const rate = await Rate.findByPk(rateId);
     if (!rate) {
       const message =
-        "L'appréciation demandé n'existe pas. Merci de réessayer avec un autre identifiant.";
+        "L'appréciation demandée n'existe pas. Merci de réessayer avec un autre identifiant.";
       return res.status(404).json({ msg: message });
     }
-    const updatedRate = await Rate.update(data, { where: { id: rateId } });
-    const message = `L'appréciation avec l'id ${updatedRate.id} a été mis à jour avec succès et actuellement vaut ${updatedRate.rating} `;
+    const [updateCount] = await Rate.update(data, { where: { id: rateId } });
+    if (updateCount === 0) {
+      const message = "Aucune modification n'a été apportée à l'appréciation.";
+      return res.status(404).json({ msg: message });
+    }
+
+    const updatedRate = await Rate.findByPk(rateId);
+    const message = `L'appréciation avec l'id ${updatedRate.id} a été mise à jour avec succès et actuellement vaut ${updatedRate.rating}`;
     res.json({ msg: message, data: updatedRate });
   } catch (error) {
     const message = "Erreur lors de la modification de l'appréciation.";
-    res.status(500).json({ msg: message });
+    res.status(500).json({ msg: message, data: error });
   }
 });
 
@@ -102,16 +110,20 @@ ratesRouter.delete("/:id", authRates, async (req, res) => {
     const rate = await Rate.findByPk(rateId);
     if (!rate) {
       const message =
-        "L'appréciation demandé n'existe pas. Merci de réesayer avec un autre identifiant.";
+        "L'appréciation demandée n'existe pas. Merci de réessayer avec un autre identifiant.";
       return res.status(404).json({ msg: message });
     }
-    const deletedRate = await Rate.destroy({ where: { id: rateId } });
-    const message = `L'appréciation ${deletedRate.title} a bien été supprimé`;
-    return res.json({ msg: message, data: deletedRate });
+    const deleteRate = await Rate.destroy({ where: { id: rateId } });
+    if (deleteRate === 0) {
+      const message = "Aucune appréciation n'a été supprimée.";
+      return res.status(404).json({ msg: message });
+    }
+    const message = `L'appréciation a bien été supprimée.`;
+    return res.json({ msg: message, data: rate }); // Proporcionar el ID del registro eliminado puede ser útil.
   } catch (error) {
     const message =
-      "L'appréciation n'a pas pu être supprimé. Merci de réessayer dans quelques instants.";
-    res.status(500), json({ msg: message, data: error });
+      "L'appréciation n'a pas pu être supprimée. Merci de réessayer dans quelques instants.";
+    res.status(500).json({ msg: message, data: error });
   }
 });
 

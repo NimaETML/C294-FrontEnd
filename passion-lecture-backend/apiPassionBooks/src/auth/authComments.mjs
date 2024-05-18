@@ -26,7 +26,7 @@ const authComments = async (req, res, next) => {
 
         // Un utilisateur ne peut modifier que ses livres
         // Un utilisateur ne peut supprimer que ses livres
-        if (["POST", "PUT", "DELETE"].includes(req.method)) {
+        if (["PUT", "DELETE"].includes(req.method)) {
           console.log(req.method);
           const commentId = req.params.id;
           const comment = await Comment.findByPk(commentId);

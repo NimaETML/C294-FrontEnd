@@ -7,7 +7,6 @@ let books = [
       "https://lien/relatif/vers/un/ficeeehier/pdf/d_une/page/de/l_ouvrageretretre",
     summary:
       "Ce livre écrit par John Doe, décrit l'histoire d'un jeune homme...",
-    writer: "John Doe",
     publisher: "Sushi Productions",
     year_of_publication: "02-02-2024",
     avg_rating: 1,
@@ -24,7 +23,6 @@ let books = [
       "https://lien/relatif/vers/un/fichier/eepdf/d_une/page/de/l_ouvragertetert",
     summary:
       "Ce livre écrit par John Doe, décrit l'histoire d'une jeune femme...",
-    writer: "John Doe",
     publisher: "Sushi Productions",
     year_of_publication: "02-02-2025",
     book_cover: "https://affichagwerwee/couvertureuearZE",
@@ -39,7 +37,6 @@ let books = [
     excerpt:
       "https://lien/relatif/vers/un/fichier/eepdf/d_une/page/de/l_ouvrageertret",
     summary: "Summary of book 3...",
-    writer: "Author Name",
     publisher: "Publisher Name",
     year_of_publication: "02-02-2026",
     book_cover: "https://affichwerwerage/couvertureXYTUE",
@@ -54,7 +51,6 @@ let books = [
     excerpt:
       "https://lien/relatif/vers/un/ficeheeier/pdf/d_une/page/de/l_ouvragetertre",
     summary: "Summary of book 4...",
-    writer: "Author Name",
     publisher: "Publisher Name",
     year_of_publication: "02-02-2027",
     book_cover: "https:/werwe/affichage/couverturejsrsre",
@@ -69,7 +65,6 @@ let books = [
     excerpt:
       "https://lien/relatif/vers/un/fichier/peedf/d_une/pagee/de/l_ouvrageertert",
     summary: "Summary of book 5...",
-    writer: "Author Name",
     publisher: "Publisher Name",
     year_of_publication: "02-02-2028",
     book_cover: "https://weraffichage/couvertureasdxvch",
@@ -84,7 +79,6 @@ let books = [
     excerpt:
       "https://lien/relaeetif/versee/un/fichier/pdf/d_une/page/de/l_ouvrageeeertreeet",
     summary: "Summary of book 6...",
-    writer: "Author Name",
     publisher: "Publisher Name",
     year_of_publication: "02-02-2029",
     book_cover: "https://afficherwerage/couvertureuirg",
@@ -99,7 +93,6 @@ let books = [
     excerpt:
       "https://lien/relatif/vers/eun/fichier/pdf/d_unee/page/de/l_oeeuvrageretertereeee",
     summary: "Summary of book 7...",
-    writer: "Author Name",
     publisher: "Publisher Name",
     year_of_publication: "02-02-2030",
     book_cover: "https://affichagwerwerwere/couvertureJTZt",
@@ -114,7 +107,6 @@ let books = [
     excerpt:
       "https://lien/relaetif/veres/un/fichier/pdf/d_une/eepage/de/l_ouvrage",
     summary: "Summary of book 8...",
-    writer: "Author Name",
     publisher: "Publisher Name",
     year_of_publication: "02-02-2031",
     book_cover: "https://afficwerewrhage/couvertureatWERJFSGH",
@@ -128,7 +120,6 @@ let books = [
     number_of_pages: 159,
     excerpt: "https://lien/relatif/vers/un/fichieeer/pdf/d_une/paeege/de/e",
     summary: "Summary of book 9...",
-    writer: "Author Name",
     publisher: "Publisher Name",
     year_of_publication: "02-02-2032",
     book_cover: "httpetstes://affiwerwerceetthage/ctetouverture",
@@ -143,7 +134,6 @@ let books = [
     excerpt:
       "https://lieen/eeeerelatif/e/un/fichier/pdf/d_une/page/de/l_ouvrage",
     summary: "Summary of book 10...",
-    writer: "Author Name",
     publisher: "Publisher Name",
     year_of_publication: "02-02-2033",
     book_cover: "hsttps://afficewrwereheage/eeGeEEe",

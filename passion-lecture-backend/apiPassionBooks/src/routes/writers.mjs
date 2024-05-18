@@ -80,17 +80,22 @@ writersRouter.post("/", authAdmin, async (req, res) => {
 writersRouter.put("/:id", authAdmin, async (req, res) => {
   const writerId = req.params.id;
   const data = { ...req.body };
-  const writer = await Writer.findByPk(writerId);
   try {
-    if (!writer) {
+    const updatedWriter = await Writer.findByPk(writerId);
+    if (!updatedWriter) {
       const message = "L'écrivain non trouvée.";
       return res.status(404).json({ msg: message });
     }
-    const updateWriter = await Writer.update(data, {
+    const [updateWriter] = await Writer.update(data, {
       where: { id: writerId },
     });
-    const message = `L'écrivain avec l'id ${updateWriter.id} a été mis à jour avec succès et actuellement est ${updateWriter.name} `;
-    res.status(200).json({ msg: message, data: updateWriter });
+    if (updateWriter === 0) {
+      const message = "Aucune modification n'a été apportée à l'écrivain.";
+      return res.status(404).json({ msg: message });
+    }
+
+    const message = `L'écrivain avec l'id ${updatedWriter.id} a été mis à jour avec succès et actuellement est ${updatedWriter.firstName}`;
+    res.status(200).json({ msg: message, data: updatedWriter });
   } catch (error) {
     const message = "Erreur lors de la modification de l'écrivain.";
     res.status(500).json({ msg: message });
@@ -99,23 +104,27 @@ writersRouter.put("/:id", authAdmin, async (req, res) => {
 
 //DELETE supprimer un écrivain par id
 writersRouter.delete("/:id", authAdmin, async (req, res) => {
+  const writerId = req.params.id;
   try {
-    const writerId = req.params.id;
-    const writer = await Writer.findByPk(writerId);
-    if (!writer) {
+    const deletedWriter = await Writer.findByPk(writerId);
+    if (!deletedWriter) {
       const message =
-        "L'écrivain demandé n'existe pas. Merci de réesayer avec un autre identifiant.";
+        "L'écrivain demandé n'existe pas. Merci de réessayer avec un autre identifiant.";
       return res.status(404).json({ msg: message });
     }
-    const deletedWriter = await Writer.destroy({
+    const deleteWriter = await Writer.destroy({
       where: { id: writerId },
     });
+    if (deleteWriter === 0) {
+      const message = "Aucun écrivain n'a été supprimé.";
+      return res.status(404).json({ msg: message });
+    }
     const message = `L'écrivain ${deletedWriter.firstName} a bien été supprimé`;
     return res.json({ msg: message, data: deletedWriter });
   } catch (error) {
     const message =
       "L'écrivain n'a pas pu être supprimé. Merci de réessayer dans quelques instants.";
-    res.status(500), json({ msg: message, data: error });
+    res.status(500).json({ msg: message });
   }
 });
 

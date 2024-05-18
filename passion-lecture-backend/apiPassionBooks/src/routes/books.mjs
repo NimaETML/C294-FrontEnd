@@ -116,13 +116,17 @@ booksRouter.put("/:id", authBooks, async (req, res) => {
   const bookId = req.params.id;
   const data = { ...req.body };
   try {
-    const book = await Book.findByPk(bookId);
-    if (!book) {
+    const updatedBook = await Book.findByPk(bookId);
+    if (!updatedBook) {
       const message =
         "Le livre demandé n'existe pas. Merci de réessayer avec un autre identifiant.";
       return res.status(404).json({ msg: message });
     }
-    const updatedBook = await Book.update(data, { where: { id: bookId } });
+    const [updateBook] = await Book.update(data, { where: { id: bookId } });
+    if (updateBook === 0) {
+      const message = "Aucune modification n'a été apportée au livre.";
+      return res.status(404).json({ msg: message });
+    }
     const message = `Le livre ${updatedBook.title} dont l'id vaut ${updatedBook.id} a été mis à jour avec succès`;
     res.json({ msg: message, data: updatedBook });
   } catch (error) {
@@ -139,16 +143,21 @@ booksRouter.delete("/:id", authBooks, async (req, res) => {
     const book = await Book.findByPk(bookId);
     if (!book) {
       const message =
-        "Le livre demandé n'existe pas. Merci de réesayer avec un autre identifiant.";
+        "Le livre demandé n'existe pas. Merci de réessayer avec un autre identifiant.";
       return res.status(404).json({ msg: message });
     }
-    const deletedBook = Book.destroy({ where: { id: bookId } });
-    const message = `Le livre ${deletedBook.title} a bien été supprimé`;
-    return res.json({ msg: message, data: deletedBook });
+    const deleteBook = await Book.destroy({ where: { id: bookId } });
+    if (deleteBook === 0) {
+      const message = "Aucun livre n'a été supprimé.";
+      return res.status(404).json({ msg: message });
+    }
+
+    const message = `Le livre ${book.title} a bien été supprimé`;
+    return res.json({ msg: message, data: { id: bookId } });
   } catch (error) {
     const message =
       "Le livre n'a pas pu être supprimé. Merci de réessayer dans quelques instants.";
-    res.status(500), json({ msg: message, data: error });
+    res.status(500).json({ msg: message, data: error });
   }
 });
 

@@ -78,17 +78,24 @@ categoriesRouter.post("/", authAdmin, async (req, res) => {
 categoriesRouter.put("/:id", authAdmin, async (req, res) => {
   const categoryId = req.params.id;
   const data = { ...req.body };
-  const category = await Category.findByPk(categoryId);
+
   try {
-    if (!category) {
+    const updatedCategory = await Category.findByPk(categoryId);
+    if (!updatedCategory) {
       const message = "Catégorie non trouvée.";
       return res.status(404).json({ msg: message });
     }
-    const updateCategory = await Category.update(data, {
+    const [updateCategory] = await Category.update(data, {
       where: { id: categoryId },
     });
-    const message = `La categorie avec l'id ${updateCategory.id} a été mis à jour avec succès et actuellement est ${updateCategory.name} `;
-    res.status(200).json({ msg: message, data: updateCategory });
+
+    if (updateCategory === 0) {
+      const message = "Aucune modification n'a été apportée à la catégorie.";
+      return res.status(404).json({ msg: message });
+    }
+
+    const message = `La catégorie avec l'id ${updatedCategory.id} a été mise à jour avec succès et actuellement est ${updatedCategory.name}`;
+    res.status(200).json({ msg: message, data: updatedCategory });
   } catch (error) {
     const message = "Erreur lors de la modification de la catégorie.";
     res.status(500).json({ msg: message });
@@ -99,17 +106,22 @@ categoriesRouter.put("/:id", authAdmin, async (req, res) => {
 categoriesRouter.delete("/:id", authAdmin, async (req, res) => {
   try {
     const categoryId = req.params.id;
-    const category = await Category.findByPk(category);
-    if (!category) {
+    const deleteCategorie = await Category.findByPk(categoryId);
+    if (!deleteCategorie) {
       const message =
         "La catégorie demandé n'existe pas. Merci de réesayer avec un autre identifiant.";
       return res.status(404).json({ msg: message });
     }
-    const deletedCategory = await Category.destroy({
+    const deletedCategorie = await Category.destroy({
       where: { id: categoryId },
     });
-    const message = `La catégorie ${deletedCategory.name} a bien été supprimé`;
-    return res.json({ msg: message, data: deletedCategory });
+    if (deletedCategorie === 0) {
+      const message = "Aucune catégorie n'a été supprimé.";
+      return res.status(404).json({ msg: message });
+    }
+
+    const message = `La catégorie ${deleteCategorie.name} a bien été supprimé`;
+    return res.json({ msg: message, data: deleteCategorie });
   } catch (error) {
     const message =
       "La catégorie n'a pas pu être supprimé. Merci de réessayer dans quelques instants.";
