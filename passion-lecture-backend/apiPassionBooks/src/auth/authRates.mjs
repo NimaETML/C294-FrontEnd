@@ -26,7 +26,7 @@ const authRates = async (req, res, next) => {
 
         // Un utilisateur ne peut modifier que ses livres
         // Un utilisateur ne peut supprimer que ses livres
-        if (["POST", "PUT", "DELETE"].includes(req.method)) {
+        if (["PUT", "DELETE"].includes(req.method)) {
           console.log(req.method);
           const rateId = req.params.id;
           const rate = await Rate.findByPk(rateId);

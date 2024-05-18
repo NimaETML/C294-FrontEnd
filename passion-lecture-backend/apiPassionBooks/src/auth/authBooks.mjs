@@ -26,7 +26,7 @@ const authBooks = async (req, res, next) => {
 
         // Un utilisateur ne peut modifier que ses livres
         // Un utilisateur ne peut supprimer que ses livres
-        if (["POST", "PUT", "DELETE"].includes(req.method)) {
+        if (["PUT", "DELETE"].includes(req.method)) {
           console.log(req.method);
           const bookId = req.params.id;
           const book = await Book.findByPk(bookId);

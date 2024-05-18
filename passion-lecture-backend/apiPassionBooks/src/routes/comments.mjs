@@ -8,7 +8,7 @@ const commentsRouter = express();
 //GET pour acceder a tous les commentaires
 commentsRouter.get("/", authVer, async (req, res) => {
   try {
-    const comments = await Rate.findAll();
+    const comments = await Comment.findAll();
     const message = "La liste des commentaires a bien été récupérée.";
     res.json({ msg: message, data: comments });
   } catch (error) {
@@ -74,26 +74,35 @@ commentsRouter.put("/:id", authComments, async (req, res) => {
         "Le livre demandé n'existe pas. Merci de réessayer avec un autre identifiant.";
       return res.status(404).json({ msg: message });
     }
+
     const user = await User.findByPk(userId);
     if (!user) {
       const message =
         "L'utilisateur demandé n'existe pas. Merci de réessayer avec un autre identifiant.";
       return res.status(404).json({ msg: message });
     }
+
     const comment = await Comment.findByPk(commentId);
     if (!comment) {
       const message =
         "Le commentaire demandé n'existe pas. Merci de réessayer avec un autre identifiant.";
       return res.status(404).json({ msg: message });
     }
-    const updatedComment = await Comment.update(data, {
+
+    const [updateCount] = await Comment.update(data, {
       where: { id: commentId },
     });
-    const message = `Le commentaire avec l'id ${updatedComment.id} a été mis à jour avec succès et actuellement est ${updatedComment.text} `;
+    if (updateCount === 0) {
+      const message = "Aucune modification n'a été apportée au commentaire.";
+      return res.status(404).json({ msg: message });
+    }
+
+    const updatedComment = await Comment.findByPk(commentId);
+    const message = `Le commentaire avec l'id ${updatedComment.id} a été mis à jour avec succès et actuellement est ${updatedComment.text}`;
     res.json({ msg: message, data: updatedComment });
   } catch (error) {
-    const message = "Erreur lors de la modification de le commentaire.";
-    res.status(500).json({ msg: message });
+    const message = "Erreur lors de la modification du commentaire.";
+    res.status(500).json({ msg: message, data: error });
   }
 });
 
@@ -101,15 +110,19 @@ commentsRouter.put("/:id", authComments, async (req, res) => {
 commentsRouter.delete("/:id", authComments, async (req, res) => {
   try {
     const commentId = req.params.id;
-    const comment = await Comment.findByPk(commentId);
-    if (!comment) {
+    const deleteComment = await Comment.findByPk(commentId);
+    if (!deleteComment) {
       const message =
-        "L'appréciation demandé n'existe pas. Merci de réesayer avec un autre identifiant.";
+        "Le commenaire demandé n'existe pas. Merci de réesayer avec un autre identifiant.";
       return res.status(404).json({ msg: message });
     }
     const deletedComment = await Comment.destroy({ where: { id: commentId } });
-    const message = `Le commentaire ${deletedComment.text} a bien été supprimé`;
-    return res.json({ msg: message, data: deletedComment });
+    if (deletedComment === 0) {
+      const message = "Aucun commentaire n'a été supprimé.";
+      return res.status(404).json({ msg: message });
+    }
+    const message = `Le commentaire ${deleteComment.text} a bien été supprimé`;
+    return res.json({ msg: message, data: deleteComment });
   } catch (error) {
     const message =
       "L'appréciation n'a pas pu être supprimé. Merci de réessayer dans quelques instants.";
