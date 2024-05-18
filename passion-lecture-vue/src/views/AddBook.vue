@@ -29,11 +29,12 @@ async function addBook() {
       category: newBook.value.category,
       description: newBook.value.description
     }
-    await BookService.createBook(bookData)
-      .then((response) => {
-        newBook.value = response.data.data
-      })
-      .catch((error) => console.log(error))
+    await n BookService.createBook(bookData)
+    try {
+      newBook.value = response.data.data
+    } catch (error) {
+      console.log(error)
+    }
     router.push('/')
   } else {
     alert('Veuillez remplir tous les champs.')

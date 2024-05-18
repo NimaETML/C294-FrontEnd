@@ -55,6 +55,14 @@ app.use("/api/login", loginRouter);
 import { usersRouter } from "./routes/users.mjs";
 app.use("/api/users", usersRouter);
 
+// si /api/rates/ alors envoi dans la route ratesRouter
+import { ratesRouter } from "./routes/rates.mjs";
+app.use("/api/rates", ratesRouter);
+
+// si /api/comments/ alors envoi dans la route commentsRouter
+import { commentsRouter } from "./routes/comments.mjs";
+app.use("/api/comments", commentsRouter);
+
 // Si aucune route ne correspondant à l'URL demandée par le consommateur
 app.use(({ res }) => {
   const message =
