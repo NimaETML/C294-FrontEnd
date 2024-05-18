@@ -81,9 +81,9 @@ const importUsers = async () => {
         dateEntry: user.dateEntry,
         isAdmin: user.isAdmin,
       });
-      console.log("User created:", createdUser.toJSON());
+      console.log("Utilisateur créé:", createdUser.toJSON());
     } catch (error) {
-      console.error("Error crating users:", error);
+      console.error("Problème lors de la création de l'utilisateur:", error);
     }
   }
 };
@@ -95,9 +95,9 @@ const importCategories = async () => {
       const createdCategory = await Category.create({
         name: category.name,
       });
-      console.log("Category created:", createdCategory.toJSON());
+      console.log("Catégorie créée:", createdCategory.toJSON());
     } catch (error) {
-      console.error("Error creating category:", error);
+      console.error("Problème lors de la création de la catégorie:", error);
     }
   }
 };
@@ -110,9 +110,9 @@ const importWriters = async () => {
         firstName: writer.firstName,
         lastName: writer.lastName,
       });
-      console.log("Writer created:", createdWriter.toJSON());
+      console.log("Écrivain créé:", createdWriter.toJSON());
     } catch (error) {
-      console.error("Error creating writer:", error);
+      console.error("Problème lors de la création de l'écrivain:", error);
     }
   }
 };
@@ -121,13 +121,13 @@ const importWriters = async () => {
 const importBooks = async () => {
   for (const book of books) {
     if (!book.userId) {
-      console.error("Invalid data: comment must have userId", book);
+      console.error("Le livre doit avoir un userId");
     }
     if (!book.categoryId) {
-      console.error("Invalid data: comment must have categoryId", book);
+      console.error("Le livre doit avoir un categoryId");
     }
     if (!book.writerId) {
-      console.error("Invalid data: comment must have writerId", book);
+      console.error("Le livre doit avoir un writerId");
     }
     try {
       const user = await User.findByPk(book.userId);
@@ -148,9 +148,9 @@ const importBooks = async () => {
         categoryId: category.id,
         writerId: writer.id,
       });
-      console.log("Book created or found:", createdBook.toJSON());
+      console.log("Livre créé ou trouvé:", createdBook.toJSON());
     } catch (error) {
-      console.error("Error creating book:", error.message);
+      console.error("Problème lors de la création du livre:", error);
     }
   }
 };
@@ -159,20 +159,20 @@ const importBooks = async () => {
 const importComments = async () => {
   for (const comment of comments) {
     if (!comment.userId) {
-      console.error("Invalid data: comment must have userId", comment);
+      console.error("Le commentaire doit avoir un userId");
     }
     if (!comment.bookId) {
-      console.error("Invalid data: comment must have bookId", comment);
+      console.error("Le commentaire doit avoir un bookId");
     }
     try {
       const user = await User.findByPk(comment.userId);
       const book = await Book.findByPk(comment.bookId);
 
       if (!user) {
-        console.error("User not found for comment:", comment);
+        console.error("L'utilisateur n'existe pas.", comment);
       }
       if (!book) {
-        console.error("Book not found for comment:", comment);
+        console.error("Le livre n'existe pas.");
       }
 
       const [createdComment, created] = await Comment.findOrCreate({
@@ -182,9 +182,9 @@ const importComments = async () => {
           bookId: book.id,
         },
       });
-      console.log("Comment created or found:", createdComment.toJSON());
+      console.log("Commentaire créé ou trouvé:", createdComment.toJSON());
     } catch (error) {
-      console.error("Error creating comment:", error);
+      console.error("Problème lors de la création du commentaire:", error);
     }
   }
 };
@@ -193,20 +193,20 @@ const importComments = async () => {
 const importRates = async () => {
   for (const rate of rates) {
     if (!rate.userId) {
-      console.error("Invalid data: rate must have userId", rate);
+      console.error("L'appréciation doit avoir un userId");
     }
     if (!rate.bookId) {
-      console.error("Invalid data: rate must have bookId", rate);
+      console.error("L'appréciation doit avoir un bookId", rate);
     }
     try {
       const user = await User.findByPk(rate.userId);
       const book = await Book.findByPk(rate.bookId);
 
       if (!user) {
-        console.error("User not found for rate:", rate);
+        console.error("L'utilisateur n'existe pas.");
       }
       if (!book) {
-        console.error("Book not found for rate:", rate);
+        console.error("Le livre n'existe pas.");
       }
 
       const [createdRate, created] = await Rate.findOrCreate({
@@ -216,9 +216,9 @@ const importRates = async () => {
           bookId: book.id,
         },
       });
-      console.log("Rate created or found:", createdRate.toJSON());
+      console.log("Appréciation créée ou trouvée:", createdRate.toJSON());
     } catch (error) {
-      console.error("Error creating comment:", error);
+      console.error("Problème lors de la création de l'ppréciation:", error);
     }
   }
 };

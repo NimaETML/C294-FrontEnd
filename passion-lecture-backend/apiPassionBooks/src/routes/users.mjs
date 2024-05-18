@@ -1,6 +1,5 @@
 import express from "express";
-import { Book, User } from "../db/sequelize.mjs";
-import { success } from "./helper.mjs";
+import { Book, User, Comment, Rate } from "../db/sequelize.mjs";
 import { authVer } from "../auth/authVer.mjs";
 
 const usersRouter = express();
@@ -23,7 +22,7 @@ usersRouter.get("/:id", authVer, async (req, res) => {
   const userId = req.params.id;
   const user = await User.findByPk(userId);
   try {
-    if (user === null) {
+    if (!user) {
       const message =
         "L'utilisateur demandé n'existe pas. Merci de réessayer avec un autre identifiant.";
       return res.status(404).json({ msg: message });
@@ -38,32 +37,68 @@ usersRouter.get("/:id", authVer, async (req, res) => {
   }
 });
 
-//GET pour acceder aux livres ajoute par un utilisateur depuis l'Id de l'utilisateur
+//GET pour acceder aux livres ajoutés par un utilisateur depuis l'Id de l'utilisateur
 usersRouter.get("/:id/books", authVer, async (req, res) => {
   const userId = req.params.id;
   const user = await Book.findByPk(userId);
   try {
-    if (user === null) {
+    if (!user) {
       const message =
         "L'utilisateur demandé n'existe pas. Merci de réessayer avec un autre identifiant.";
       return res.status(404).json({ msg: message });
     }
-    Book.findAll({ where: { userId: userId } })
-      .then((books) => {
-        const message = `Les livres de l'utilisateur ${userId} ont bien été récupérés.`;
-        res.json({ msg: message, data: books });
-      })
+    const books = await Book.findAll({ where: { userId: userId } });
+    try {
+      const message = `Les livres de l'utilisateur ${userId} ont bien été récupérés.`;
+      res.json({ msg: message, data: books });
+    } catch (error) {
       // Message d'erreur
-      .catch((error) => {
-        const message =
-          "Les livres de l'utilisateur n'ont pas pu être récupérée. Merci de réessayer dans quelques instants.";
-        res.status(500).json({ msg: message, data: error });
-      });
+      const message =
+        "Les livres de l'utilisateur n'ont pas pu être récupérée. Merci de réessayer dans quelques instants.";
+      res.status(500).json({ msg: message, data: error });
+    }
   } catch (error) {
     const message =
-      "L'écrivain n'a pas pu être récupéré. Merci de réessayer dans quelques instants.";
+      "L'utilisateur n'a pas pu être récupéré. Merci de réessayer dans quelques instants.";
     res.status(500).json({ msg: message, data: error });
   }
 });
 
+//GET pour acceder aux livres que l'utilisateurs a commenté
+usersRouter.get("/:id/commentedbooks", authVer, async (req, res) => {
+  const userId = req.params.id;
+  try {
+    const comments = await Comment.findAll({ where: { userId: userId } });
+    if (!comments) {
+      const message = `Aucun commentaire trouvé pour l'utilisateur avec l'ID ${userId}. Aucun livre à afficher.`;
+      return res.status(404).json({ msg: message });
+    }
+    const books = await comments.map((comment) => comment.Book);
+    const message = `Liste des livres commentés par l'utilisateur avec l'ID ${userId} récupérée avec succès.`;
+    res.json({ msg: message, data: books });
+  } catch (error) {
+    const message =
+      "Erreur lors de la récupération des livres. Merci de réessayer dans quelques instants.";
+    res.status(500).json({ msg: message, data: error });
+  }
+});
+
+//GET pour acceder aux livres que l'utilisateurs a ajouté une appéciation
+usersRouter.get("/:id/ratedbooks", authVer, async (req, res) => {
+  const userId = req.params.id;
+  try {
+    const rates = await Rate.findAll({ where: { userId: userId } });
+    if (!rates) {
+      const message = `Aucun commentaire trouvé pour l'utilisateur avec l'ID ${userId}. Aucun livre à afficher.`;
+      return res.status(404).json({ msg: message });
+    }
+    const books = await rates.map((rate) => rate.Book);
+    const message = `Liste des livres commentés par l'utilisateur avec l'ID ${userId} récupérée avec succès.`;
+    res.json({ msg: message, data: books });
+  } catch (error) {
+    const message =
+      "Erreur lors de la récupération des livres. Merci de réessayer dans quelques instants.";
+    res.status(500).json({ msg: message, data: error });
+  }
+});
 export { usersRouter };

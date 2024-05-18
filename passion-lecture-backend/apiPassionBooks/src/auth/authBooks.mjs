@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { privateKey } from "./private_key.mjs";
 import { Book } from "../db/sequelize.mjs";
 
-const auth = async (req, res, next) => {
+const authBooks = async (req, res, next) => {
   const authorizationHeader = req.headers.authorization;
 
   if (!authorizationHeader) {
@@ -26,7 +26,7 @@ const auth = async (req, res, next) => {
 
         // Un utilisateur ne peut modifier que ses livres
         // Un utilisateur ne peut supprimer que ses livres
-        if (["PUT", "DELETE"].includes(req.method)) {
+        if (["POST", "PUT", "DELETE"].includes(req.method)) {
           console.log(req.method);
           const bookId = req.params.id;
           const book = await Book.findByPk(bookId);
@@ -54,4 +54,4 @@ const auth = async (req, res, next) => {
   }
 };
 
-export { auth };
+export { authBooks };
