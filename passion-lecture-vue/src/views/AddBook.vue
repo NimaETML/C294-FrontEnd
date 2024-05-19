@@ -21,7 +21,6 @@ import BookService from '../services/BookService.js'
 const router = useRouter()
 
 const newBook = ref({ title: '', description: '' })
-
 async function addBook() {
   if (newBook.value.title && newBook.value.description) {
     const bookData = {
@@ -29,8 +28,9 @@ async function addBook() {
       category: newBook.value.category,
       description: newBook.value.description
     }
-    await n BookService.createBook(bookData)
+
     try {
+      const response = await BookService.createBook(bookData)
       newBook.value = response.data.data
     } catch (error) {
       console.log(error)
