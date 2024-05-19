@@ -30,13 +30,6 @@ sequelize
 
 initDb();
 
-app.use("/images", express.static(path.join(__dirname, "public", "images")));
-/*
-// si /api/ alors redirect à l'adresse de base
-app.get("/", (req, res) => {
-  res.redirect(`http://localhost:${port}/`);
-});
-*/
 // message affiché par défaut
 app.get("/", (req, res) => {
   res.send("API REST pour visualier et noter des livres !");
@@ -72,10 +65,10 @@ app.use("/api/comments", commentsRouter);
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, "images")); // Almacenamos en images
+    cb(null, path.join(__dirname, "images"));
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + file.originalname); // Nombramos el archivo con la fecha actual para evitar duplicados
+    cb(null, Date.now() + "-" + file.originalname);
   },
 });
 
