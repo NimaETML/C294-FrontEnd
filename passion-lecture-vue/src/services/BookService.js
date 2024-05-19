@@ -24,10 +24,10 @@ const uploadImage = async (imageFile) => {
       }
     })
 
-    console.log('Imagen subida correctamente:', response.data)
+    console.log('Image correctement chargée:', response.data)
     return response.data.url // URL de la imagen subida
   } catch (error) {
-    console.error('Error al subir la imagen:', error)
+    console.error("Erreur lors du chargement de l'image:", error)
     throw error
   }
 }
