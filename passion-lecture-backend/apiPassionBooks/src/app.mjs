@@ -1,16 +1,21 @@
 import express from "express";
 import cors from "cors";
+import path from "path";
+import { fileURLToPath } from "url";
+import multer from "multer";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const app = express();
 const port = 3901;
-
-app.use(express.json());
-app.use(cors(corsOptions));
 
 var corsOptions = {
   origin: `http://localhost:5173`,
   optionsSuccessStatus: 200, // For legacy browser support
 };
 
+app.use(express.json());
+app.use(cors(corsOptions));
 import { initDb, sequelize } from "./db/sequelize.mjs";
 
 sequelize
@@ -25,14 +30,16 @@ sequelize
 
 initDb();
 
-// message affiché par défaut
-app.get("/", (req, res) => {
-  res.send("API REST pour visualier et noter des livres !");
-});
-
+app.use("/images", express.static(path.join(__dirname, "public", "images")));
+/*
 // si /api/ alors redirect à l'adresse de base
 app.get("/", (req, res) => {
   res.redirect(`http://localhost:${port}/`);
+});
+*/
+// message affiché par défaut
+app.get("/", (req, res) => {
+  res.send("API REST pour visualier et noter des livres !");
 });
 
 // si /api/books/ alors envoi dans la route booksRouter
@@ -63,17 +70,39 @@ app.use("/api/rates", ratesRouter);
 import { commentsRouter } from "./routes/comments.mjs";
 app.use("/api/comments", commentsRouter);
 
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, "images")); // Almacenamos en images
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + "-" + file.originalname); // Nombramos el archivo con la fecha actual para evitar duplicados
+  },
+});
+
+const upload = multer({ storage: storage });
+
+// Endpoint para subir imágenes
+app.post("/upload", upload.single("image"), (req, res) => {
+  try {
+    res.status(200).json({
+      message: "Imagen subida correctamente",
+      filename: req.file.filename,
+      url: `/images/${req.file.filename}`,
+    });
+  } catch (error) {
+    res.status(400).json({ error: "Error al subir la imagen" });
+  }
+});
+
+app.use("/images", express.static(path.join(__dirname, "images")));
+
 // Si aucune route ne correspondant à l'URL demandée par le consommateur
-app.use(({ res }) => {
+app.use(({ req, res }) => {
   const message =
     "Impossible de trouver la ressource demandée, veuillez réesayer";
-  res.status(404).json({ message });
+  res.status(404).json({ msg: message });
 });
 
-app.listen(port);
-
-/* SI TEMPS
-app.listen(port, () => {
-  console.log(`Example app listening on port http://localhost:${port}/`);
-});
- */
+app.listen(port, () =>
+  console.log(`Server running on http://localhost:${port}`)
+);

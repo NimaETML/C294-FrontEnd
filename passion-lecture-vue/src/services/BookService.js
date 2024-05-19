@@ -13,6 +13,27 @@ const apiClient = axios.create({
   }
 })
 
+const uploadImage = async (imageFile) => {
+  const formData = new FormData()
+  formData.append('image', imageFile)
+
+  try {
+    const response = await apiClient.post('/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+
+    console.log('Imagen subida correctamente:', response.data)
+    return response.data.url // URL de la imagen subida
+  } catch (error) {
+    console.error('Error al subir la imagen:', error)
+    throw error
+  }
+}
+
+export { uploadImage }
+
 export default {
   //get tous les books
   getBooks() {
@@ -29,5 +50,11 @@ export default {
   },
   deleteBook(id) {
     return apiClient.delete('/books/' + id)
+  },
+  getCategory(id) {
+    return apiClient.get('/categories/' + id)
+  },
+  getWriter(id) {
+    return apiClient.get('/authors/' + id)
   }
 }

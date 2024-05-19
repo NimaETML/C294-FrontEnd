@@ -10,7 +10,20 @@ import {
 import { authBooks } from "../auth/authBooks.mjs";
 import { authVer } from "../auth/authVer.mjs";
 const booksRouter = express();
+/*
+import multer from "multer";
 
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "../images/");
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  },
+});
+//const upload = multer({ dest: "images/"})
+const upload = multer({ storage: storage });
+*/
 //GET pour acceder a tous les libres
 booksRouter.get("/", authVer, async (req, res) => {
   try {

@@ -54,7 +54,7 @@ let users = [
     firstName: "admin",
     lastName: "admin",
     nickName: "admin",
-    email: "etml6@eduvaud.ch",
+    email: "admin@eduvaud.ch",
     password: "admin",
     dateEntry: "02-02-2025",
     isAdmin: true,
