@@ -75,6 +75,9 @@ onMounted(async () => {
     <RouterLink class="button-link" :to="{ name: 'edit-book', params: { id: book.id } }"
       >Modifier ce livre</RouterLink
     >
+    <RouterLink class="button-link" :to="{ name: 'delete-book', params: { id: book.id } }">
+      Supprimer
+    </RouterLink>
   </div>
 </template>
 
