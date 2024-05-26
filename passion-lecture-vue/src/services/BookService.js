@@ -41,6 +41,9 @@ export default {
   getBook(id) {
     return apiClient.get('/books/' + id)
   },
+  getBookRates(id) {
+    return apiClient.get(`/books/${id}/rates`)
+  },
   createBook(newBook) {
     return apiClient.post('/books/', newBook, {
       headers: {

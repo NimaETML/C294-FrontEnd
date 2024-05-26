@@ -1,25 +1,52 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import BookService from '@/services/BookService'
+
+// Définir les références réactives
 const book = ref(null)
+const rates = ref([])
 const category = ref(null)
 const author = ref(null)
+const averageRating = ref(0)
+
+// Obtenir les propriétés du composant
 const props = defineProps({
   id: {
-    required: true
+    required: true,
+    type: Number
   }
 })
 
+// Fonction pour calculer la moyenne des évaluations
+function calculateAverageRating(rates) {
+  if (rates.length === 0) {
+    return 0
+  }
+  const sum = rates.reduce((acc, rate) => acc + rate.rating, 0)
+  return (sum / rates.length).toFixed(2)
+}
+
+// Charger les données lorsque le composant est monté
 onMounted(async () => {
   try {
+    // Obtenir les informations du livre
     const infoBook = await BookService.getBook(props.id)
     book.value = infoBook.data.data
+
+    // Obtenir les évaluations du livre
+    const infoRates = await BookService.getBookRates(props.id)
+    rates.value = infoRates.data.data
+    averageRating.value = calculateAverageRating(rates.value)
+
+    // Obtenir les informations de la catégorie
     const infoCategory = await BookService.getCategory(book.value.categoryId)
     category.value = infoCategory.data.data
+
+    // Obtenir les informations de l'auteur
     const infoAuthor = await BookService.getWriter(book.value.writerId)
     author.value = infoAuthor.data.data
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 })
 </script>
@@ -27,17 +54,27 @@ onMounted(async () => {
 <template>
   <div class="book-card" v-if="book">
     <h2>{{ book.title }}</h2>
-    <img :src="book.book_cover" />
-    <p>Summary: {{ book.summary }}</p>
-    <h3>Category: {{ category ? category.name : 'Loading...' }}</h3>
+    <img :src="book.book_cover" alt="Couverture du livre" />
+    <p>Résumé: {{ book.summary }}</p>
+    <h3>Catégorie: {{ category ? category.name : 'Chargement...' }}</h3>
     <p>
-      Writer : {{ author ? author.firstName : 'Loading...' }}
-      {{ author ? author.lastName : 'Loading...' }}
+      Auteur: {{ author ? author.firstName : 'Chargement...' }}
+      {{ author ? author.lastName : 'Chargement...' }}
     </p>
-    <p>Publisher: {{ book.publisher }}</p>
+    <p>Éditeur: {{ book.publisher }}</p>
     <p>Pages: {{ book.number_of_pages }}</p>
 
-    <RouterLink class="button-link" :to="{ name: 'edit-book' }">Edit this book</RouterLink>
+    <h3>Évaluations:</h3>
+    <p>Moyenne des évaluations: {{ averageRating }}</p>
+    <ul>
+      <li v-for="rate in rates" :key="rate.id">
+        Utilisateur {{ rate.userId }}: {{ rate.rating }} étoiles
+      </li>
+    </ul>
+
+    <RouterLink class="button-link" :to="{ name: 'edit-book', params: { id: book.id } }"
+      >Modifier ce livre</RouterLink
+    >
   </div>
 </template>
 
