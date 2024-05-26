@@ -1,15 +1,14 @@
 import axios from 'axios' // importation d'axios
 
-// importantion des données depuis l'API
+// importation des données depuis l'API
 const token =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsImlzQWRtaW4iOnRydWUsImlhdCI6MTcxNDk4OTIwOSwiZXhwIjoxNzQ2NTQ2ODA5fQ.eYFtHHTRSRB8cKHgPdcKRKnwDdLlhNBIGm_VV6D3jp4'
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImlzQWRtaW4iOnRydWUsImlhdCI6MTcxNTcyMDgxMywiZXhwIjoxNzQ3Mjc4NDEzfQ.kNxNGu2qgxwhZKwDtwLQ3jX2ID12yNqJTT0deGwea54'
 const apiClient = axios.create({
   baseURL: 'http://localhost:3901/api',
   withCredentials: false,
   headers: {
     Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-    'Content-Type': 'application/json'
+    Authorization: `Bearer ${token}`
   }
 })
 
@@ -25,7 +24,7 @@ const uploadImage = async (imageFile) => {
     })
 
     console.log('Image correctement chargée:', response.data)
-    return response.data.url // URL de la imagen subida
+    return response.data.url
   } catch (error) {
     console.error("Erreur lors du chargement de l'image:", error)
     throw error
@@ -35,7 +34,7 @@ const uploadImage = async (imageFile) => {
 export { uploadImage }
 
 export default {
-  //get tous les books
+  // get tous les books
   getBooks() {
     return apiClient.get('/books')
   },
@@ -43,10 +42,14 @@ export default {
     return apiClient.get('/books/' + id)
   },
   createBook(newBook) {
-    return apiClient.post('/books/', newBook)
+    return apiClient.post('/books/', newBook, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
   },
   editBook(id, newBook) {
-    return apiClient.put('/books/', +id, newBook)
+    return apiClient.put('/books/' + id, newBook)
   },
   deleteBook(id) {
     return apiClient.delete('/books/' + id)
@@ -54,7 +57,13 @@ export default {
   getCategory(id) {
     return apiClient.get('/categories/' + id)
   },
+  getCategoryByName(name) {
+    return apiClient.get(`/categories/name/${name}`)
+  },
   getWriter(id) {
     return apiClient.get('/authors/' + id)
+  },
+  getWriterByFirstname(firstname) {
+    return apiClient.get(`/authors/firstname/${firstname}`)
   }
 }

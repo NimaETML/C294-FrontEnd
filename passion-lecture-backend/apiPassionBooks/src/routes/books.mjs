@@ -10,20 +10,23 @@ import {
 import { authBooks } from "../auth/authBooks.mjs";
 import { authVer } from "../auth/authVer.mjs";
 const booksRouter = express();
-/*
 import multer from "multer";
+import path from "path";
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "../images/");
+    cb(null, path.join(__dirname, "../images"));
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname);
   },
 });
-//const upload = multer({ dest: "images/"})
+
 const upload = multer({ storage: storage });
-*/
+
 //GET pour acceder a tous les libres
 booksRouter.get("/", authVer, async (req, res) => {
   try {
@@ -93,61 +96,153 @@ booksRouter.get("/:id/comments", authVer, async (req, res) => {
 });
 
 //POST ajouter un livre
-booksRouter.post("/", authBooks, async (req, res) => {
-  const { userId, writerId, categoryId } = req.body;
-  try {
-    const userExists = await User.findByPk(userId);
-    if (!userExists) {
+booksRouter.post(
+  "/",
+  authVer,
+  upload.single("book_cover"),
+  async (req, res) => {
+    const {
+      title,
+      number_of_pages,
+      excerpt,
+      summary,
+      publisher,
+      year_of_publication,
+      userId,
+      writerId,
+      categoryId,
+    } = req.body;
+
+    try {
+      const userExists = await User.findByPk(userId);
+      if (!userExists) {
+        const message =
+          "L'utilisateur n'existe pas. Merci de réessayer avec un autre identifiant.";
+        return res.status(404).json({ msg: message });
+      }
+      const writerExists = await Writer.findByPk(writerId);
+      if (!writerExists) {
+        const message =
+          "L'écrivain n'existe pas. Merci de réessayer avec un autre identifiant.";
+        return res.status(404).json({ msg: message });
+      }
+      const categoryExists = await Category.findByPk(categoryId);
+      if (!categoryExists) {
+        const message =
+          "La catégorie n'existe pas. Merci de réessayer avec un autre identifiant.";
+        return res.status(404).json({ msg: message });
+      }
+
+      const bookData = {
+        title,
+        number_of_pages,
+        excerpt,
+        summary,
+        publisher,
+        year_of_publication,
+        book_cover: req.file
+          ? `http://localhost:3901/images/${req.file.filename}`
+          : null,
+        userId,
+        writerId,
+        categoryId,
+      };
+
+      const createdBook = await Book.create(bookData);
+      const message = `Le livre dont l'id est ${createdBook.id} a été bien créé`;
+      res.json({
+        msg: message,
+        data: createdBook,
+      });
+    } catch (error) {
       const message =
-        "L'utilisateur n'existe pas. Merci de réessayer avec un autre identifiant.";
-      return res.status(404).json({ msg: message });
+        "Le livre n'a pas pu être créé. Merci de réessayer dans quelques instants.";
+      res.status(500).json({
+        msg: message,
+        data: error.message,
+      });
     }
-    const writerExists = await Writer.findByPk(writerId);
-    if (!writerExists) {
-      const message =
-        "L'écrivain n'existe pas. Merci de réessayer avec un autre identifiant.";
-      return res.status(404).json({ msg: message });
-    }
-    const categoryExists = await Category.findByPk(categoryId);
-    if (!categoryExists) {
-      const message =
-        "La catégorie n'existe pas. Merci de réessayer avec un autre identifiant.";
-      return res.status(404).json({ msg: message });
-    }
-    const createdBook = await Book.create(req.body);
-    const message = `Le livre dont l'id est ${createdBook.id} a été bien créé`;
-    res.json({ msg: message, data: createdBook });
-  } catch (error) {
-    const message =
-      "La liste des livres n'a pas pu être récupérée. Merci de réessayer dans quelques instants.";
-    res.status(500).json({ msg: message, data: error });
   }
-});
+);
 
 //PUT modifier un livre
-booksRouter.put("/:id", authBooks, async (req, res) => {
-  const bookId = req.params.id;
-  const data = { ...req.body };
-  try {
-    const updatedBook = await Book.findByPk(bookId);
-    if (!updatedBook) {
+booksRouter.put(
+  "/:id",
+  authBooks,
+  upload.single("book_cover"),
+  async (req, res) => {
+    const bookId = req.params.id;
+    const {
+      title,
+      number_of_pages,
+      excerpt,
+      summary,
+      publisher,
+      year_of_publication,
+      userId,
+      writerId,
+      categoryId,
+    } = req.body;
+    try {
+      const book = await Book.findByPk(bookId);
+      if (!book) {
+        return res.status(404).json({
+          msg: "Le livre demandé n'existe pas. Merci de réessayer avec un autre identifiant.",
+        });
+      }
+      if (!userExists) {
+        const message =
+          "L'utilisateur n'existe pas. Merci de réessayer avec un autre identifiant.";
+        return res.status(404).json({ msg: message });
+      }
+      const writerExists = await Writer.findByPk(writerId);
+      if (!writerExists) {
+        const message =
+          "L'écrivain n'existe pas. Merci de réessayer avec un autre identifiant.";
+        return res.status(404).json({ msg: message });
+      }
+      const categoryExists = await Category.findByPk(categoryId);
+      if (!categoryExists) {
+        const message =
+          "La catégorie n'existe pas. Merci de réessayer avec un autre identifiant.";
+        return res.status(404).json({ msg: message });
+      }
+
+      const updateData = {
+        title,
+        number_of_pages,
+        excerpt,
+        summary,
+        publisher,
+        year_of_publication,
+        userId,
+        writerId,
+        categoryId,
+      };
+
+      if (req.file) {
+        book.book_cover = `http://localhost:3901/images/${req.file.filename}`;
+      }
+
+      const [updatedRows] = await Book.update(updateData, {
+        where: { id: bookId },
+      });
+
+      if (updatedRows === 0) {
+        const message = "Aucune modification n'a été apportée au livre.";
+        return res.status(404).json({ msg: message });
+      }
+      const updatedBook = await Book.findByPk(bookId);
+      const message = `Le livre ${updatedBook.title} dont l'id vaut ${updatedBook.id} a été mis à jour avec succès`;
+
+      res.json({ msg: message, data: updatedBook });
+    } catch (error) {
       const message =
-        "Le livre demandé n'existe pas. Merci de réessayer avec un autre identifiant.";
-      return res.status(404).json({ msg: message });
+        "Le livre n'a pas pu être mis à jour. Merci de réessayer dans quelques instants.";
+      res.status(500).json({ msg: message, data: error });
     }
-    const [updateBook] = await Book.update(data, { where: { id: bookId } });
-    if (updateBook === 0) {
-      const message = "Aucune modification n'a été apportée au livre.";
-      return res.status(404).json({ msg: message });
-    }
-    const message = `Le livre ${updatedBook.title} dont l'id vaut ${updatedBook.id} a été mis à jour avec succès`;
-    res.json({ msg: message, data: updatedBook });
-  } catch (error) {
-    const message =
-      "Le livre n'a pas pu être mis à jour. Merci de réessayer dans quelques instants.";
-    res.status(500).json({ msg: message, data: error });
   }
-});
+);
 
 //DELETE supprimer un livre par id
 booksRouter.delete("/:id", authBooks, async (req, res) => {

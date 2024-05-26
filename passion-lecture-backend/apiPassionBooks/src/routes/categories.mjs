@@ -35,6 +35,24 @@ categoriesRouter.get("/:id", authVer, async (req, res) => {
   }
 });
 
+//GET pour acceder aux categories par leur nom
+categoriesRouter.get("/name/:name", authVer, async (req, res) => {
+  const categoryName = req.params.name;
+  try {
+    const category = await Category.findOne({ where: { name: categoryName } });
+    if (!category) {
+      const message = "La catégorie demandée n'existe pas.";
+      return res.status(404).json({ msg: message });
+    }
+    const message = `La categorie dont le nom est ${categoryName} a été bien récuperée`;
+    res.json({ msg: message, data: category });
+  } catch (error) {
+    const message =
+      "La liste des categories n'a pas pu être récupérée. Merci de réessayer dans quelques instants.";
+    res.status(500).json({ msg: message, data: error });
+  }
+});
+
 //GET trouve les categories qui appartient à un livre
 categoriesRouter.get("/:id/books", authVer, async (req, res) => {
   const categoryId = req.params.id;
