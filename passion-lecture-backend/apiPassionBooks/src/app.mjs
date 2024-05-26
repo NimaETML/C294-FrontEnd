@@ -68,7 +68,7 @@ const storage = multer.diskStorage({
     cb(null, path.join(__dirname, "images"));
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + file.originalname);
+    cb(null, file.originalname);
   },
 });
 
@@ -78,12 +78,12 @@ const upload = multer({ storage: storage });
 app.post("/upload", upload.single("image"), (req, res) => {
   try {
     res.status(200).json({
-      message: "Imagen subida correctamente",
+      message: "Image importé",
       filename: req.file.filename,
       url: `/images/${req.file.filename}`,
     });
   } catch (error) {
-    res.status(400).json({ error: "Error al subir la imagen" });
+    res.status(400).json({ error: "Error lors de l'importation des images" });
   }
 });
 

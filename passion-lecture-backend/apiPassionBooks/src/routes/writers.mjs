@@ -37,6 +37,24 @@ writersRouter.get("/:id", authVer, async (req, res) => {
   }
 });
 
+//GET pour acceder aux écrivains par leur nom
+writersRouter.get("/firstname/:name", authVer, async (req, res) => {
+  const writerName = req.params.name;
+  try {
+    const writer = await Writer.findOne({ where: { firstName: writerName } });
+    if (!writer) {
+      const message = "L'écrivain demandée n'existe pas.";
+      return res.status(404).json({ msg: message });
+    }
+    const message = `L'écrivain dont le nom est ${writerName} a été bien récuperée`;
+    res.json({ msg: message, data: writer });
+  } catch (error) {
+    const message =
+      "La liste des écrivains n'a pas pu être récupérée. Merci de réessayer dans quelques instants.";
+    res.status(500).json({ msg: message, data: error });
+  }
+});
+
 //GET trouve les livres qui appartient à un écrivain
 writersRouter.get("/:id/books", authVer, async (req, res) => {
   const writerId = req.params.id;

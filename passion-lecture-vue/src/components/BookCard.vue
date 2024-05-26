@@ -5,29 +5,13 @@ defineProps({
     required: true
   }
 })
-
-/*
-const imageUrl = ref('')
-
-import uploadImage from '@/services/BookService'
-const handleFileUpload = async (event) => {
-  const file = event.target.files[0]
-  if (file) {
-    try {
-      const url = await uploadImage(file)
-      imageUrl.value = url
-    } catch (error) {
-      console.error('Error al subir la imagen:', error)
-    }
-  }
-}*/
 </script>
 
 <template>
   <RouterLink class="book-link" :to="{ name: 'book-details', params: { id: book.id } }">
     <div class="book-card">
       <h2>{{ book.title }}</h2>
-      <img :src="book.book_cover" alt="Book Cover" />
+      <img :src="book.book_cover" alt="Book Cover" v-if="book.book_cover" />
     </div>
   </RouterLink>
 </template>
