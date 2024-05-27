@@ -1,24 +1,13 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import AddBook from './views/AddBook.vue'
+import { RouterView } from 'vue-router'
+import TheHeader from './components/TheHeader.vue'
+import TheFooter from './components/TheFooter.vue'
 </script>
 
 <template>
-  <header>
-    <div id="layout">
-      <div class="wrapper">
-        <nav>
-          <h1>Hyper Book</h1>
-          <RouterLink :to="{ name: 'account' }">Mon compte</RouterLink> |
-          <RouterLink :to="{ name: 'home' }">Home</RouterLink> |
-          <RouterLink :to="{ name: 'book-list' }">Books</RouterLink> |
-          <RouterLink :to="{ name: 'add-book' }">Add book</RouterLink>
-        </nav>
-      </div>
-    </div>
-  </header>
-
+  <TheHeader />
   <RouterView />
+  <TheFooter />
   <!-- espace résérvé pour le contenue du composant "view", sera replacer par le composant de la route chargée -->
 </template>
 <!-- composant de la library vue-router, crée un lien vers une route spécifique -->
@@ -39,38 +28,5 @@ h2 {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-}
-</style>
-
-<style scoped>
-#layout {
-  text-align: center;
-  font-family: Avenir, Arial, Helvetica, sans-serif;
-  -webkit-font-feature-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-}
-nav {
-  padding: 30px;
-
-  font-family: Avenir, Arial, Helvetica, sans-serif;
-}
-nav {
-  padding: 5px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #439482;
-  text-decoration: none;
-}
-nav a.router-link-exact-active {
-  color: #42b983;
-}
-
-nav a {
-  font-weight: bold;
-
-  color: #212c27;
 }
 </style>

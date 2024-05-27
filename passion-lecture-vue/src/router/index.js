@@ -38,6 +38,11 @@ const router = createRouter({
       path: '/delete-book/:id',
       name: 'delete-book',
       component: () => import('../views/DropBook.vue')
+    },
+    {
+      path: '/account',
+      name: 'account',
+      component: () => import('../views/AccountView.vue')
     }
   ]
 })
