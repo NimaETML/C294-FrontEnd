@@ -116,7 +116,7 @@ const BookModel = (sequelize, DataTypes) => {
         },
       },
       year_of_publication: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: false,
         validate: {
           notEmpty: {

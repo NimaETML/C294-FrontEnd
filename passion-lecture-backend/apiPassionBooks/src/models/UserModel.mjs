@@ -92,7 +92,7 @@ const UserModel = (sequelize, Datatypes) => {
       },
     },
     dateEntry: {
-      type: Datatypes.DATE,
+      type: Datatypes.DATEONLY,
       allowNull: false,
       validate: {
         notEmpty: {

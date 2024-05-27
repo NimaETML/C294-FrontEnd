@@ -13,8 +13,8 @@
         />
         <textarea v-model="newBook.excerpt" placeholder="Excerpt"></textarea>
         <textarea v-model="newBook.summary" placeholder="Summary"></textarea>
-        <input v-model="writerName" placeholder="Writer's Firstname" />
-        <input v-model="catergoryName" placeholder="Category Name" />
+        <input v-model="writerName.firstName" placeholder="Writer's Firstname" />
+        <input v-model="catergoryName.name" placeholder="Category Name" />
         <input type="file" @change="handleFileUpload" name="book_cover" />
         <button type="submit">Ajouter</button>
       </form>
@@ -42,15 +42,18 @@ const catergoryName = ref({})
 
 onMounted(() => {
   // Récupérer un livre
+
   BookService.getBook(route.params.id)
     .then((response) => {
       newBook.value = response.data.data
     })
     .then(() => {
-      console.log(newBook.value)
-      writerName.value = BookService.getWriter(newBook.value.writerId)
-      catergoryName.value = BookService.getCategory(newBook.value.categoryId)
-      console.log(catergoryName.value)
+      BookService.getWriter(newBook.value.writerId).then((response) => {
+        writerName.value = response.data.data
+        BookService.getCategory(newBook.value.categoryId).then((response) => {
+          catergoryName.value = response.data.data
+        })
+      })
     })
     .catch((error) => console.log(error))
 })
@@ -75,11 +78,10 @@ function handleFileUpload(event) {
   newBook.value.book_cover = event.target.files[0]
 }
 
-async function getWriterAndCategory() {
-  writerName = await BookService.getWriter(newBook.writerId)
-  catergoryName = await BookService.getCategory(newBook.categoryId)
-}
 async function editBook() {
+  newBook.value.firstname = writerName.value.firstName
+  newBook.value.category_name = catergoryName.value.name
+
   if (
     newBook.value.title &&
     newBook.value.number_of_pages &&
@@ -88,8 +90,7 @@ async function editBook() {
     newBook.value.excerpt &&
     newBook.value.summary &&
     newBook.value.firstname &&
-    newBook.value.category_name &&
-    newBook.value.book_cover
+    newBook.value.category_name
   ) {
     try {
       // Obtener el writerId por firstname
@@ -134,7 +135,7 @@ async function editBook() {
       formData.append('categoryId', categoryId)
 
       console.log(route.params.id)
-      console.log(BookId + 'bookId')
+      //console.log(BookId + 'bookId')
       const response = await BookService.editBook(route.params.id, formData)
       console.log('editBook response:', response.data)
       newBook.value = {
@@ -156,6 +157,14 @@ async function editBook() {
       )
     }
   } else {
+    console.log(newBook.value.title)
+    console.log(newBook.value.category_name)
+    console.log(newBook.value.number_of_pages)
+    console.log(newBook.value.publisher)
+    console.log(newBook.value.year_of_publication)
+    console.log(newBook.value.excerpt)
+    console.log(newBook.value.summary)
+    console.log(newBook.value.firstname)
     alert('Veuillez remplir tous les champs.')
   }
 }

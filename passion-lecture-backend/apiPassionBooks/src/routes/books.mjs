@@ -215,14 +215,13 @@ booksRouter.put(
         summary,
         publisher,
         year_of_publication,
+        book_cover: req.file
+          ? `http://localhost:3901/images/${req.file.filename}`
+          : null,
         userId,
         writerId,
         categoryId,
       };
-
-      if (req.file) {
-        book.book_cover = `http://localhost:3901/images/${req.file.filename}`;
-      }
 
       const [updatedRows] = await Book.update(updateData, {
         where: { id: bookId },
@@ -233,6 +232,7 @@ booksRouter.put(
         return res.status(404).json({ msg: message });
       }
       const updatedBook = await Book.findByPk(bookId);
+
       const message = `Le livre ${updatedBook.title} dont l'id vaut ${updatedBook.id} a été mis à jour avec succès`;
 
       res.json({ msg: message, data: updatedBook });
