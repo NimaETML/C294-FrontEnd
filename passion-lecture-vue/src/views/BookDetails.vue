@@ -48,11 +48,6 @@ onMounted(async () => {
     const infoBook = await BookService.getBook(props.id)
     book.value = infoBook.data.data
 
-    // Obtenir les évaluations du livre
-    const infoRates = await BookService.getBookRates(props.id)
-    rates.value = infoRates.data.data
-    averageRating.value = calculateAverageRating(rates.value)
-
     // Obtenir les informations de la catégorie
     const infoCategory = await BookService.getCategory(book.value.categoryId)
     category.value = infoCategory.data.data
@@ -62,6 +57,14 @@ onMounted(async () => {
     author.value = infoAuthor.data.data
   } catch (error) {
     console.error(error)
+
+    // Obtenir les évaluations du livre
+    const infoRates = await BookService.getBookRates(props.id)
+    rates.value = infoRates.data.data
+    if (rates.value == null) {
+      averageRating.value = calculateAverageRating(0)
+    }
+    averageRating.value = calculateAverageRating(rates.value)
   }
 })
 </script>

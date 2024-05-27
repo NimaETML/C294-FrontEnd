@@ -1,15 +1,20 @@
-import axios from 'axios' // importation d'axios
+import axios from 'axios'
 
-// importation des données depuis l'API
-const token =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImlzQWRtaW4iOnRydWUsImlhdCI6MTcxNTcyMDgxMywiZXhwIjoxNzQ3Mjc4NDEzfQ.kNxNGu2qgxwhZKwDtwLQ3jX2ID12yNqJTT0deGwea54'
 const apiClient = axios.create({
   baseURL: 'http://localhost:3901/api',
   withCredentials: false,
   headers: {
     Accept: 'application/json',
-    Authorization: `Bearer ${token}`
+    'Content-Type': 'application/json; charset=utf-8'
   }
+})
+
+apiClient.interceptors.request.use((config) => {
+  const token = localStorage.getItem('jwt')
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
+  return config
 })
 
 const uploadImage = async (imageFile) => {
@@ -71,5 +76,8 @@ export default {
   },
   getWriterByFirstname(firstname) {
     return apiClient.get(`/authors/firstname/${firstname}`)
+  },
+  login(credentials) {
+    return apiClient.post('/login', credentials)
   }
 }
