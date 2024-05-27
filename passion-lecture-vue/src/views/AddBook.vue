@@ -164,7 +164,7 @@ async function addBook() {
       }
       const categoryId = categoryResponse.data.data.id
 
-      // Obtener el userId desde el token
+      //userId pris du token
       const token =
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImlzQWRtaW4iOnRydWUsImlhdCI6MTcxNTcyMDgxMywiZXhwIjoxNzQ3Mjc4NDEzfQ.kNxNGu2qgxwhZKwDtwLQ3jX2ID12yNqJTT0deGwea54'
       const decodedToken = JSON.parse(atob(token.split('.')[1]))
@@ -197,7 +197,10 @@ async function addBook() {
       }
       router.push('/')
     } catch (error) {
-      console.log('Error al crear el libro:', error.response ? error.response.data : error.message)
+      console.log(
+        'Error lors de la créatiom du livre:',
+        error.response ? error.response.data : error.message
+      )
     }
 >>>>>>> b7422f5920b785e9f0022f57c103765c2cea34f8
   } else {
