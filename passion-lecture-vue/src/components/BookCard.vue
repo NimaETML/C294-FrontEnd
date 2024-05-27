@@ -1,6 +1,4 @@
 <script setup>
-import { ref } from 'vue'
-
 defineProps({
   book: {
     type: Object,
@@ -13,6 +11,7 @@ defineProps({
   <RouterLink class="book-link" :to="{ name: 'book-details', params: { id: book.id } }">
     <div class="book-card">
       <h2>{{ book.title }}</h2>
+      <img :src="book.book_cover" alt="Book Cover" v-if="book.book_cover" />
     </div>
   </RouterLink>
 </template>

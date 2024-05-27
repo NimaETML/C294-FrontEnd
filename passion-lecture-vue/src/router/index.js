@@ -1,50 +1,43 @@
-import AccountView from '../views/AccountView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '@/views/HomeView.vue'
-import AllBooks from '@/views/BookList.vue'
-import AddBook from '@/views/AddBook.vue'
-import BookDetails from '@/views/BookDetails.vue'
-import EditBook from '@/views/EditBook.vue'
-import DropBook from '@/views/DropBook.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: () => import('../views/HomeView.vue')
     },
     {
       path: '/book-list', // chemin de la route
       name: 'book-list', // nom de la route
-      component: AllBooks
+      component: () => import('../views/BookList.vue')
     },
     {
       path: '/account',
       name: 'account',
-      component: AccountView
+      component: () => import('../views/AccountView.vue')
     },
     {
       path: '/addbook',
       name: 'add-book',
-      component: AddBook
+      component: () => import('../views/AddBook.vue')
     },
     {
       path: '/book/:id',
       name: 'book-details',
       props: true,
-      component: BookDetails
+      component: () => import('../views/BookDetails.vue')
     },
     {
       path: '/book/:id',
       name: 'edit-book',
-      component: EditBook
+      component: () => import('../views/EditBook.vue')
     },
 
     {
-      path: '/book/',
+      path: '/delete-book/:id',
       name: 'delete-book',
-      component: DropBook
+      component: () => import('../views/DropBook.vue')
     }
   ]
 })

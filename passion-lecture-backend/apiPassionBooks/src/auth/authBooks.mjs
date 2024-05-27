@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { privateKey } from "./private_key.mjs";
 import { Book } from "../db/sequelize.mjs";
 
-const auth = async (req, res, next) => {
+const authBooks = async (req, res, next) => {
   const authorizationHeader = req.headers.authorization;
 
   if (!authorizationHeader) {
@@ -54,4 +54,4 @@ const auth = async (req, res, next) => {
   }
 };
 
-export { auth };
+export { authBooks };

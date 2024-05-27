@@ -10,14 +10,14 @@ loginRouter.post("/", (req, res) => {
     .then((user) => {
       if (!user) {
         const message = `L'utilisateur demandé n'existe pas`;
-        return res.status(404).json({ message });
+        return res.status(404).json({ msg: message });
       }
       bcrypt
         .compare(req.body.password, user.password)
         .then((isPasswordValid) => {
           if (!isPasswordValid) {
             const message = `Le mot de passe est incorrecte.`;
-            return res.status(401).json({ message });
+            return res.status(401).json({ msg: message });
           } else {
             // JWT
             const token = jwt.sign(
@@ -28,13 +28,13 @@ loginRouter.post("/", (req, res) => {
               }
             );
             const message = `L'utilisateur a été connecté avec succès`;
-            return res.json({ message, data: user, token });
+            return res.json({ msg: message, data: user, tkn: token });
           }
         });
     })
     .catch((error) => {
       const message = `L'utilisateur n'a pas pu être connecté. Réessayez dans quelques instants`;
-      return res.json({ message, data: error });
+      return res.json({ msg: message, data: error });
     });
 });
 export { loginRouter };
