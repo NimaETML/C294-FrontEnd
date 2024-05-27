@@ -1,26 +1,87 @@
-<script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import BookService from '../services/BookService.js'
-const router = useRouter()
+<template>
+  <main>
+    <div class="edit">
+      <h2>Edit a book</h2>
+      <form @submit.prevent="editBook" enctype="multipart/form-data">
+        <input v-model="newBook.title" placeholder="Title" />
+        <input v-model="newBook.number_of_pages" type="number" placeholder="Number of Pages" />
+        <input v-model="newBook.publisher" placeholder="Publisher" />
+        <input
+          v-model="newBook.year_of_publication"
+          type="date"
+          placeholder="Year of Publication"
+        />
+        <textarea v-model="newBook.excerpt" placeholder="Excerpt"></textarea>
+        <textarea v-model="newBook.summary" placeholder="Summary"></textarea>
+        <input v-model="writerName.firstName" placeholder="Writer's Firstname" />
+        <input v-model="catergoryName.name" placeholder="Category Name" />
+        <input type="file" @change="handleFileUpload" name="book_cover" />
+        <button type="submit">Ajouter</button>
+      </form>
+      <router-link to="/">Retour</router-link>
+    </div>
+  </main>
+</template>
 
-const newBook = ref({
-  title: '',
-  number_of_pages: '',
-  publisher: '',
-  year_of_publication: '',
-  excerpt: '',
-  summary: '',
-  book_cover: null,
-  firstname: '',
-  category_name: ''
+<script setup>
+defineProps({
+  BookId: {
+    type: Number,
+    required: true
+  }
 })
+import { ref, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import BookService from '../services/BookService.js'
+
+const route = useRoute()
+const router = useRouter()
+const newBook = ref({})
+const writerName = ref({})
+const catergoryName = ref({})
+
+onMounted(() => {
+  // Récupérer un livre
+
+  BookService.getBook(route.params.id)
+    .then((response) => {
+      newBook.value = response.data.data
+    })
+    .then(() => {
+      BookService.getWriter(newBook.value.writerId).then((response) => {
+        writerName.value = response.data.data
+        BookService.getCategory(newBook.value.categoryId).then((response) => {
+          catergoryName.value = response.data.data
+        })
+      })
+    })
+    .catch((error) => console.log(error))
+})
+
+// getWriterAndCategory()
+// console.log(newBook.title)
+
+//router.push('/') // Redirection vers la page d'accueil
+/*
+const newBook = ref({
+  title: book.value.title,
+  number_of_pages: book.value.number_of_pages,
+  excerpt: book.value.excerpt,
+  summary: book.value.summary,
+  publisher: book.value.publisher,
+  year_of_publication: book.value.year_of_publication,
+  book_cover: book.value.book_cover,
+  category_name: book.value.category_name
+})*/
 
 function handleFileUpload(event) {
   newBook.value.book_cover = event.target.files[0]
 }
 
-async function updateBook() {
+async function editBook() {
+  newBook.value.firstname = writerName.value.firstName
+  newBook.value.category_name = catergoryName.value.name
+
   if (
     newBook.value.title &&
     newBook.value.number_of_pages &&
@@ -29,8 +90,7 @@ async function updateBook() {
     newBook.value.excerpt &&
     newBook.value.summary &&
     newBook.value.firstname &&
-    newBook.value.category_name &&
-    newBook.value.book_cover
+    newBook.value.category_name
   ) {
     try {
       // Obtener el writerId por firstname
@@ -56,7 +116,7 @@ async function updateBook() {
       }
       const categoryId = categoryResponse.data.data.id
 
-      //userId pris du token
+      // Obtener el userId desde el token
       const token =
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImlzQWRtaW4iOnRydWUsImlhdCI6MTcxNTcyMDgxMywiZXhwIjoxNzQ3Mjc4NDEzfQ.kNxNGu2qgxwhZKwDtwLQ3jX2ID12yNqJTT0deGwea54'
       const decodedToken = JSON.parse(atob(token.split('.')[1]))
@@ -74,8 +134,10 @@ async function updateBook() {
       formData.append('writerId', writerId)
       formData.append('categoryId', categoryId)
 
-      const response = await BookService.createBook(formData)
-      console.log('createBook response:', response.data)
+      console.log(route.params.id)
+      //console.log(BookId + 'bookId')
+      const response = await BookService.editBook(route.params.id, formData)
+      console.log('editBook response:', response.data)
       newBook.value = {
         title: '',
         number_of_pages: '',
@@ -90,18 +152,26 @@ async function updateBook() {
       router.push('/')
     } catch (error) {
       console.log(
-        'Error lors de la créatiom du livre:',
+        'Erreur lors du update du livre:',
         error.response ? error.response.data : error.message
       )
     }
   } else {
+    console.log(newBook.value.title)
+    console.log(newBook.value.category_name)
+    console.log(newBook.value.number_of_pages)
+    console.log(newBook.value.publisher)
+    console.log(newBook.value.year_of_publication)
+    console.log(newBook.value.excerpt)
+    console.log(newBook.value.summary)
+    console.log(newBook.value.firstname)
     alert('Veuillez remplir tous les champs.')
   }
 }
 </script>
 
 <style scoped>
-.update {
+.edit {
   margin: auto;
   width: 30%;
 }
@@ -111,35 +181,3 @@ form {
   gap: 5px;
 }
 </style>
-
-<template>
-  <main>
-    <div class="update">
-      <h2>Update book</h2>
-      <form @submit.prevent="updateBook" enctype="multipart/form-data">
-        <p>{{}}</p>
-        <input v-model="newBook.title" placeholder="Title" required />
-        <input
-          v-model="newBook.number_of_pages"
-          type="number"
-          placeholder="Number of Pages"
-          required
-        />
-        <input v-model="newBook.publisher" placeholder="Publisher" required />
-        <input
-          v-model="newBook.year_of_publication"
-          type="date"
-          placeholder="Year of Publication"
-          required
-        />
-        <textarea v-model="newBook.excerpt" placeholder="Excerpt" required></textarea>
-        <textarea v-model="newBook.summary" placeholder="Summary" required></textarea>
-        <input v-model="newBook.firstname" placeholder="Writer's Firstname" required />
-        <input v-model="newBook.category_name" placeholder="Category Name" required />
-        <input type="file" @change="handleFileUpload" required name="book_cover" />
-        <button type="submit">Ajouter</button>
-      </form>
-      <router-link to="/">Retour</router-link>
-    </div>
-  </main>
-</template>
