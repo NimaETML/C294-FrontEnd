@@ -17,6 +17,20 @@ const props = defineProps({
   }
 })
 
+onMounted(() => {
+  BookService.getBook(props.id)
+    .then((response) => {
+      book.value = response.data.data
+
+      return BookService.getCategorie(book.value.categoryId)
+    })
+    .then((categoryResponse) => {
+      category.value = categoryResponse.data.data
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+})
 // Fonction pour calculer la moyenne des évaluations
 function calculateAverageRating(rates) {
   if (rates.length === 0) {
@@ -27,6 +41,7 @@ function calculateAverageRating(rates) {
 }
 
 // Charger les données lorsque le composant est monté
+
 onMounted(async () => {
   try {
     // Obtenir les informations du livre
