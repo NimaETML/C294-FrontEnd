@@ -5,16 +5,16 @@
         <h1>Hyper Book</h1>
       </div>
       <nav v-if="isAuthenticated">
-        <RouterLink :to="{ name: 'account' }">Mon compte</RouterLink>
         <RouterLink :to="{ name: 'home' }">Home</RouterLink>
         <RouterLink :to="{ name: 'book-list' }">Books</RouterLink>
         <RouterLink :to="{ name: 'add-book' }">Add book</RouterLink>
+        <RouterLink :to="{ name: 'account' }">Mon compte</RouterLink>
       </nav>
       <nav v-else>
-        <RouterLink :to="{ name: 'account' }">Mon compte</RouterLink>
         <RouterLink class="disabled" :to="{ name: 'home' }">Home</RouterLink>
         <RouterLink class="disabled" :to="{ name: 'book-list' }">Books</RouterLink>
         <RouterLink class="disabled" :to="{ name: 'add-book' }">Add book</RouterLink>
+        <RouterLink :to="{ name: 'account' }">Mon compte</RouterLink>
       </nav>
     </div>
   </header>

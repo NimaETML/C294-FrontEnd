@@ -4,9 +4,19 @@
       <h2>Add a new book</h2>
       <form @submit.prevent="addBook" enctype="multipart/form-data">
         <input v-model="newBook.title" placeholder="Title" required />
-        <input v-model="newBook.firstname" placeholder="Writer's Firstname" required />
+        <select v-model="newBook.firstname" required>
+          <option disabled value="">Select an author</option>
+          <option v-for="author in authors" :key="author.id" :value="author.firstName">
+            {{ author.firstName }} {{ author.lastName }}
+          </option>
+        </select>
         <input v-model="newBook.publisher" placeholder="Publisher" required />
-        <input v-model="newBook.category_name" placeholder="Category Name" required />
+        <select v-model="newBook.category_name" required>
+          <option disabled value="">Select a category</option>
+          <option v-for="category in categories" :key="category.id" :value="category.name">
+            {{ category.name }}
+          </option>
+        </select>
         <textarea v-model="newBook.excerpt" placeholder="Excerpt" required></textarea>
         <textarea v-model="newBook.summary" placeholder="Summary" required></textarea>
         <input
@@ -24,15 +34,16 @@
         <input type="file" @change="handleFileUpload" name="book_cover" />
         <button type="submit">Ajouter</button>
       </form>
-      <router-link to="/" class="retour-button">Retour</router-link>
+      <router-link to="/home" class="retour-button">Retour</router-link>
     </div>
   </main>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import BookService from '../services/BookService.js'
+
 const router = useRouter()
 
 const newBook = ref({
@@ -45,6 +56,32 @@ const newBook = ref({
   book_cover: null,
   firstname: '',
   category_name: ''
+})
+
+const authors = ref([])
+const categories = ref([])
+
+async function loadAuthors() {
+  try {
+    const response = await BookService.getWriters()
+    authors.value = response.data.data
+  } catch (error) {
+    console.error('Erreur lors du chargement des auteurs:', error)
+  }
+}
+
+async function loadCategories() {
+  try {
+    const response = await BookService.getCategories()
+    categories.value = response.data.data
+  } catch (error) {
+    console.error('Erreur lors du chargement des catégories:', error)
+  }
+}
+
+onMounted(() => {
+  loadAuthors()
+  loadCategories()
 })
 
 function handleFileUpload(event) {
@@ -112,6 +149,8 @@ async function addBook() {
       formData.append('writerId', writerId)
       formData.append('categoryId', categoryId)
 
+      await BookService.createBook(formData)
+
       newBook.value = {
         title: '',
         number_of_pages: '',
@@ -123,9 +162,10 @@ async function addBook() {
         firstname: '',
         category_name: ''
       }
-      router.push('/')
+      console.log(newBook.value)
+      router.push('/home')
     } catch (error) {
-      console.log('Erreur lors de la création du livre')
+      console.log('Erreur lors de la création du livre:', error)
     }
   } else {
     alert('Veuillez remplir tous les champs.')

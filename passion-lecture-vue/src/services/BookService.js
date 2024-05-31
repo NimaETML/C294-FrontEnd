@@ -83,11 +83,17 @@ export default {
   deleteBook(id) {
     return apiClient.delete('/books/' + id)
   },
+  getCategories() {
+    return apiClient.get('/categories')
+  },
   getCategory(id) {
     return apiClient.get('/categories/' + id)
   },
   getCategoryByName(name) {
     return apiClient.get(`/categories/name/${name}`)
+  },
+  getWriters() {
+    return apiClient.get('/authors')
   },
   getWriter(id) {
     return apiClient.get('/authors/' + id)
