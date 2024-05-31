@@ -7,6 +7,7 @@ const book = ref(null)
 const rates = ref([])
 const category = ref(null)
 const author = ref(null)
+const user = ref(null)
 const averageRating = ref(0)
 
 // Obtenir les propriétés du composant
@@ -48,6 +49,8 @@ onMounted(async () => {
     const infoAuthor = await BookService.getWriter(book.value.writerId)
     author.value = infoAuthor.data.data
 
+    const infoUser = await BookService.getUser(book.value.userId)
+    user.value = infoUser.data.data
     // Obtenir les évaluations du livre
     const infoRates = await BookService.getBookRates(props.id)
     rates.value = infoRates.data.data
@@ -58,6 +61,9 @@ onMounted(async () => {
     console.error(error)
   }
 })
+function goBack() {
+  window.history.back()
+}
 </script>
 
 <template>
@@ -80,13 +86,14 @@ onMounted(async () => {
         Utilisateur {{ rate.userId }}: {{ rate.rating }} étoiles
       </li>
     </ul>
-
+    <p>Posté par: {{ user ? user.nickName : 'Chargement...' }}</p>
     <RouterLink class="button-link" :to="{ name: 'edit-book', params: { BookId: book.id } }"
       >Modifier ce livre</RouterLink
     >
     <RouterLink class="button-link" :to="{ name: 'delete-book', params: { BookId: book.id } }">
       Supprimer
     </RouterLink>
+    <button class="button-link" @click="goBack">Retour</button>
   </div>
 </template>
 

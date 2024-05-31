@@ -25,6 +25,11 @@ onMounted(() => {
       <BookCard v-for="book in books" :key="book.id" :book="book" />
     </div>
   </div>
+  <p>
+    Cette application a été réalisée dans le cadre d'un apprentissage durant les heures de "projet"
+    par les élèves de l'ETML. Elle a pour but final de permettre de partager sa passion pour la
+    lecture
+  </p>
 </template>
 
 <style scoped>
@@ -49,5 +54,11 @@ onMounted(() => {
   display: flex;
   flex-wrap: wrap; /* Allow the books to wrap onto new lines */
   justify-content: center; /* Center the books horizontally */
+}
+
+p {
+  text-align: center; /* Center the text horizontally */
+  margin: 20px auto; /* Center the <p> element itself */
+  width: 80%; /* Optional: control the width of the <p> for better appearance */
 }
 </style>

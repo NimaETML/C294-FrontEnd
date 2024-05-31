@@ -28,7 +28,7 @@
         <input type="file" @change="handleFileUpload" name="book_cover" />
         <button type="submit">Modifier</button>
       </form>
-      <router-link to="/">Retour</router-link>
+      <button @click="goBack">Retour</button>
     </div>
   </main>
 </template>
@@ -146,7 +146,7 @@ async function editBook() {
         writerId: '',
         categoryId: ''
       }
-      router.push('/')
+      router.push('/home')
     } catch (error) {
       console.log(
         'Erreur lors du update du livre:',
@@ -156,6 +156,10 @@ async function editBook() {
   } else {
     alert('Veuillez remplir tous les champs.')
   }
+}
+
+function goBack() {
+  window.history.back()
 }
 </script>
 

@@ -101,6 +101,9 @@ export default {
   getWriterByFirstname(firstname) {
     return apiClient.get(`/authors/firstname/${firstname}`)
   },
+  getUser(id) {
+    return apiClient.get('/users/' + id)
+  },
   login(credentials) {
     return apiClient.post('/login', credentials)
   }

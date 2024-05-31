@@ -73,7 +73,7 @@ let categories = [
   },
   {
     id: 19,
-    name: "Politique",
+    name: "Mangas",
   },
   {
     id: 20,

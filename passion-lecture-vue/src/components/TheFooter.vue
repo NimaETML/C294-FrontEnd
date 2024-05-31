@@ -2,6 +2,10 @@
   <footer>
     <div class="footer-content">
       <span>Application des livres - ApipassionBooks - 2024</span>
+      <div class="footer-details">
+        <p>Contact: pu78ifh@eduvaud.ch</p>
+        <p>Développeurs: Dario Chasi - Nima Zarrabi - William Trelles - Thibaud Racine</p>
+      </div>
     </div>
   </footer>
 </template>
@@ -17,10 +21,12 @@ footer {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column; /* Change to column to stack elements vertically */
 }
 
 .footer-content {
   display: flex;
+  flex-direction: column; /* Change to column to stack elements vertically */
   justify-content: center;
   align-items: center;
   width: 100%;
@@ -30,6 +36,13 @@ footer span {
   font-family: 'Arial', sans-serif;
   font-size: 14px;
   font-weight: bold;
+  text-align: center;
+}
+
+.footer-details p {
+  margin: 5px 0; /* Add some margin for spacing between paragraphs */
+  font-family: 'Arial', sans-serif;
+  font-size: 14px;
   text-align: center;
 }
 </style>
