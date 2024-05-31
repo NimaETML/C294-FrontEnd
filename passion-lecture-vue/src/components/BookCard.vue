@@ -23,8 +23,11 @@ defineProps({
   cursor: pointer;
   border: 1px solid #fff; /* White border */
   color: white;
+  background-color: #39495c;
   border-radius: 8px; /* Rounded corners */
-  margin-bottom: 20px; /* Increased margin */
+  margin-bottom: 15px; /* Increased margin */
+  margin-top: 5px;
+  margin-left: 1px;
   margin-right: 20px; /* Margin between each book card */
 }
 
