@@ -29,4 +29,11 @@ h2 {
   text-align: center;
   color: #2c3e50;
 }
+body {
+  background-color: #1c333a;
+  color: white; /* Ensure text is visible on the dark background */
+  font-family: Avenir, Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+}
 </style>

@@ -46,14 +46,14 @@ const logout = () => {
 
 <template>
   <div class="account">
-    <h1>My Account</h1>
+    <h2>My Account</h2>
     <div v-if="isAuthenticated">
       <button @click="logout">Logout</button>
     </div>
 
     <div v-else>
       <form @submit.prevent="login">
-        <label for="nickName">Nickname:</label>
+        <label for="nickName">Nickname</label>
         <input
           type="text"
           v-model="nickName"
@@ -62,7 +62,7 @@ const logout = () => {
           placeholder="Enter nickname"
           required
         />
-        <label for="password">Password:</label>
+        <label for="password">Password</label>
         <input
           type="password"
           v-model="password"
@@ -79,13 +79,92 @@ const logout = () => {
   </div>
 </template>
 
-<style>
-/*
-@media (min-width: 1024px) {
-  .about {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-  }
-}*/
+<style scoped>
+.account {
+  margin: 0 auto;
+  padding: 20px;
+  margin-top: 225px;
+  margin-bottom: 273px;
+  max-width: 400px;
+  background: rgb(167, 254, 255);
+  background: linear-gradient(203deg, rgba(167, 254, 255, 1) 0%, rgba(110, 255, 170, 1) 100%);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.account h2 {
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
+  color: rgb(0, 86, 126);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+}
+
+label {
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
+  color: rgb(0, 86, 126);
+}
+
+input[type='text'],
+input[type='password'],
+input[type='submit'] {
+  width: 80%;
+  max-width: 80%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  border-radius: 10px;
+}
+
+input[type='submit'] {
+  background: #28a745;
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.3s ease;
+}
+
+input[type='submit']:hover {
+  background: rgb(0, 143, 0);
+}
+
+button {
+  padding: 10px 15px;
+  border: none;
+  background: #007bff;
+  color: white;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background: #0063cc;
+}
+
+.error {
+  color: red;
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+label {
+  margin-bottom: -12px;
+}
 </style>

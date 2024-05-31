@@ -1,12 +1,13 @@
 <template>
   <header>
-    <div id="layout"></div>
     <div class="wrapper">
-      <nav>
+      <div class="logo">
         <h1>Hyper Book</h1>
-        <RouterLink :to="{ name: 'account' }">Mon compte</RouterLink> |
-        <RouterLink :to="{ name: 'home' }">Home</RouterLink> |
-        <RouterLink :to="{ name: 'book-list' }">Books</RouterLink> |
+      </div>
+      <nav>
+        <RouterLink :to="{ name: 'account' }">Mon compte</RouterLink>
+        <RouterLink :to="{ name: 'home' }">Home</RouterLink>
+        <RouterLink :to="{ name: 'book-list' }">Books</RouterLink>
         <RouterLink :to="{ name: 'add-book' }">Add book</RouterLink>
       </nav>
     </div>
@@ -18,34 +19,52 @@ import { RouterLink } from 'vue-router'
 </script>
 
 <style scoped>
-#layout {
-  text-align: center;
-  font-family: Avenir, Arial, Helvetica, sans-serif;
-  -webkit-font-feature-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
+header {
+  background: rgb(0, 143, 0);
+  background: linear-gradient(90deg, rgb(86, 201, 255) 0%, rgb(27, 255, 122) 100%);
+  color: white;
+  padding: 10px 20px;
+  border-bottom: 2px solid hsla(160, 100%, 37%, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
-nav {
-  padding: 30px;
 
-  font-family: Avenir, Arial, Helvetica, sans-serif;
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
 }
+
+.logo h1 {
+  font-family: 'Arial', sans-serif;
+  font-size: 24px;
+  font-weight: bold;
+}
+
 nav {
-  padding: 5px;
+  display: flex;
+  gap: 15px;
 }
 
 nav a {
+  font-family: 'Arial', sans-serif;
   font-weight: bold;
-  color: #439482;
+  color: white;
   text-decoration: none;
+  padding: 5px 10px;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
 }
+
 nav a.router-link-exact-active {
   color: #42b983;
 }
 
-nav a {
-  font-weight: bold;
-
-  color: #212c27;
+nav a:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border-radius: 4px;
 }
 </style>
