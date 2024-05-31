@@ -33,17 +33,3 @@ npm run build
 ```sh
 npm run lint
 ```
-
-/\*
-async function getBook (){
-try {
-const response = await BookService.getBook(bookId)
-book.value = response.data.data
-
-    const categoryResponse = await BookService.getCategorie(book.value.categoryId)
-    category.value = categoryResponse.data.data
-
-} catch (error) {
-console.log(error)
-}
-}\*/
