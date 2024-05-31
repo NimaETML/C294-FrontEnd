@@ -95,20 +95,55 @@ onMounted(async () => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 180px;
-  padding-top: 0%;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.book-card h2 {
+  margin-top: 0px;
+  font-size: 24px;
+  color: #007bff;
+  margin-bottom: 10px;
+}
+
+.book-card img {
+  max-width: 219px; /* Adjust the maximum width as needed */
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.book-card p {
+  margin-bottom: 8px; /* Reduced margin-bottom */
+  margin-top: 8px; /* Reduced margin-top */
 }
 
 .button-link {
   display: inline-block;
   padding: 10px 15px;
-  background-color: #333a41;
+  background-color: #007bff;
   color: #fff;
   border-radius: 4px;
   cursor: pointer;
   text-align: center;
   text-decoration: none;
   font-family: Avenir, Helvetica, Arial, sans-serif;
-  font-size: small;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.button-link:hover {
+  background-color: #0056b3;
+}
+
+.book-card ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.book-card ul li {
+  margin-bottom: 5px;
 }
 </style>
