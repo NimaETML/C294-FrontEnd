@@ -8,13 +8,13 @@
         <RouterLink :to="{ name: 'home' }">Home</RouterLink>
         <RouterLink :to="{ name: 'book-list' }">Books</RouterLink>
         <RouterLink :to="{ name: 'add-book' }">Add book</RouterLink>
-        <RouterLink :to="{ name: 'account' }">Mon compte</RouterLink>
+        <RouterLink :to="{ name: 'account' }">My Account</RouterLink>
       </nav>
       <nav v-else>
-        <RouterLink class="disabled" :to="{ name: 'home' }">Home</RouterLink>
-        <RouterLink class="disabled" :to="{ name: 'book-list' }">Books</RouterLink>
-        <RouterLink class="disabled" :to="{ name: 'add-book' }">Add book</RouterLink>
-        <RouterLink :to="{ name: 'account' }">Mon compte</RouterLink>
+        <RouterLink class="disabled">Home</RouterLink>
+        <RouterLink class="disabled" >Books</RouterLink>
+        <RouterLink class="disabled">Add book</RouterLink>
+        <RouterLink :to="{ name: 'account' }">Log In</RouterLink>
       </nav>
     </div>
   </header>
