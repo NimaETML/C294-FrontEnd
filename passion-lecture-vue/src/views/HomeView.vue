@@ -27,8 +27,9 @@ onMounted(() => {
   </div>
   <p>
     Cette application a été réalisée dans le cadre d'un apprentissage durant les heures de "projet"
-    par les élèves de l'ETML. Elle a pour but final de permettre de partager sa passion pour la
-    lecture
+    par les élèves de l'ETML. L'objectif de ce site est de permettre de lire les informations des
+    différents livres, ainsi que d'en ajouter, éditer ou supprimer. Ce site web pour but final de
+    permettre de partager sa passion pour la lecture.
   </p>
 </template>
 
