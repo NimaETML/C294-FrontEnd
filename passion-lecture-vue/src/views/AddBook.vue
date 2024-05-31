@@ -136,7 +136,8 @@ async function addBook() {
 .add {
   margin: 0 auto;
   padding: 20px;
-  margin-top: 20px;
+  margin-top: 60px;
+  margin-bottom: 62px;
   padding-top: 0px;
   padding-bottom: 0px;
   max-width: 800px;
