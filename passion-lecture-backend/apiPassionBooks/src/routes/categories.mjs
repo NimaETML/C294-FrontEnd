@@ -7,7 +7,7 @@ const categoriesRouter = express();
 //GET pour acceder a tous les categories
 categoriesRouter.get("/", authVer, async (req, res) => {
   try {
-    const categories = await Category.findAll();
+    const categories = await Category.findAll({ order: ["name"] });
     const message = "La liste des categories a bien été récupérée.";
     res.json({ msg: message, data: categories });
   } catch (error) {

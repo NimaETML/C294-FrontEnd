@@ -8,7 +8,7 @@ const writersRouter = express();
 //GET pour acceder a tous les écrivains
 writersRouter.get("/", authVer, async (req, res) => {
   try {
-    const writers = await Writer.findAll();
+    const writers = await Writer.findAll({ order: ["firstName"] });
     const message = "La liste des écrivains a bien été récupérée.";
     res.json({ msg: message, data: writers });
   } catch (error) {

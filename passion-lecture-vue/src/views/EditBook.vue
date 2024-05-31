@@ -1,7 +1,7 @@
 <template>
   <main>
     <div class="edit">
-      <h2>Edit a book</h2>
+      <h2 class="title">Edit a book</h2>
       <form @submit.prevent="editBook" enctype="multipart/form-data">
         <input v-model="newBook.title" placeholder="Title" />
         <input v-model="newBook.number_of_pages" type="number" placeholder="Number of Pages" />
@@ -28,7 +28,7 @@
         <input type="file" @change="handleFileUpload" name="book_cover" />
         <button type="submit">Modifier</button>
       </form>
-      <button @click="goBack">Retour</button>
+      <button class="back-button" @click="goBack">Retour</button>
     </div>
   </main>
 </template>
@@ -164,13 +164,26 @@ function goBack() {
 </script>
 
 <style scoped>
+.title {
+  margin-top: 40px;
+  margin-bottom: 35px;
+  margin-left: 30px; /* Add margin-top to the title */
+}
 .edit {
-  margin: auto;
-  width: 30%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Center the book cards horizontally */
+  overflow-x: hidden; /* Hide horizontal overflow */
+  margin-top: 50px; /* Adjust margin as needed */
 }
 form {
   display: flex;
   flex-direction: column;
   gap: 5px;
+}
+.back-button {
+  margin-top: 2%; /* Ensure button is at the bottom */
+  margin-bottom: 5%;
 }
 </style>

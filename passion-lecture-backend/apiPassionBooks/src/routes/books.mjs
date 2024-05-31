@@ -85,7 +85,7 @@ booksRouter.get("/:id/comments", authVer, async (req, res) => {
     const comments = await Comment.findAll({ where: { bookId: bookId } });
     if (comments.length === 0) {
       const message = `Aucune appréciation trouvée pour le livre avec l'ID ${bookId}.`;
-      return res.status(404).json({ msg: message });
+      return res.status(200).json({ msg: message });
     }
     const message = `La liste des appréciations pour le livre dont l'id vaut ${bookId} a bien été récupérée.`;
     res.json({ msg: message, data: comments });

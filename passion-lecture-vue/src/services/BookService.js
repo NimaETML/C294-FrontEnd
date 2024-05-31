@@ -56,6 +56,9 @@ export default {
   getBookRates(id) {
     return apiClient.get(`/books/${id}/rates`)
   },
+  getBookComments(id) {
+    return apiClient.get(`/books/${id}/comments`)
+  },
   insertCover(image) {
     const formData = new FormData()
     formData.append('image', image)

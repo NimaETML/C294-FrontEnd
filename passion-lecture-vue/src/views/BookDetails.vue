@@ -5,6 +5,7 @@ import BookService from '@/services/BookService'
 // Définir les références réactives
 const book = ref(null)
 const rates = ref([])
+const comments = ref([])
 const category = ref(null)
 const author = ref(null)
 const user = ref(null)
@@ -40,27 +41,42 @@ onMounted(async () => {
     // Obtenir les informations du livre
     const infoBook = await BookService.getBook(props.id)
     book.value = infoBook.data.data
+    console.log('Book:', book.value)
 
     // Obtenir les informations de la catégorie
     const infoCategory = await BookService.getCategory(book.value.categoryId)
     category.value = infoCategory.data.data
+    console.log('Category:', category.value)
 
     // Obtenir les informations de l'auteur
     const infoAuthor = await BookService.getWriter(book.value.writerId)
     author.value = infoAuthor.data.data
+    console.log('Author:', author.value)
 
+    // Obtenir les informations de l'utilisateur
     const infoUser = await BookService.getUser(book.value.userId)
     user.value = infoUser.data.data
+    console.log('User:', user.value)
+
     // Obtenir les évaluations du livre
     const infoRates = await BookService.getBookRates(props.id)
     rates.value = infoRates.data.data
+    console.log('Rates:', rates.value)
+
+    // Obtenir les commentaires du livre
+    const infoComments = await BookService.getBookComments(props.id)
+    comments.value = infoComments.data.data
+    console.log('Comments:', comments.value)
 
     // Calculer la moyenne des évaluations
     averageRating.value = await calculateAverageRating(rates.value)
+    console.log('Average Rating:', averageRating.value)
   } catch (error) {
     console.error(error)
   }
 })
+
+// Fonction pour retourner à la page précédente
 function goBack() {
   window.history.back()
 }
@@ -78,7 +94,7 @@ function goBack() {
     </p>
     <p>Éditeur: {{ book.publisher }}</p>
     <p>Pages: {{ book.number_of_pages }}</p>
-
+    <p>Posté par: {{ user ? user.nickName : 'Chargement...' }}</p>
     <h3>Évaluations:</h3>
     <p>Moyenne des évaluations: {{ averageRating }}</p>
     <ul>
@@ -86,10 +102,14 @@ function goBack() {
         Utilisateur {{ rate.userId }}: {{ rate.rating }} étoiles
       </li>
     </ul>
-    <p>Posté par: {{ user ? user.nickName : 'Chargement...' }}</p>
-    <RouterLink class="button-link" :to="{ name: 'edit-book', params: { BookId: book.id } }"
-      >Modifier ce livre</RouterLink
-    >
+    <h3>Commentaires:</h3>
+    <ul v-if="comments.length > 0">
+      <li v-for="comment in comments" :key="comment.id">Commentaire: {{ comment.text }}</li>
+    </ul>
+    <p v-else>Aucun commentaire pour ce livre.</p>
+    <RouterLink class="button-link" :to="{ name: 'edit-book', params: { BookId: book.id } }">
+      Modifier ce livre
+    </RouterLink>
     <RouterLink class="button-link" :to="{ name: 'delete-book', params: { BookId: book.id } }">
       Supprimer
     </RouterLink>
