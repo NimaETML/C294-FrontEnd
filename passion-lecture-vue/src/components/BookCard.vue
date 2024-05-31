@@ -22,6 +22,7 @@ defineProps({
   width: 200px; /* Adjusted width for smaller book cards */
   cursor: pointer;
   border: 1px solid #fff; /* White border */
+  color: white;
   border-radius: 8px; /* Rounded corners */
   margin-bottom: 20px; /* Increased margin */
   margin-right: 20px; /* Margin between each book card */
