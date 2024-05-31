@@ -18,18 +18,33 @@ defineProps({
 
 <style scoped>
 .book-card {
-  padding: 20px;
-  width: 250px;
+  padding: 10px;
+  width: 200px; /* Adjusted width for smaller book cards */
   cursor: pointer;
-  border: 1px solid #39495c;
-  margin-bottom: 18px;
+  border: 1px solid #fff; /* White border */
+  border-radius: 8px; /* Rounded corners */
+  margin-bottom: 20px; /* Increased margin */
+  margin-right: 20px; /* Margin between each book card */
 }
+
 .book-card:hover {
   transform: scale(1.01);
   box-shadow: 0 3px 12px 0 rgba(0, 0, 0, 0.2);
 }
+
 .book-link {
   color: #39495c;
   text-decoration: none;
+}
+
+.book-card h2 {
+  font-size: 14px; /* Adjusted font size for the book title */
+  margin-bottom: 5px;
+}
+
+.book-card img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
 }
 </style>

@@ -161,8 +161,11 @@ button {
   border-radius: 4px;
   font-size: 16px;
   cursor: pointer;
-  margin-top: 10px;
+  margin-top: 85px;
+  margin-bottom: 84px;
   transition: background 0.3s ease;
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
 }
 
 button:hover {
