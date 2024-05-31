@@ -21,7 +21,8 @@ const storage = multer.diskStorage({
     cb(null, path.join(__dirname, "../images"));
   },
   filename: function (req, file, cb) {
-    cb(null, file.originalname);
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9); //Nommage de l'image de couverture unique
+    cb(null, `${uniqueSuffix}-${file.originalname}`);
   },
 });
 
@@ -66,7 +67,7 @@ booksRouter.get("/:id/rates", authVer, async (req, res) => {
     const rates = await Rate.findAll({ where: { bookId: bookId } });
     if (rates.length === 0) {
       const message = `Aucune appréciation trouvée pour le livre avec l'ID ${bookId}.`;
-      return res.status(404).json({ msg: message });
+      return res.status(200).json({ msg: message });
     }
     const message = `La liste des appréciations pour le livre dont l'id vaut ${bookId} a bien été récupérée.`;
     res.json({ msg: message, data: rates });
@@ -107,7 +108,7 @@ booksRouter.post(
       excerpt,
       summary,
       publisher,
-      year_of_publication,
+      date_of_publication,
       userId,
       writerId,
       categoryId,
@@ -133,16 +134,21 @@ booksRouter.post(
         return res.status(404).json({ msg: message });
       }
 
+      let book_cover;
+      if (req.file && req.file.filename) {
+        book_cover = `http://localhost:3901/images/${req.file.filename}`;
+      } else {
+        book_cover = "http://localhost:3901/images/default.jpg";
+      }
+
       const bookData = {
         title,
         number_of_pages,
         excerpt,
         summary,
         publisher,
-        year_of_publication,
-        book_cover: req.file
-          ? `http://localhost:3901/images/${req.file.filename}`
-          : null,
+        date_of_publication,
+        book_cover: book_cover,
         userId,
         writerId,
         categoryId,
@@ -164,12 +170,53 @@ booksRouter.post(
     }
   }
 );
+// Définir la route pour télécharger une image
+booksRouter.post("/upload", upload.single("image"), (req, res) => {
+  try {
+    // Vérifiez si le fichier a été fourni
+    if (!req.file) {
+      return res.status(400).json({ error: "Aucune image fournie" });
+    }
+
+    // Répondre avec les détails de l'image téléchargée
+    res.status(200).json({
+      message: "Image importée",
+      filename: req.file.filename,
+      url: `http://localhost:3901/images/${req.file.filename}`,
+    });
+  } catch (error) {
+    // Gérer les erreurs inattendues
+    console.error("Erreur lors de l'importation de l'image:", error);
+    res.status(500).json({ error: "Erreur lors de l'importation de l'image" });
+  }
+});
+
+booksRouter.post("/upload", upload.single("image"), (req, res) => {
+  try {
+    // Vérifiez si le fichier a été fourni
+    if (!req.file) {
+      return res.status(400).json({ error: "Aucune image fournie" });
+    }
+
+    // Répondre avec les détails de l'image téléchargée
+    res.status(200).json({
+      message: "Image importée",
+      filename: req.file.filename,
+      url: `http://localhost:3901/images/${req.file.filename}`,
+    });
+  } catch (error) {
+    // Gérer les erreurs inattendues
+    console.error("Erreur lors de l'importation de l'image:", error);
+    res.status(500).json({ error: "Erreur lors de l'importation de l'image" });
+  }
+});
 
 //PUT modifier un livre
 booksRouter.put(
   "/:id",
   authBooks,
   upload.single("book_cover"),
+
   async (req, res) => {
     const bookId = req.params.id;
     const {
@@ -178,11 +225,14 @@ booksRouter.put(
       excerpt,
       summary,
       publisher,
-      year_of_publication,
+      date_of_publication,
       userId,
       writerId,
       categoryId,
     } = req.body;
+
+    console.log("Data:", req.body);
+
     try {
       const book = await Book.findByPk(bookId);
       if (!book) {
@@ -190,22 +240,33 @@ booksRouter.put(
           msg: "Le livre demandé n'existe pas. Merci de réessayer avec un autre identifiant.",
         });
       }
+
+      const userExists = await User.findByPk(userId);
       if (!userExists) {
-        const message =
-          "L'utilisateur n'existe pas. Merci de réessayer avec un autre identifiant.";
-        return res.status(404).json({ msg: message });
+        return res.status(404).json({
+          msg: "L'utilisateur n'existe pas. Merci de réessayer avec un autre identifiant.",
+        });
       }
+
       const writerExists = await Writer.findByPk(writerId);
       if (!writerExists) {
-        const message =
-          "L'écrivain n'existe pas. Merci de réessayer avec un autre identifiant.";
-        return res.status(404).json({ msg: message });
+        return res.status(404).json({
+          msg: "L'écrivain n'existe pas. Merci de réessayer avec un autre identifiant.",
+        });
       }
+
       const categoryExists = await Category.findByPk(categoryId);
       if (!categoryExists) {
-        const message =
-          "La catégorie n'existe pas. Merci de réessayer avec un autre identifiant.";
-        return res.status(404).json({ msg: message });
+        return res.status(404).json({
+          msg: "La catégorie n'existe pas. Merci de réessayer avec un autre identifiant.",
+        });
+      }
+
+      let book_cover;
+      if (req.file && req.file.filename) {
+        book_cover = `http://localhost:3901/images/${req.file.filename}`;
+      } else {
+        book_cover = book.book_cover;
       }
 
       const updateData = {
@@ -214,32 +275,35 @@ booksRouter.put(
         excerpt,
         summary,
         publisher,
-        year_of_publication,
-        book_cover: req.file
-          ? `http://localhost:3901/images/${req.file.filename}`
-          : null,
+        date_of_publication,
+        book_cover: book_cover,
         userId,
         writerId,
         categoryId,
       };
+
+      console.log("Data:", updateData);
 
       const [updatedRows] = await Book.update(updateData, {
         where: { id: bookId },
       });
 
       if (updatedRows === 0) {
-        const message = "Aucune modification n'a été apportée au livre.";
-        return res.status(404).json({ msg: message });
+        return res
+          .status(404)
+          .json({ msg: "Aucune modification n'a été apportée au livre." });
       }
+
       const updatedBook = await Book.findByPk(bookId);
-
-      const message = `Le livre ${updatedBook.title} dont l'id vaut ${updatedBook.id} a été mis à jour avec succès`;
-
-      res.json({ msg: message, data: updatedBook });
+      res.json({
+        msg: "Le livre a été mis à jour avec succès",
+        data: updatedBook,
+      });
     } catch (error) {
-      const message =
-        "Le livre n'a pas pu être mis à jour. Merci de réessayer dans quelques instants.";
-      res.status(500).json({ msg: message, data: error });
+      res.status(500).json({
+        msg: "Le livre n'a pas pu être mis à jour. Merci de réessayer dans quelques instants.",
+        data: error,
+      });
     }
   }
 );

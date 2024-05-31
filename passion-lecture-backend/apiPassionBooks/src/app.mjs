@@ -2,7 +2,6 @@ import express from "express";
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
-import multer from "multer";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -62,30 +61,6 @@ app.use("/api/rates", ratesRouter);
 // si /api/comments/ alors envoi dans la route commentsRouter
 import { commentsRouter } from "./routes/comments.mjs";
 app.use("/api/comments", commentsRouter);
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, "images"));
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
-  },
-});
-
-const upload = multer({ storage: storage });
-
-// Endpoint para subir imágenes
-app.post("/upload", upload.single("image"), (req, res) => {
-  try {
-    res.status(200).json({
-      message: "Image importé",
-      filename: req.file.filename,
-      url: `/images/${req.file.filename}`,
-    });
-  } catch (error) {
-    res.status(400).json({ error: "Error lors de l'importation des images" });
-  }
-});
 
 app.use("/images", express.static(path.join(__dirname, "images")));
 

@@ -16,13 +16,12 @@
           required
         />
         <input
-          v-model="newBook.year_of_publication"
+          v-model="newBook.date_of_publication"
           type="date"
-          placeholder="Year of Publication"
+          placeholder="Date of Publication"
           required
         />
-
-        <input type="file" @change="handleFileUpload" required name="book_cover" />
+        <input type="file" @change="handleFileUpload" name="book_cover" />
         <button type="submit">Ajouter</button>
       </form>
       <router-link to="/" class="retour-button">Retour</router-link>
@@ -40,7 +39,7 @@ const newBook = ref({
   title: '',
   number_of_pages: '',
   publisher: '',
-  year_of_publication: '',
+  date_of_publication: '',
   excerpt: '',
   summary: '',
   book_cover: null,
@@ -57,14 +56,30 @@ async function addBook() {
     newBook.value.title &&
     newBook.value.number_of_pages &&
     newBook.value.publisher &&
-    newBook.value.year_of_publication &&
+    newBook.value.date_of_publication &&
     newBook.value.excerpt &&
     newBook.value.summary &&
     newBook.value.firstname &&
-    newBook.value.category_name &&
-    newBook.value.book_cover
+    newBook.value.category_name
   ) {
     try {
+      const token = localStorage.getItem('jwt')
+
+      let decodedToken
+      try {
+        decodedToken = JSON.parse(atob(token.split('.')[1]))
+      } catch (e) {
+        console.error('Error decoding token:', e)
+        alert('Invalid token. Please log in again.')
+        return
+      }
+
+      const userId = decodedToken.userId
+      if (!userId) {
+        alert('User ID not found in token. Please log in again.')
+        return
+      }
+      console.log(userId)
       // Obtener el writerId por firstname
       console.log('newBook.value.firstname:', newBook.value.firstname)
       const writerResponse = await BookService.getWriterByFirstname(newBook.value.firstname)
@@ -88,20 +103,16 @@ async function addBook() {
       }
       const categoryId = categoryResponse.data.data.id
 
-      //userId pris du token
-      const token =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImlzQWRtaW4iOnRydWUsImlhdCI6MTcxNTcyMDgxMywiZXhwIjoxNzQ3Mjc4NDEzfQ.kNxNGu2qgxwhZKwDtwLQ3jX2ID12yNqJTT0deGwea54'
-      const decodedToken = JSON.parse(atob(token.split('.')[1]))
-      const userId = decodedToken.userId
-
       const formData = new FormData()
       formData.append('title', newBook.value.title)
       formData.append('number_of_pages', newBook.value.number_of_pages)
       formData.append('publisher', newBook.value.publisher)
-      formData.append('year_of_publication', newBook.value.year_of_publication)
+      formData.append('date_of_publication', newBook.value.date_of_publication)
       formData.append('excerpt', newBook.value.excerpt)
       formData.append('summary', newBook.value.summary)
-      formData.append('book_cover', newBook.value.book_cover)
+      if (newBook.value.book_cover) {
+        formData.append('book_cover', newBook.value.book_cover)
+      }
       formData.append('userId', userId)
       formData.append('writerId', writerId)
       formData.append('categoryId', categoryId)
@@ -112,7 +123,7 @@ async function addBook() {
         title: '',
         number_of_pages: '',
         publisher: '',
-        year_of_publication: '',
+        date_of_publication: '',
         excerpt: '',
         summary: '',
         book_cover: null,
@@ -122,7 +133,7 @@ async function addBook() {
       router.push('/')
     } catch (error) {
       console.log(
-        'Error lors de la créatiom du livre:',
+        'Erreur lors de la création du livre:',
         error.response ? error.response.data : error.message
       )
     }

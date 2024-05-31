@@ -7,7 +7,7 @@
         <input v-model="newBook.number_of_pages" type="number" placeholder="Number of Pages" />
         <input v-model="newBook.publisher" placeholder="Publisher" />
         <input
-          v-model="newBook.year_of_publication"
+          v-model="newBook.date_of_publication"
           type="date"
           placeholder="Year of Publication"
         />
@@ -26,7 +26,7 @@
 <script setup>
 defineProps({
   BookId: {
-    type: Number,
+    type: String,
     required: true
   }
 })
@@ -41,44 +41,40 @@ const writerName = ref({})
 const catergoryName = ref({})
 
 onMounted(() => {
-  // Récupérer un livre
-
   BookService.getBook(route.params.id)
     .then((response) => {
       newBook.value = response.data.data
+      return BookService.getWriter(newBook.value.writerId)
     })
-    .then(() => {
-      BookService.getWriter(newBook.value.writerId).then((response) => {
-        writerName.value = response.data.data
-        BookService.getCategory(newBook.value.categoryId).then((response) => {
-          catergoryName.value = response.data.data
-        })
-      })
+    .then((response) => {
+      writerName.value = response.data.data
+      return BookService.getCategory(newBook.value.categoryId)
+    })
+    .then((response) => {
+      catergoryName.value = response.data.data
     })
     .catch((error) => console.log(error))
 })
 
-// getWriterAndCategory()
-// console.log(newBook.title)
-
-//router.push('/') // Redirection vers la page d'accueil
-/*
-const newBook = ref({
-  title: book.value.title,
-  number_of_pages: book.value.number_of_pages,
-  excerpt: book.value.excerpt,
-  summary: book.value.summary,
-  publisher: book.value.publisher,
-  year_of_publication: book.value.year_of_publication,
-  book_cover: book.value.book_cover,
-  category_name: book.value.category_name
-})*/
-
 function handleFileUpload(event) {
   newBook.value.book_cover = event.target.files[0]
 }
+/*
+function parseJwt(token) {
+  try {
+    return JSON.parse(atob(token.split('.')[1]))
+  } catch (e) {
+    console.error('Error decoding token:', e)
+    return null
+  }
+}*/
 
 async function editBook() {
+  console.log(`GREG : ${newBook.value}`)
+
+  console.log(newBook.value)
+  console.log(newBook.value.book_cover)
+
   newBook.value.firstname = writerName.value.firstName
   newBook.value.category_name = catergoryName.value.name
 
@@ -86,19 +82,37 @@ async function editBook() {
     newBook.value.title &&
     newBook.value.number_of_pages &&
     newBook.value.publisher &&
-    newBook.value.year_of_publication &&
+    newBook.value.date_of_publication &&
     newBook.value.excerpt &&
     newBook.value.summary &&
     newBook.value.firstname &&
     newBook.value.category_name
   ) {
     try {
-      // Obtener el writerId por firstname
+      const token = localStorage.getItem('jwt')
+      if (!token) {
+        alert('Token not found. Please log in again.')
+        return
+      }
+
+      let decodedToken
+      try {
+        decodedToken = JSON.parse(atob(token.split('.')[1]))
+      } catch (e) {
+        console.error('Error decoding token:', e)
+        alert('Invalid token. Please log in again.')
+        return
+      }
+
+      const userId = decodedToken.userId
+      if (!userId) {
+        alert('User ID not found in token. Please log in again.')
+        return
+      }
       console.log('newBook.value.firstname:', newBook.value.firstname)
       const writerResponse = await BookService.getWriterByFirstname(newBook.value.firstname)
       console.log('writerResponse:', writerResponse.data.data)
 
-      // Verifica si writerResponse.data e id existen
       if (!writerResponse.data.data || typeof writerResponse.data.data.id === 'undefined') {
         alert("L'écrivain n'existe pas. Merci de réessayer avec un autre identifiant.")
         return
@@ -107,7 +121,6 @@ async function editBook() {
       const writerId = writerResponse.data.data.id
       console.log('writerId:', writerId)
 
-      // Obtener el categoryId por name
       const categoryResponse = await BookService.getCategoryByName(newBook.value.category_name)
       console.log('categoryResponse:', categoryResponse.data.data)
       if (!categoryResponse.data.data || typeof categoryResponse.data.data.id === 'undefined') {
@@ -116,33 +129,33 @@ async function editBook() {
       }
       const categoryId = categoryResponse.data.data.id
 
-      // Obtener el userId desde el token
-      const token =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImlzQWRtaW4iOnRydWUsImlhdCI6MTcxNTcyMDgxMywiZXhwIjoxNzQ3Mjc4NDEzfQ.kNxNGu2qgxwhZKwDtwLQ3jX2ID12yNqJTT0deGwea54'
-      const decodedToken = JSON.parse(atob(token.split('.')[1]))
-      const userId = decodedToken.userId
-
       const formData = new FormData()
       formData.append('title', newBook.value.title)
       formData.append('number_of_pages', newBook.value.number_of_pages)
       formData.append('publisher', newBook.value.publisher)
-      formData.append('year_of_publication', newBook.value.year_of_publication)
+      formData.append('date_of_publication', newBook.value.date_of_publication)
       formData.append('excerpt', newBook.value.excerpt)
       formData.append('summary', newBook.value.summary)
-      formData.append('book_cover', newBook.value.book_cover)
+      if (newBook.value.book_cover) {
+        formData.append('book_cover', newBook.value.book_cover)
+      } else {
+        formData.append('book_cover', '/toto/')
+      }
       formData.append('userId', userId)
       formData.append('writerId', writerId)
       formData.append('categoryId', categoryId)
 
-      console.log(route.params.id)
-      //console.log(BookId + 'bookId')
+      console.log('AVANT editBook')
+      console.log(formData)
+
       const response = await BookService.editBook(route.params.id, formData)
       console.log('editBook response:', response.data)
+
       newBook.value = {
         title: '',
         number_of_pages: '',
         publisher: '',
-        year_of_publication: '',
+        date_of_publication: '',
         excerpt: '',
         summary: '',
         book_cover: null,
@@ -157,14 +170,6 @@ async function editBook() {
       )
     }
   } else {
-    console.log(newBook.value.title)
-    console.log(newBook.value.category_name)
-    console.log(newBook.value.number_of_pages)
-    console.log(newBook.value.publisher)
-    console.log(newBook.value.year_of_publication)
-    console.log(newBook.value.excerpt)
-    console.log(newBook.value.summary)
-    console.log(newBook.value.firstname)
     alert('Veuillez remplir tous les champs.')
   }
 }

@@ -141,7 +141,7 @@ const importBooks = async () => {
         summary: book.summary,
         writer: book.writer,
         publisher: book.publisher,
-        year_of_publication: book.year_of_publication,
+        date_of_publication: book.date_of_publication,
         comments: book.comments,
         book_cover: book.book_cover,
         userId: user.id,

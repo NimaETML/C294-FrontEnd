@@ -13,35 +13,27 @@ const averageRating = ref(0)
 const props = defineProps({
   id: {
     required: true,
-    type: Number
+    type: String
   }
 })
 
-onMounted(() => {
-  BookService.getBook(props.id)
-    .then((response) => {
-      book.value = response.data.data
-
-      return BookService.getCategorie(book.value.categoryId)
-    })
-    .then((categoryResponse) => {
-      category.value = categoryResponse.data.data
-    })
-    .catch((error) => {
-      console.log(error)
-    })
-})
 // Fonction pour calculer la moyenne des évaluations
-function calculateAverageRating(rates) {
-  if (rates.length === 0) {
-    return 0
+async function calculateAverageRating(rates) {
+  if (!Array.isArray(rates) || rates.length === 0) {
+    return '0.00'
   }
-  const sum = rates.reduce((acc, rate) => acc + rate.rating, 0)
+
+  const sum = rates.reduce((acc, rate) => {
+    if (typeof rate.rating !== 'number') {
+      throw new Error('Each rate must have a numeric rating property.')
+    }
+    return acc + rate.rating
+  }, 0)
+
   return (sum / rates.length).toFixed(2)
 }
 
 // Charger les données lorsque le composant est monté
-
 onMounted(async () => {
   try {
     // Obtenir les informations du livre
@@ -55,16 +47,15 @@ onMounted(async () => {
     // Obtenir les informations de l'auteur
     const infoAuthor = await BookService.getWriter(book.value.writerId)
     author.value = infoAuthor.data.data
-  } catch (error) {
-    console.error(error)
 
     // Obtenir les évaluations du livre
     const infoRates = await BookService.getBookRates(props.id)
     rates.value = infoRates.data.data
-    if (rates.value == null) {
-      averageRating.value = calculateAverageRating(0)
-    }
-    averageRating.value = calculateAverageRating(rates.value)
+
+    // Calculer la moyenne des évaluations
+    averageRating.value = await calculateAverageRating(rates.value)
+  } catch (error) {
+    console.error(error)
   }
 })
 </script>
@@ -90,10 +81,10 @@ onMounted(async () => {
       </li>
     </ul>
 
-    <RouterLink class="button-link" :to="{ name: 'edit-book', params: { id: book.id } }"
+    <RouterLink class="button-link" :to="{ name: 'edit-book', params: { BookId: book.id } }"
       >Modifier ce livre</RouterLink
     >
-    <RouterLink class="button-link" :to="{ name: 'delete-book', params: { id: book.id } }">
+    <RouterLink class="button-link" :to="{ name: 'delete-book', params: { BookId: book.id } }">
       Supprimer
     </RouterLink>
   </div>

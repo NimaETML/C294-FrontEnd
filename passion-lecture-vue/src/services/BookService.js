@@ -47,10 +47,24 @@ export default {
     return apiClient.get('/categories/' + id)
   },
   getBook(id) {
-    return apiClient.get('/books/' + id)
+    return apiClient.get('/books/' + id, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
   },
   getBookRates(id) {
     return apiClient.get(`/books/${id}/rates`)
+  },
+  insertCover(image) {
+    const formData = new FormData()
+    formData.append('image', image)
+
+    return apiClient.post('/books/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
   },
   createBook(newBook) {
     return apiClient.post('/books/', newBook, {
@@ -60,7 +74,11 @@ export default {
     })
   },
   editBook(id, newBook) {
-    return apiClient.put('/books/' + id, newBook)
+    return apiClient.put('/books/' + id, newBook, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
   },
   deleteBook(id) {
     return apiClient.delete('/books/' + id)
