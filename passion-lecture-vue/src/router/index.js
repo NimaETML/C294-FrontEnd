@@ -40,7 +40,7 @@ const router = createRouter({
       component: () => import('../views/DropBook.vue')
     },
     {
-      path: '/account',
+      path: '/',
       name: 'account',
       component: () => import('../views/AccountView.vue')
     }

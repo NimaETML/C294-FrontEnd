@@ -8,7 +8,7 @@ const route = useRoute()
 onMounted(() => {
   deleteBook()
 })
-
+//Suppresion du livre
 async function deleteBook() {
   try {
     const response = await BookService.deleteBook(route.params.id)

@@ -4,11 +4,17 @@
       <div class="logo">
         <h1>Hyper Book</h1>
       </div>
-      <nav>
+      <nav v-if="isAuthenticated">
         <RouterLink :to="{ name: 'account' }">Mon compte</RouterLink>
-        <RouterLink v-if="isAuthenticated" :to="{ name: 'home' }">Home</RouterLink>
-        <RouterLink v-if="isAuthenticated" :to="{ name: 'book-list' }">Books</RouterLink>
-        <RouterLink v-if="isAuthenticated" :to="{ name: 'add-book' }">Add book</RouterLink>
+        <RouterLink :to="{ name: 'home' }">Home</RouterLink>
+        <RouterLink :to="{ name: 'book-list' }">Books</RouterLink>
+        <RouterLink :to="{ name: 'add-book' }">Add book</RouterLink>
+      </nav>
+      <nav v-else>
+        <RouterLink :to="{ name: 'account' }">Mon compte</RouterLink>
+        <RouterLink class="disabled" :to="{ name: 'home' }">Home</RouterLink>
+        <RouterLink class="disabled" :to="{ name: 'book-list' }">Books</RouterLink>
+        <RouterLink class="disabled" :to="{ name: 'add-book' }">Add book</RouterLink>
       </nav>
     </div>
   </header>
@@ -51,7 +57,8 @@ nav {
   gap: 15px;
 }
 
-nav a {
+nav a,
+.disabled {
   font-family: 'Arial', sans-serif;
   font-weight: bold;
   color: rgb(0, 86, 126);
@@ -60,6 +67,7 @@ nav a {
   transition:
     background 0.3s ease,
     color 0.3s ease;
+  cursor: not-allowed;
 }
 
 nav a.router-link-exact-active {
@@ -70,5 +78,9 @@ nav a:hover {
   background: rgba(255, 255, 255, 0.1);
   color: #0084b8;
   border-radius: 4px;
+}
+
+.disabled {
+  opacity: 0.5;
 }
 </style>
