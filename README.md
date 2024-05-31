@@ -1,6 +1,7 @@
 # C294-FrontEnd
 
 ## setup da la base de données et de phpmyadmin
+
 assurez vous que le docker daemon soit actif, puis allez dans le repertoire \C294-FrontEnd\Docker_MySQL
 lancez alors la commade 'docker compose up -d' dans un invite de commande
 
@@ -9,10 +10,11 @@ ajoutez une base de données 'db_Web295'
 
 ## setup du BackEnd
 
-allez dans le repertoire \C294-FrontEnd\passion-lecture-backend\apiPassionBooks\src
+allez dans le repertoire \C294-FrontEnd\passion-lecture-backend\src
 puis lancez la commade 'npm i' dans un invite de commande, une fois l'installation terminée, lancez 'npm start'
 
 ## setup de du FrontEnd
+
 allez dans le repertoire \C294-FrontEnd\passion-lecture-vue
 puis lancez la commade 'npm i' dans un invite de commande, une fois l'installation terminée, lancez 'npm run dev'
 
