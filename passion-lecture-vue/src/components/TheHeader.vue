@@ -6,9 +6,9 @@
       </div>
       <nav>
         <RouterLink :to="{ name: 'account' }">Mon compte</RouterLink>
-        <RouterLink :to="{ name: 'home' }">Home</RouterLink>
-        <RouterLink :to="{ name: 'book-list' }">Books</RouterLink>
-        <RouterLink :to="{ name: 'add-book' }">Add book</RouterLink>
+        <RouterLink v-if="isAuthenticated" :to="{ name: 'home' }">Home</RouterLink>
+        <RouterLink v-if="isAuthenticated" :to="{ name: 'book-list' }">Books</RouterLink>
+        <RouterLink v-if="isAuthenticated" :to="{ name: 'add-book' }">Add book</RouterLink>
       </nav>
     </div>
   </header>
@@ -16,6 +16,10 @@
 
 <script setup>
 import { RouterLink } from 'vue-router'
+import { onUpdated } from 'vue'
+import { isAuthenticated } from '../auth.js'
+
+onUpdated(() => {})
 </script>
 
 <style scoped>
