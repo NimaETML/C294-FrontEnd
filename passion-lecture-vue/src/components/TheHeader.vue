@@ -57,8 +57,7 @@ nav {
   gap: 15px;
 }
 
-nav a,
-.disabled {
+nav a {
   font-family: 'Arial', sans-serif;
   font-weight: bold;
   color: rgb(0, 86, 126);
@@ -67,7 +66,6 @@ nav a,
   transition:
     background 0.3s ease,
     color 0.3s ease;
-  cursor: not-allowed;
 }
 
 nav a.router-link-exact-active {
@@ -82,5 +80,6 @@ nav a:hover {
 
 .disabled {
   opacity: 0.5;
+  cursor: not-allowed;
 }
 </style>
