@@ -45,47 +45,57 @@ const logout = () => {
 </script>
 
 <template>
-  <div class="account">
-    <h2>My Account</h2>
-    <div v-if="isAuthenticated">
-      <button @click="logout">Logout</button>
+  <div class="container">
+    <div class="account">
+      <h2>My Account</h2>
+      <div v-if="isAuthenticated">
+        <button @click="logout">Logout</button>
+      </div>
+
+      <div v-else>
+        <form @submit.prevent="login">
+          <label for="nickName">Nickname</label>
+          <input
+            type="text"
+            v-model="nickName"
+            name="nickName"
+            id="nickName"
+            placeholder="Enter nickname"
+            required
+          />
+          <label for="password">Password</label>
+          <input
+            type="password"
+            v-model="password"
+            name="password"
+            id="password"
+            placeholder="Enter password"
+            required
+          />
+          <input type="submit" value="Login" />
+        </form>
+      </div>
     </div>
 
-    <div v-else>
-      <form @submit.prevent="login">
-        <label for="nickName">Nickname</label>
-        <input
-          type="text"
-          v-model="nickName"
-          name="nickName"
-          id="nickName"
-          placeholder="Enter nickname"
-          required
-        />
-        <label for="password">Password</label>
-        <input
-          type="password"
-          v-model="password"
-          name="password"
-          id="password"
-          placeholder="Enter password"
-          required
-        />
-        <input type="submit" value="Login" />
-      </form>
-
-      <div v-if="loginError" class="error">{{ loginError }}</div>
-    </div>
+    <div v-if="loginError" class="error">{{ loginError }}</div>
   </div>
 </template>
 
 <style scoped>
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .account {
   margin: 0 auto;
   padding: 20px;
-  margin-top: 225px;
-  margin-bottom: 273px;
+  margin-top: 235px;
+  margin-bottom: 295px;
   max-width: 400px;
+  width: 350px;
   background: rgb(167, 254, 255);
   background: linear-gradient(203deg, rgba(167, 254, 255, 1) 0%, rgba(110, 255, 170, 1) 100%);
   border-radius: 8px;
@@ -93,9 +103,11 @@ const logout = () => {
   display: flex;
   flex-direction: column;
   align-items: center;
+  z-index: 1; /* Ensure the account div stays above the background */
 }
 
 .account h2 {
+  margin-top: 5px;
   font-family: 'Arial', sans-serif;
   font-weight: bold;
   color: rgb(0, 86, 126);
@@ -158,10 +170,14 @@ button:hover {
 }
 
 .error {
+  position: absolute;
+  bottom: 250px;
+  width: 100%;
   color: red;
   font-family: 'Arial', sans-serif;
   font-weight: bold;
-  margin-top: 10px;
+  text-align: center;
+  z-index: 2; /* Ensure the error message stays above other content */
 }
 
 label {

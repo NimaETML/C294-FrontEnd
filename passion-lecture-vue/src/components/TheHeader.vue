@@ -22,7 +22,7 @@ import { RouterLink } from 'vue-router'
 header {
   background: rgb(0, 143, 0);
   background: linear-gradient(90deg, rgb(86, 201, 255) 0%, rgb(27, 255, 122) 100%);
-  color: white;
+  color: rgb(0, 86, 126);
   padding: 10px 20px;
   border-bottom: 2px solid hsla(160, 100%, 37%, 1);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -50,7 +50,7 @@ nav {
 nav a {
   font-family: 'Arial', sans-serif;
   font-weight: bold;
-  color: white;
+  color: rgb(0, 86, 126);
   text-decoration: none;
   padding: 5px 10px;
   transition:
@@ -59,12 +59,12 @@ nav a {
 }
 
 nav a.router-link-exact-active {
-  color: #42b983;
+  color: #070068;
 }
 
 nav a:hover {
   background: rgba(255, 255, 255, 0.1);
-  color: #fff;
+  color: #0084b8;
   border-radius: 4px;
 }
 </style>

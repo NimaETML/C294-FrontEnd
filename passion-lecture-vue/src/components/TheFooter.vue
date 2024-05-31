@@ -10,7 +10,7 @@
 footer {
   background: rgb(0, 143, 0);
   background: linear-gradient(90deg, rgb(86, 201, 255) 0%, rgb(27, 255, 122) 100%);
-  color: white;
+  color: rgb(0, 86, 126);
   padding: 10px 20px;
   border-top: 2px solid hsla(160, 100%, 37%, 1);
   box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
