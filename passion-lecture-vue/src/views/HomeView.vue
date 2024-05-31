@@ -29,7 +29,9 @@ onMounted(() => {
 
 <style scoped>
 .title {
-  margin-top: 20px; /* Add margin-top to the title */
+  margin-top: 40px;
+  margin-bottom: 35px;
+  margin-left: 30px; /* Add margin-top to the title */
 }
 
 .home {
@@ -37,6 +39,8 @@ onMounted(() => {
   align-items: center;
   justify-content: center; /* Center the book cards horizontally */
   overflow-x: hidden; /* Hide horizontal overflow */
+  margin-top: 200px;
+  margin-bottom: 200px;
 }
 
 .books-container {

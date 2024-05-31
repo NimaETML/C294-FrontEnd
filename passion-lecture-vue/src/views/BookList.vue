@@ -20,7 +20,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <h3>All books</h3>
+  <h3 class="title">All books</h3>
   <div class="home">
     <div class="books-container">
       <BookCard v-for="book in books" :key="book.id" :book="book" />
@@ -29,6 +29,12 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.title {
+  margin-top: 40px;
+  margin-bottom: 35px;
+  margin-left: 30px; /* Add margin-top to the title */
+}
+
 .home {
   display: flex;
   align-items: center;
