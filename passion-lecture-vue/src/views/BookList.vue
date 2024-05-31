@@ -8,9 +8,6 @@ const books = ref(null)
 onMounted(() => {
   BookService.getBooks()
     .then((response) => {
-      // Le backend nous retourne un objet contenant 2 entrées :
-      // - msg qde confirmation
-      // - data qui contient l'ensemble des livres
       books.value = response.data.data
     })
     .catch((error) => {

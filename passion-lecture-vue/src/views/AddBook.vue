@@ -51,6 +51,7 @@ function handleFileUpload(event) {
   newBook.value.book_cover = event.target.files[0]
 }
 
+//Ajout du livre
 async function addBook() {
   if (
     newBook.value.title &&
@@ -79,24 +80,18 @@ async function addBook() {
         alert('User ID not found in token. Please log in again.')
         return
       }
-      console.log(userId)
-      // Obtener el writerId por firstname
-      console.log('newBook.value.firstname:', newBook.value.firstname)
       const writerResponse = await BookService.getWriterByFirstname(newBook.value.firstname)
-      console.log('writerResponse:', writerResponse.data.data)
 
-      // Verifica si writerResponse.data e id existen
+      // Vérifie si writerResponse.data et id existent
       if (!writerResponse.data.data || typeof writerResponse.data.data.id === 'undefined') {
         alert("L'écrivain n'existe pas. Merci de réessayer avec un autre identifiant.")
         return
       }
 
       const writerId = writerResponse.data.data.id
-      console.log('writerId:', writerId)
 
-      // Obtener el categoryId por name
+      // Obtention du category name
       const categoryResponse = await BookService.getCategoryByName(newBook.value.category_name)
-      console.log('categoryResponse:', categoryResponse.data.data)
       if (!categoryResponse.data.data || typeof categoryResponse.data.data.id === 'undefined') {
         alert("La catégorie n'existe pas. Merci de réessayer avec un autre identifiant.")
         return
@@ -117,8 +112,6 @@ async function addBook() {
       formData.append('writerId', writerId)
       formData.append('categoryId', categoryId)
 
-      const response = await BookService.createBook(formData)
-      console.log('createBook response:', response.data)
       newBook.value = {
         title: '',
         number_of_pages: '',
@@ -132,10 +125,7 @@ async function addBook() {
       }
       router.push('/')
     } catch (error) {
-      console.log(
-        'Erreur lors de la création du livre:',
-        error.response ? error.response.data : error.message
-      )
+      console.log('Erreur lors de la création du livre')
     }
   } else {
     alert('Veuillez remplir tous les champs.')
