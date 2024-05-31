@@ -1,7 +1,10 @@
 <script setup>
 import { ref } from 'vue'
 import BookService from '../services/BookService.js'
+import { useRouter } from 'vue-router'
+import { isAuthenticated } from '../auth.js' // Importar el valor reactivo
 
+const router = useRouter()
 const users = ref(null)
 const searchQuery = ref('')
 const errorMessage = ref('')
@@ -9,7 +12,6 @@ const errorMessage = ref('')
 const nickName = ref('')
 const password = ref('')
 const loginError = ref('')
-const isAuthenticated = ref(!!localStorage.getItem('jwt'))
 
 const login = async () => {
   try {
@@ -22,6 +24,7 @@ const login = async () => {
       localStorage.setItem('jwt', response.data.token)
       loginError.value = ''
       isAuthenticated.value = true
+      router.push('/home')
       console.log('Login successful:', response.data.data)
     } else {
       loginError.value = 'Invalid nickname or password'
