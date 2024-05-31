@@ -13,7 +13,7 @@ async function deleteBook() {
   try {
     const response = await BookService.deleteBook(route.params.id)
     if (response.status === 200) {
-      router.push('/') // Redirection vers la page d'accueil
+      router.push('/home') // Redirection vers la page d'accueil
     } else {
       throw new Error('Erreur lors de la suppression du livre.')
     }
