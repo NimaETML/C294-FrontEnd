@@ -13,10 +13,20 @@
         />
         <textarea v-model="newBook.excerpt" placeholder="Excerpt"></textarea>
         <textarea v-model="newBook.summary" placeholder="Summary"></textarea>
-        <input v-model="writerName.firstName" placeholder="Writer's Firstname" />
-        <input v-model="catergoryName.name" placeholder="Category Name" />
+        <select v-model="newBook.writerId" required>
+          <option disabled value="">Select an author</option>
+          <option v-for="author in authors" :key="author.id" :value="author.id">
+            {{ author.firstName }} {{ author.lastName }}
+          </option>
+        </select>
+        <select v-model="newBook.categoryId" required>
+          <option disabled value="">Select a category</option>
+          <option v-for="category in categories" :key="category.id" :value="category.id">
+            {{ category.name }}
+          </option>
+        </select>
         <input type="file" @change="handleFileUpload" name="book_cover" />
-        <button type="submit">Ajouter</button>
+        <button type="submit">Modifier</button>
       </form>
       <router-link to="/">Retour</router-link>
     </div>
@@ -37,47 +47,43 @@ import BookService from '../services/BookService.js'
 const route = useRoute()
 const router = useRouter()
 const newBook = ref({})
-const writerName = ref({})
-const catergoryName = ref({})
+const authors = ref([])
+const categories = ref([])
 
-onMounted(() => {
-  BookService.getBook(route.params.id)
-    .then((response) => {
-      newBook.value = response.data.data
-      return BookService.getWriter(newBook.value.writerId)
-    })
-    .then((response) => {
-      writerName.value = response.data.data
-      return BookService.getCategory(newBook.value.categoryId)
-    })
-    .then((response) => {
-      catergoryName.value = response.data.data
-    })
-    .catch((error) => console.log(error))
+async function loadAuthors() {
+  try {
+    const response = await BookService.getWriters()
+    authors.value = response.data.data
+  } catch (error) {
+    console.error('Erreur lors du chargement des auteurs:', error)
+  }
+}
+
+async function loadCategories() {
+  try {
+    const response = await BookService.getCategories()
+    categories.value = response.data.data
+  } catch (error) {
+    console.error('Erreur lors du chargement des catégories:', error)
+  }
+}
+
+onMounted(async () => {
+  try {
+    await loadAuthors()
+    await loadCategories()
+    const response = await BookService.getBook(route.params.id)
+    newBook.value = response.data.data
+  } catch (error) {
+    console.log(error)
+  }
 })
 
 function handleFileUpload(event) {
   newBook.value.book_cover = event.target.files[0]
 }
-/*
-function parseJwt(token) {
-  try {
-    return JSON.parse(atob(token.split('.')[1]))
-  } catch (e) {
-    console.error('Error decoding token:', e)
-    return null
-  }
-}*/
 
 async function editBook() {
-  console.log(`GREG : ${newBook.value}`)
-
-  console.log(newBook.value)
-  console.log(newBook.value.book_cover)
-
-  newBook.value.firstname = writerName.value.firstName
-  newBook.value.category_name = catergoryName.value.name
-
   if (
     newBook.value.title &&
     newBook.value.number_of_pages &&
@@ -85,8 +91,8 @@ async function editBook() {
     newBook.value.date_of_publication &&
     newBook.value.excerpt &&
     newBook.value.summary &&
-    newBook.value.firstname &&
-    newBook.value.category_name
+    newBook.value.writerId &&
+    newBook.value.categoryId
   ) {
     try {
       const token = localStorage.getItem('jwt')
@@ -109,25 +115,6 @@ async function editBook() {
         alert('User ID not found in token. Please log in again.')
         return
       }
-      console.log('newBook.value.firstname:', newBook.value.firstname)
-      const writerResponse = await BookService.getWriterByFirstname(newBook.value.firstname)
-      console.log('writerResponse:', writerResponse.data.data)
-
-      if (!writerResponse.data.data || typeof writerResponse.data.data.id === 'undefined') {
-        alert("L'écrivain n'existe pas. Merci de réessayer avec un autre identifiant.")
-        return
-      }
-
-      const writerId = writerResponse.data.data.id
-      console.log('writerId:', writerId)
-
-      const categoryResponse = await BookService.getCategoryByName(newBook.value.category_name)
-      console.log('categoryResponse:', categoryResponse.data.data)
-      if (!categoryResponse.data.data || typeof categoryResponse.data.data.id === 'undefined') {
-        alert("La catégorie n'existe pas. Merci de réessayer avec un autre identifiant.")
-        return
-      }
-      const categoryId = categoryResponse.data.data.id
 
       const formData = new FormData()
       formData.append('title', newBook.value.title)
@@ -142,11 +129,8 @@ async function editBook() {
         formData.append('book_cover', '/toto/')
       }
       formData.append('userId', userId)
-      formData.append('writerId', writerId)
-      formData.append('categoryId', categoryId)
-
-      console.log('AVANT editBook')
-      console.log(formData)
+      formData.append('writerId', newBook.value.writerId)
+      formData.append('categoryId', newBook.value.categoryId)
 
       const response = await BookService.editBook(route.params.id, formData)
       console.log('editBook response:', response.data)
@@ -159,8 +143,8 @@ async function editBook() {
         excerpt: '',
         summary: '',
         book_cover: null,
-        firstname: '',
-        category_name: ''
+        writerId: '',
+        categoryId: ''
       }
       router.push('/')
     } catch (error) {
